@@ -12,20 +12,20 @@ import java.util.regex.Pattern;
  *
  * @author A643012
  */
-public class OPERATOR_PLUS extends Lexem implements Rule {
+public class PAR_OPEN extends Lexem implements Rule {
 
-    public final static String NAME = "OPERATOR_PLUS";
+    public final static String NAME = "PAR_OPEN";
 
-    public OPERATOR_PLUS() {
+    public PAR_OPEN() {
     }
 
     @Override
     public boolean match(String sentence) {
         movePointerFromX = 1;
-        lastMatch = "+";
+        lastMatch = "(";
         
         
-        return sentence.charAt(0) == '+';
+        return sentence.charAt(0) == '(';
     }
 
     public String getName() {

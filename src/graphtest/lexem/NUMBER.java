@@ -17,24 +17,19 @@ public class NUMBER extends Lexem implements Rule {
     public final static String NAME = "NUMBER";
 
     public NUMBER() {
-        pattern = Pattern.compile("^([0-9]+)");
-        System.out.println("+++> " + pattern.pattern());
-        System.out.println("===> " + pattern.matcher("sin(8)").find());
-
+      
     }
 
     @Override
     public boolean match(String sentence) {
 
+        pattern = Pattern.compile("^([0-9]+((,|\\.)[0-9])?)");
         Matcher matcher = pattern.matcher(sentence);
 
         boolean r = matcher.find();
-
-        System.out.println("+++> " + pattern.pattern());
-        System.out.println("Test de >> " + pattern.matcher("sin(8)").find());
-
         if (r) {
             lastMatch = (matcher.group(0));
+            System.out.println(lastMatch);
             movePointerFromX = lastMatch.length();
 
             return true;

@@ -5,27 +5,22 @@
  */
 package graphtest.lexem;
 
-import static graphtest.lexem.Lexem.pattern;
-import java.util.regex.Pattern;
-
 /**
  *
  * @author A643012
  */
-public class OPERATOR_PLUS extends Lexem implements Rule {
+public class OPERATOR_DIVIDE extends Lexem implements Rule {
 
-    public final static String NAME = "OPERATOR_PLUS";
+    public final static String NAME = "OPERATOR_DIVIDE";
 
-    public OPERATOR_PLUS() {
+    public OPERATOR_DIVIDE() {
     }
 
     @Override
     public boolean match(String sentence) {
         movePointerFromX = 1;
-        lastMatch = "+";
-        
-        
-        return sentence.charAt(0) == '+';
+        lastMatch = "/";
+        return sentence.charAt(0) == '/';
     }
 
     public String getName() {

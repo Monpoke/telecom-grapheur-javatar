@@ -17,15 +17,13 @@ public class FCT_SIN extends Lexem implements Rule {
     public final static String NAME = "FCT_SIN";
 
     public FCT_SIN() {
-        pattern = Pattern.compile("^(sin)");
     }
 
     @Override
     public boolean match(String sentence) {
+        pattern = Pattern.compile("^(sin)");
         Matcher matcher = pattern.matcher(sentence);
 
-        System.out.println(sentence + "<" + matcher.find());
-        
         boolean r = matcher.find();
 
         if (r) {
