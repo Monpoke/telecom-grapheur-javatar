@@ -5,22 +5,29 @@
  */
 package graphtest.lexem;
 
+import graphtest.parsed.ParsedToken;
+import graphtest.parsed.TOK_OPERATOR_MINUS;
+
 /**
  *
  * @author A643012
  */
-public class OPERATOR_MINUS extends Lexem implements Rule {
+public class Matcher_OPERATOR_MINUS extends Lexem implements Rule {
 
     public final static String NAME = "OPERATOR_MINUS";
 
-    public OPERATOR_MINUS() {
+    public Matcher_OPERATOR_MINUS() {
     }
 
     @Override
-    public boolean match(String sentence) {
+    public ParsedToken match(String sentence) {
         movePointerFromX = 1;
         lastMatch = "-";
-        return sentence.charAt(0) == '-';
+        if(sentence.charAt(0) == '-'){
+            return new TOK_OPERATOR_MINUS();
+        }
+
+        return null;
     }
 
     public String getName() {

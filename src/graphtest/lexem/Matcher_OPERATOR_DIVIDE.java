@@ -5,22 +5,28 @@
  */
 package graphtest.lexem;
 
+import graphtest.parsed.ParsedToken;
+import graphtest.parsed.TOK_OPERATOR_DIVIDE;
+
 /**
  *
  * @author A643012
  */
-public class OPERATOR_DIVIDE extends Lexem implements Rule {
+public class Matcher_OPERATOR_DIVIDE extends Lexem implements Rule {
 
     public final static String NAME = "OPERATOR_DIVIDE";
 
-    public OPERATOR_DIVIDE() {
+    public Matcher_OPERATOR_DIVIDE() {
     }
 
     @Override
-    public boolean match(String sentence) {
+    public ParsedToken match(String sentence) {
         movePointerFromX = 1;
         lastMatch = "/";
-        return sentence.charAt(0) == '/';
+        if(sentence.charAt(0) == '/'){
+            return new TOK_OPERATOR_DIVIDE();
+        }
+        return null;
     }
 
     public String getName() {

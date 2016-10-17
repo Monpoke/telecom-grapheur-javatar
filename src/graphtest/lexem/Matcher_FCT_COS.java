@@ -5,6 +5,9 @@
  */
 package graphtest.lexem;
 
+import graphtest.parsed.ParsedToken;
+import graphtest.parsed.TOK_FCT_COS;
+import graphtest.parsed.TOK_FCT_SIN;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -12,30 +15,28 @@ import java.util.regex.Pattern;
  *
  * @author A643012
  */
-public class NUMBER extends Lexem implements Rule {
+public class Matcher_FCT_COS extends Lexem implements Rule {
 
-    public final static String NAME = "NUMBER";
+    public final static String NAME = "FCT_COS";
 
-    public NUMBER() {
-      
+    public Matcher_FCT_COS() {
     }
 
     @Override
-    public boolean match(String sentence) {
-
-        pattern = Pattern.compile("^([0-9]+((,|\\.)[0-9])?)");
+    public ParsedToken match(String sentence) {
+        pattern = Pattern.compile("^(cos)");
         Matcher matcher = pattern.matcher(sentence);
 
         boolean r = matcher.find();
+
         if (r) {
             lastMatch = (matcher.group(0));
-            System.out.println(lastMatch);
             movePointerFromX = lastMatch.length();
 
-            return true;
+            return new TOK_FCT_COS();
         }
 
-        return false;
+        return null;
 
     }
 

@@ -5,7 +5,12 @@
  */
 package graphtest;
 
+import graphtest.exceptions.ParsingException;
+import graphtest.parsed.ParsedToken;
+import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -30,7 +35,21 @@ public class GraphTest {
         
         System.out.println("Lancement du parsage...");
         
-        new Parser(math);
+        try {
+            // FIRST STEP
+            Parser parser = new Parser(math);
+            
+            // SECOND STEP
+            ArrayList<ParsedToken> parsedTokenList = parser.getParsedTokenList();
+            
+            
+            
+            
+            
+            
+        } catch (ParsingException ex) {
+            Logger.getLogger(GraphTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         
     }

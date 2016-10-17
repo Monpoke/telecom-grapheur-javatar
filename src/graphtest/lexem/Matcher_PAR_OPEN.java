@@ -6,26 +6,32 @@
 package graphtest.lexem;
 
 import static graphtest.lexem.Lexem.pattern;
+import graphtest.parsed.ParsedToken;
+import graphtest.parsed.TOK_PAR_OPEN;
 import java.util.regex.Pattern;
 
 /**
  *
  * @author A643012
  */
-public class PAR_OPEN extends Lexem implements Rule {
+public class Matcher_PAR_OPEN extends Lexem implements Rule {
 
     public final static String NAME = "PAR_OPEN";
 
-    public PAR_OPEN() {
+    public Matcher_PAR_OPEN() {
     }
 
     @Override
-    public boolean match(String sentence) {
+    public ParsedToken match(String sentence) {
         movePointerFromX = 1;
         lastMatch = "(";
         
         
-        return sentence.charAt(0) == '(';
+        if(sentence.charAt(0) == '('){
+            return new TOK_PAR_OPEN();
+        }
+        
+        return null;
     }
 
     public String getName() {

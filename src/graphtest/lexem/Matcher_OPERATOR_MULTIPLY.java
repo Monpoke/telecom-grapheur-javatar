@@ -5,22 +5,28 @@
  */
 package graphtest.lexem;
 
+import graphtest.parsed.ParsedToken;
+import graphtest.parsed.TOK_OPERATOR_MULTIPLY;
+
 /**
  *
  * @author A643012
  */
-public class OPERATOR_MULTIPLY extends Lexem implements Rule {
+public class Matcher_OPERATOR_MULTIPLY extends Lexem implements Rule {
 
     public final static String NAME = "OPERATOR_MULTIPLY";
 
-    public OPERATOR_MULTIPLY() {
+    public Matcher_OPERATOR_MULTIPLY() {
     }
 
     @Override
-    public boolean match(String sentence) {
+    public ParsedToken match(String sentence) {
         movePointerFromX = 1;
         lastMatch = "*";
-        return sentence.charAt(0) == '*';
+        if(sentence.charAt(0) == '*'){
+            return new TOK_OPERATOR_MULTIPLY();
+        }
+        return null;
     }
 
     public String getName() {
