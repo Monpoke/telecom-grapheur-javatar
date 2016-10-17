@@ -14,5 +14,9 @@ public class TOK_OPERATOR_MULTIPLY extends ParsedToken implements ParsedTokenInt
         this.parsedType = TokenType.OPERATOR_MULTIPLY;
     }
     
+    @Override
+    public boolean isOperator() {
+        return true; 
+    }
     
 }

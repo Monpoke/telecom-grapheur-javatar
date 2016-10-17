@@ -15,4 +15,8 @@ public class TOK_OPERATOR_DIVIDE extends ParsedToken implements ParsedTokenInter
     }
     
     
+    @Override
+    public boolean isOperator() {
+        return true; 
+    }
 }

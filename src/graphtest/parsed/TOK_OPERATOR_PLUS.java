@@ -13,6 +13,11 @@ public class TOK_OPERATOR_PLUS extends ParsedToken implements ParsedTokenInterfa
     public TOK_OPERATOR_PLUS() {
         this.parsedType = TokenType.OPERATOR_PLUS;
     }
+
+    @Override
+    public boolean isOperator() {
+        return true; 
+    }
     
     
 }

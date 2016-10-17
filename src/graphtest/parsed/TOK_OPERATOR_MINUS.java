@@ -14,5 +14,9 @@ public class TOK_OPERATOR_MINUS extends ParsedToken implements ParsedTokenInterf
         this.parsedType = TokenType.OPERATOR_MINUS;
     }
     
+    @Override
+    public boolean isOperator() {
+        return true; 
+    }
     
 }
