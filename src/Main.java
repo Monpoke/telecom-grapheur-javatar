@@ -1,11 +1,15 @@
+import modele.TelecomGrapheurModele;
+import controleur.TelecomGrapheurControleur;
 import vue.FenetreContener;
-import vue.TelecomGrapheur;
+import vue.TelecomGrapheurVue;
 
 public class Main {
 
 	public static void main(String[] args) {
 		FenetreContener fenetre = new FenetreContener();
-		TelecomGrapheur graph = new TelecomGrapheur(fenetre);
+		TelecomGrapheurControleur controleur = new TelecomGrapheurControleur();
+		TelecomGrapheurModele modele = new TelecomGrapheurModele();
+		TelecomGrapheurVue graph = new TelecomGrapheurVue(fenetre,modele,controleur);
 		fenetre.add(graph);
 	}
 }

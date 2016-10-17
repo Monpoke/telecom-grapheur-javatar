@@ -6,7 +6,7 @@ public class Constantes {
 
 	static Dimension dimension = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
 	
-	public static final int width = (int) dimension.getWidth();
-	public static final int height = (int) dimension.getHeight()-35;
+	public static int width = (int) dimension.getWidth();
+	public static int height = (int) dimension.getHeight()-35;
 	
 }
