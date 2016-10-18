@@ -37,11 +37,16 @@ class Parser {
     private final String math;
 
     public Parser(String math) throws ParsingException {
-        this.math = math;
+        this.math = cleanMath(math);
 
         registerLexem();
 
         startParser();
+    }
+    
+    private String cleanMath(String input){
+        input = input.replace(" ", "");
+        return input;
     }
 
     private void startParser() throws ParsingException {

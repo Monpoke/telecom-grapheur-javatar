@@ -15,4 +15,10 @@ public class TOK_FCT_TAN extends ParsedToken implements ParsedTokenInterface {
     }
     
     
+    @Override
+    public boolean isFunction() {
+        return true;
+    }
+    
+    
 }

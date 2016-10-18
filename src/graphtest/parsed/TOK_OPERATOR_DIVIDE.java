@@ -19,4 +19,5 @@ public class TOK_OPERATOR_DIVIDE extends ParsedToken implements ParsedTokenInter
     public boolean isOperator() {
         return true; 
     }
+
 }

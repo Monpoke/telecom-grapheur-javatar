@@ -13,6 +13,11 @@ public class TOK_FCT_COS extends ParsedToken implements ParsedTokenInterface {
     public TOK_FCT_COS() {
         this.parsedType = TokenType.FCT_COS;
     }
+
+    @Override
+    public boolean isFunction() {
+        return true;
+    }
     
     
 }
