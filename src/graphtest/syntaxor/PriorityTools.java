@@ -22,6 +22,7 @@ public class PriorityTools {
         parenthesisArray = removeUselessParenthesis(parenthesisArray);
         
         
+        
         return null;
     }
     
@@ -29,14 +30,22 @@ public class PriorityTools {
         ArrayList<ParsedToken> parenthesisArray = new ArrayList<>();
         parenthesisArray = lexicalArray;
         
+        if(parenthesisArray.get(0) instanceof TOK_PAR_OPEN 
+                && parenthesisArray.get(parenthesisArray.size()-1) instanceof TOK_PAR_CLOSE){
+            parenthesisArray.remove(0);
+            parenthesisArray.remove(parenthesisArray.size()-1);
+        }
+        
         for(int i=0;i+2<parenthesisArray.size();i++){
             if(parenthesisArray.get(i) instanceof TOK_PAR_OPEN 
-               && parenthesisArray.get(i+2) instanceof TOK_PAR_CLOSE 
-               && parenthesisArray.get(i+1) instanceof TOK_VARIABLE || parenthesisArray.get(i+1) instanceof TOK_NUMBER){
+                && parenthesisArray.get(i+2) instanceof TOK_PAR_CLOSE 
+                    && (parenthesisArray.get(i+1) instanceof TOK_VARIABLE || parenthesisArray.get(i+1) instanceof TOK_NUMBER)){
+                parenthesisArray.remove(i);
+                parenthesisArray.remove(i+2);
             }
         }
         
-        return null;
+        return parenthesisArray;
     }
     
 }
