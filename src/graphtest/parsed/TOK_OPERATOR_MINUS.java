@@ -19,4 +19,10 @@ public class TOK_OPERATOR_MINUS extends ParsedToken implements ParsedTokenInterf
         return true; 
     }
     
+    
+    @Override
+    public String toString() {
+        return "SUBSTRACT";
+    }
+    
 }

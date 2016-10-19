@@ -18,5 +18,10 @@ public class TOK_OPERATOR_MULTIPLY extends ParsedToken implements ParsedTokenInt
     public boolean isOperator() {
         return true; 
     }
-    
+ 
+    @Override
+    public String toString() {
+        return "MULTIPLY";
+    }
+       
 }

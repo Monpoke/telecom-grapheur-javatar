@@ -109,14 +109,15 @@ class Parser {
      */
     private void registerLexem() {
 
+        // CHECK NUMBER
+        registeredMatchers.add(new Matcher_NUMBER());
+        
         // OPERATORS
         registeredMatchers.add(new OPERATOR_PLUS());
         registeredMatchers.add(new Matcher_OPERATOR_MINUS());
         registeredMatchers.add(new Matcher_OPERATOR_DIVIDE());
         registeredMatchers.add(new Matcher_OPERATOR_MULTIPLY());
 
-        // CHECK NUMBER
-        registeredMatchers.add(new Matcher_NUMBER());
 
         // FCTS
         registeredMatchers.add(new Matcher_FCT_SIN());

@@ -18,6 +18,12 @@ public class TOK_FCT_COS extends ParsedToken implements ParsedTokenInterface {
     public boolean isFunction() {
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "COS";
+    }
+    
     
     
 }

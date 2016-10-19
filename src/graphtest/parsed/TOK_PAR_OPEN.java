@@ -14,5 +14,10 @@ public class TOK_PAR_OPEN extends ParsedToken implements ParsedTokenInterface {
         this.parsedType = TokenType.PAR_OPEN;
     }
     
+    @Override
+    public String toString() {
+        return "(";
+    }
+    
     
 }

@@ -15,4 +15,9 @@ public class TOK_PAR_CLOSE extends ParsedToken implements ParsedTokenInterface {
     }
     
     
+    @Override
+    public String toString() {
+        return ")";
+    }
+    
 }

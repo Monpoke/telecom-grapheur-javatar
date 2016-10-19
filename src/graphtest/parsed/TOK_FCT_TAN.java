@@ -20,5 +20,10 @@ public class TOK_FCT_TAN extends ParsedToken implements ParsedTokenInterface {
         return true;
     }
     
+    @Override
+    public String toString() {
+        return "TAN";
+    }
+    
     
 }

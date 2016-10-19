@@ -20,4 +20,10 @@ public class TOK_OPERATOR_DIVIDE extends ParsedToken implements ParsedTokenInter
         return true; 
     }
 
+    
+    @Override
+    public String toString() {
+        return "DIVIDE";
+    }
+    
 }

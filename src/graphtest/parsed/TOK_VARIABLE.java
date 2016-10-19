@@ -16,4 +16,9 @@ public class TOK_VARIABLE extends ParsedToken implements ParsedTokenInterface {
     }
     
     
+    @Override
+    public String toString() {
+        return "$" + getVariableName();
+    }
+    
 }

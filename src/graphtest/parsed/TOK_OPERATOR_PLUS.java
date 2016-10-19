@@ -19,5 +19,10 @@ public class TOK_OPERATOR_PLUS extends ParsedToken implements ParsedTokenInterfa
         return true; 
     }
     
+    @Override
+    public String toString() {
+        return "ADD";
+    }
+    
     
 }
