@@ -16,6 +16,8 @@ public class BorneGraphiqueModele extends Observable{
 
 	public void setBorneXLeft(int borneXLeft) {
 		this.borneXLeft = borneXLeft;
+		setChanged ();
+		notifyObservers ();
 	}
 
 	public int getBorneXRight() {
@@ -24,6 +26,8 @@ public class BorneGraphiqueModele extends Observable{
 
 	public void setBorneXRight(int borneXRight) {
 		this.borneXRight = borneXRight;
+		setChanged ();
+		notifyObservers ();
 	}
 
 	public int getBorneYTop() {
@@ -32,6 +36,8 @@ public class BorneGraphiqueModele extends Observable{
 
 	public void setBorneYTop(int borneYTop) {
 		this.borneYTop = borneYTop;
+		setChanged ();
+		notifyObservers ();
 	}
 
 	public int getBorneYDown() {
@@ -40,6 +46,8 @@ public class BorneGraphiqueModele extends Observable{
 
 	public void setBorneYDown(int borneYDown) {
 		this.borneYDown = borneYDown;
+		setChanged ();
+		notifyObservers ();
 	}
 	
 	

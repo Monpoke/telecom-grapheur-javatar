@@ -17,6 +17,8 @@ public class AxeModele extends Observable{
 	
 	public void setTailleCase(int tailleCase) {
 		this.tailleCase = tailleCase;
+		setChanged ();
+		notifyObservers ();
 	}
 	
 	public int getCoeffZoom() {
@@ -25,6 +27,8 @@ public class AxeModele extends Observable{
 	
 	public void setCoeffZoom(int coeffZoom) {
 		this.coeffZoom = coeffZoom;
+		setChanged ();
+		notifyObservers ();
 	}
 	
 	public int getBorneXLeft() {
@@ -45,17 +49,25 @@ public class AxeModele extends Observable{
 	
 	public void setBorneXLeft(int borneXLeft) {
 		this.borneXLeft = borneXLeft;
+		setChanged ();
+		notifyObservers ();
 	}
 	
 	public void setBorneXRight(int borneXRight) {
 		this.borneXRight = borneXRight;
+		setChanged ();
+		notifyObservers ();
 	}
 	
 	public void setBorneYDown(int borneYDown) {
 		this.borneYDown = borneYDown;
+		setChanged ();
+		notifyObservers ();
 	}
 	
 	public void setBorneYtop(int borneYtop) {
 		this.borneYtop = borneYtop;
+		setChanged ();
+		notifyObservers ();
 	}
 }

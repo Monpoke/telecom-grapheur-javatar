@@ -8,6 +8,7 @@ public class TelecomGrapheurModele extends Observable{
 	AxeModele axeModeleY = new AxeModele();
 	PointModele origin = new PointModele();
 	BorneGraphiqueModele bornes = new BorneGraphiqueModele();
+	boolean isClique = false;
 	
 	public TelecomGrapheurModele() {
 		this.initBornes();
@@ -16,12 +17,22 @@ public class TelecomGrapheurModele extends Observable{
 		this.initOrigin();
 	}
 	
+	public void setClique(boolean isClique) {
+		this.isClique = isClique;
+	}
+	
+	public boolean isClique(){
+		return this.isClique;
+	}
+
 	public AxeModele getAxeModeleX() {
 		return axeModeleX;
 	}
 	
 	public void setAxeModeleX(AxeModele axeModeleX) {
 		this.axeModeleX = axeModeleX;
+		setChanged ();
+		notifyObservers ();
 	}
 	
 	public AxeModele getAxeModeleY() {
@@ -30,6 +41,8 @@ public class TelecomGrapheurModele extends Observable{
 	
 	public void setAxeModeleY(AxeModele axeModeleY) {
 		this.axeModeleY = axeModeleY;
+		setChanged ();
+		notifyObservers ();
 	}
 	
 	public PointModele getOrigin() {
@@ -38,6 +51,8 @@ public class TelecomGrapheurModele extends Observable{
 	
 	public void setOrigin(PointModele origin) {
 		this.origin = origin;
+		setChanged ();
+		notifyObservers ();
 	}
 	
 	public BorneGraphiqueModele getBornes() {
@@ -46,13 +61,15 @@ public class TelecomGrapheurModele extends Observable{
 	
 	public void setBornes(BorneGraphiqueModele bornes) {
 		this.bornes = bornes;
+		setChanged ();
+		notifyObservers ();
 	}
 	
 	public void initBornes(){
-		this.getBornes().setBorneXLeft(-10);
-		this.getBornes().setBorneXRight(10);
-		this.getBornes().setBorneYTop(-5);
-		this.getBornes().setBorneYDown(5);
+		this.getBornes().setBorneXLeft(-10000); // axes caché en dehors de la fenetre pour plus de fluidité et pour ne pas tout recalculer
+		this.getBornes().setBorneXRight(10000);
+		this.getBornes().setBorneYTop(-5000);
+		this.getBornes().setBorneYDown(5000);
 	}
 	
 	public void initOrigin(){
