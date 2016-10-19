@@ -12,9 +12,9 @@ import graphtest.parsed.ParsedToken;
  * @author A643012
  */
 public class TreeNode {
-    
+
     protected ParsedToken token;
-    
+
     protected TreeNode left;
     protected TreeNode right;
 
@@ -24,10 +24,31 @@ public class TreeNode {
         this.right = new TreeNode(right);
     }
 
-    public TreeNode(ParsedToken token) {
-        this.token=token;
+    public TreeNode(ParsedToken token, TreeNode left, TreeNode right) {
+        this.token = token;
+        this.left = left;
+        this.right = right;
     }
     
+    public TreeNode(ParsedToken token, ParsedToken left, TreeNode right) {
+        this.token = token;
+        this.left = new TreeNode(left);
+        this.right = right;
+    }
+    
+    public TreeNode(ParsedToken token, TreeNode left, ParsedToken right) {
+        this.token = token;
+        this.left = left;
+        this.right = new TreeNode(right);
+    }
+    
+    
+    
+
+    public TreeNode(ParsedToken token) {
+        this.token = token;
+    }
+
     public ParsedToken getToken() {
         return token;
     }
@@ -51,7 +72,5 @@ public class TreeNode {
     public void setRight(TreeNode right) {
         this.right = right;
     }
-    
-    
-    
+
 }

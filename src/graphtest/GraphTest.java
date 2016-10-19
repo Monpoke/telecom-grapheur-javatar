@@ -27,7 +27,7 @@ public class GraphTest {
         Scanner s = new Scanner(System.in);
 
         String math = "";
-
+        
         do {
             System.out.println("Phrase: ");
             math = s.nextLine();
