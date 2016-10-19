@@ -1,8 +1,10 @@
 package graphtest.syntaxor;
 
 import graphtest.parsed.ParsedToken;
+import graphtest.parsed.TOK_NUMBER;
 import graphtest.parsed.TOK_PAR_CLOSE;
 import graphtest.parsed.TOK_PAR_OPEN;
+import graphtest.parsed.TOK_VARIABLE;
 import java.util.ArrayList;
 
 /**
@@ -27,21 +29,12 @@ public class PriorityTools {
         ArrayList<ParsedToken> parenthesisArray = new ArrayList<>();
         parenthesisArray = lexicalArray;
         
-        ArrayList<ParsedToken> parenthesisPosition = new ArrayList<>();
-        
-        int i = 0;
-        
-        while(i < parenthesisArray.size()){
-            if(parenthesisArray.get(i) instanceof TOK_PAR_OPEN){
-                
-            }else if(parenthesisArray.get(i) instanceof TOK_PAR_CLOSE){
-                
+        for(int i=0;i+2<parenthesisArray.size();i++){
+            if(parenthesisArray.get(i) instanceof TOK_PAR_OPEN 
+               && parenthesisArray.get(i+2) instanceof TOK_PAR_CLOSE 
+               && parenthesisArray.get(i+1) instanceof TOK_VARIABLE || parenthesisArray.get(i+1) instanceof TOK_NUMBER){
             }
-            
-            i++;
         }
-        
-        
         
         return null;
     }
