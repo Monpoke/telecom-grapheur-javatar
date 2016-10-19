@@ -5,6 +5,8 @@
  */
 package graphtest.parsed;
 
+import java.math.BigInteger;
+
 /**
  *
  * @author A643012
@@ -22,6 +24,11 @@ public abstract class ParsedToken {
      * Used for numeric values
      */
     protected double value = 0;
+    
+    /**
+     * Used for the expression priority
+     */
+    protected BigInteger priority = new BigInteger("0");
 
     public TokenType getParsedType() {
         return parsedType;
@@ -45,6 +52,14 @@ public abstract class ParsedToken {
 
     public void setValue(double value) {
         this.value = value;
+    }
+    
+    public BigInteger getPriority(){
+        return this.priority;
+    }
+    
+    public void setPriority(BigInteger priority){
+        this.priority = priority;
     }
     
     /**

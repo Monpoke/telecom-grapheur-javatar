@@ -13,30 +13,64 @@ import java.util.ArrayList;
  */
 public class PriorityTools {
     
+    /**
+     * Attribute priority to the token in the expression
+     * @param lexicalArray
+     * @return ArrayList<ParsedToken> 
+     */
     public ArrayList<ParsedToken> addPriority(ArrayList<ParsedToken> lexicalArray){
-        return null;
+        ArrayList<ParsedToken> priorityArray = new ArrayList<>();
+        priorityArray = setPriorityParenthesis(lexicalArray);
+        
+        return priorityArray;
     }
     
+    /**
+     * Add some parenthesis in the expression in order to respect the priority setter rules
+     * See @Florent for more details about the priority setter rules
+     * @param lexicalArray
+     * @return ArrayList<ParsedToken>
+     */
     public ArrayList<ParsedToken> setPriorityParenthesis(ArrayList<ParsedToken> lexicalArray){
         ArrayList<ParsedToken> parenthesisArray = new ArrayList<>();
         parenthesisArray = removeUselessParenthesis(parenthesisArray);
         
+        for(int i=0;i<parenthesisArray.size();i++){
+            if(parenthesisArray.get(i) instanceof TOK_NUMBER || parenthesisArray.get(i) instanceof TOK_VARIABLE){
+                //TODO
+            }
+        }
         
-        return null;
+        return parenthesisArray;
     }
     
+    /**
+     * Remove the useless parenthesis in the expression
+     * @param lexicalArray
+     * @return ArrayList<ParsedToken>
+     */
     public ArrayList<ParsedToken> removeUselessParenthesis(ArrayList<ParsedToken> lexicalArray){
         ArrayList<ParsedToken> parenthesisArray = new ArrayList<>();
         parenthesisArray = lexicalArray;
         
+        // Remove useless parenthesis at start and end : for exemple '(3+1)' -> '3+1'
+        if(parenthesisArray.get(0) instanceof TOK_PAR_OPEN 
+                && parenthesisArray.get(parenthesisArray.size()-1) instanceof TOK_PAR_CLOSE){
+            parenthesisArray.remove(0);
+            parenthesisArray.remove(parenthesisArray.size()-1);
+        }
+        
+        // Remove useless parenthesis surrounding number/variables : for exemple '3+(1)' -> '3+1'
         for(int i=0;i+2<parenthesisArray.size();i++){
             if(parenthesisArray.get(i) instanceof TOK_PAR_OPEN 
-               && parenthesisArray.get(i+2) instanceof TOK_PAR_CLOSE 
-               && parenthesisArray.get(i+1) instanceof TOK_VARIABLE || parenthesisArray.get(i+1) instanceof TOK_NUMBER){
+                && parenthesisArray.get(i+2) instanceof TOK_PAR_CLOSE 
+                    && (parenthesisArray.get(i+1) instanceof TOK_VARIABLE || parenthesisArray.get(i+1) instanceof TOK_NUMBER)){
+                parenthesisArray.remove(i);
+                parenthesisArray.remove(i+2);
             }
         }
         
-        return null;
+        return parenthesisArray;
     }
     
 }
