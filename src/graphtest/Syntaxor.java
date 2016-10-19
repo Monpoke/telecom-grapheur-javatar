@@ -21,6 +21,10 @@ public class Syntaxor {
     
     private void startSyntaxor(){
         
+        if(!this.lexicalArray.isEmpty()){
+            
+        }
+        
         displayOrderedStack();
     }
     
