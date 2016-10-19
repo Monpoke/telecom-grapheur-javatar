@@ -42,11 +42,14 @@ public class TreeNode {
         this.right = new TreeNode(right);
     }
     
-    
-    
 
     public TreeNode(ParsedToken token) {
         this.token = token;
+    }
+
+    public TreeNode(ParsedToken token, TreeNode left) {
+        this.token = token;
+        this.left = left;
     }
 
     public ParsedToken getToken() {

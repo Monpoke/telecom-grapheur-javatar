@@ -6,9 +6,12 @@
 package graphtest.evaluator;
 
 import graphtest.TreeNode;
+import graphtest.exceptions.VariableException;
 import graphtest.parsed.TokenType;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -20,7 +23,7 @@ public class Evaluator {
      * Contains the node tree.
      */
     private final TreeNode root;
-    private List<Variable> variables;
+    private Map<String, Variable> variables;
 
     public Evaluator(TreeNode root) {
         this.root = root;
@@ -29,7 +32,7 @@ public class Evaluator {
     }
 
     public void resetScope() {
-        variables = new ArrayList<>();
+        variables = new HashMap<>();
     }
 
     /**
@@ -37,10 +40,10 @@ public class Evaluator {
      * @param variable
      */
     public void addVariable(Variable variable) {
-        this.variables.add(variable);
+        this.variables.put(variable.getName(), variable);
     }
 
-    double evaluate() {
+    double evaluate() throws Exception {
         double result = 0;
 
         /**
@@ -51,45 +54,106 @@ public class Evaluator {
         return result;
     }
 
-    public double process(TreeNode node) {
+    /**
+     * Process
+     *
+     * @param node
+     * @return
+     */
+    public double process(TreeNode node) throws Exception {
         double result = 0;
 
-        double leftR, rightR;
-
         if (node.getToken().isOperator()) {
-            switch (node.getToken().getParsedType()) {
-                case OPERATOR_PLUS:
-                    leftR = process(node.getLeft());
-                    rightR = process(node.getRight());
-                    result += leftR + rightR;
-                    System.out.println(leftR + "+" + rightR);
-                    break;
-                case OPERATOR_DIVIDE:
-                    leftR = process(node.getLeft());
-                    rightR = process(node.getRight());
-                    result += leftR / rightR;
-                    System.out.println(leftR + "/" + rightR);
-                    break;
-                case OPERATOR_MULTIPLY:
-                    leftR = process(node.getLeft());
-                    rightR = process(node.getRight());
-                    result += leftR * rightR;
-                    System.out.println(leftR + "*" + rightR);
-                    break;
-                case OPERATOR_MINUS:
-                    leftR = process(node.getLeft());
-                    rightR = process(node.getRight());
-                    result += leftR - rightR;
-                    System.out.println(leftR + "-" + rightR);
-                    break;
-            }
-        } // return number
+            result += processOperators(node);
+
+        } else if (node.getToken().isFunction()) {
+            result += processFunction(node);
+        } 
+
+        // return number
         else if (node.getToken().getParsedType().equals(TokenType.NUMBER)) {
             return node.getToken().getValue();
+        }
+        // add variables
+        else if (node.getToken().getParsedType().equals(TokenType.VARIABLE)) {
+            // check if variable is set
+            if(!variables.containsKey(node.getToken().getVariableName())){
+                throw new VariableException(node.getToken().getVariableName() + " <= is not set!");
+            }
+            return variables.get(node.getToken().getVariableName()).getValue();
         }
 
         System.out.println("returns=> " + result);
         return result;
     }
 
+    /**
+     * Operators
+     *
+     * @param node
+     * @return
+     */
+    private double processOperators(TreeNode node) throws Exception{
+        double leftR, rightR, result = 0;
+
+        switch (node.getToken().getParsedType()) {
+            case OPERATOR_PLUS:
+                leftR = process(node.getLeft());
+                rightR = process(node.getRight());
+                result += leftR + rightR;
+                System.out.println(leftR + "+" + rightR);
+                break;
+            case OPERATOR_DIVIDE:
+                leftR = process(node.getLeft());
+                rightR = process(node.getRight());
+                result += leftR / rightR;
+                System.out.println(leftR + "/" + rightR);
+                break;
+            case OPERATOR_MULTIPLY:
+                leftR = process(node.getLeft());
+                rightR = process(node.getRight());
+                result += leftR * rightR;
+                System.out.println(leftR + "*" + rightR);
+                break;
+            case OPERATOR_MINUS:
+                leftR = process(node.getLeft());
+                rightR = process(node.getRight());
+                result += leftR - rightR;
+                System.out.println(leftR + "-" + rightR);
+                break;
+        }
+
+        return result;
+    }
+
+    /**
+     * Operators
+     *
+     * @param node
+     * @return
+     */
+    private double processFunction(TreeNode node) throws Exception {
+        double leftR, rightR, result = 0;
+
+        switch (node.getToken().getParsedType()) {
+            case FCT_COS:
+                leftR = Math.cos(process(node.getLeft()));
+                result += leftR;
+                System.out.println("cos(" + leftR + ")");
+                break;
+            case FCT_SIN:
+                leftR = Math.sin(process(node.getLeft()));
+                result += leftR;
+                System.out.println("sin(" + leftR + ")");
+                break;
+            case FCT_TAN:
+                leftR = Math.cos(process(node.getLeft()));
+                result += leftR;
+                System.out.println("tan(" + leftR + ")");
+                break;
+
+        }
+
+        return result;
+    }
 }
