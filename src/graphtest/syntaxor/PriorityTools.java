@@ -2,6 +2,10 @@ package graphtest.syntaxor;
 
 import graphtest.parsed.ParsedToken;
 import graphtest.parsed.TOK_NUMBER;
+import graphtest.parsed.TOK_OPERATOR_DIVIDE;
+import graphtest.parsed.TOK_OPERATOR_MINUS;
+import graphtest.parsed.TOK_OPERATOR_MULTIPLY;
+import graphtest.parsed.TOK_OPERATOR_PLUS;
 import graphtest.parsed.TOK_PAR_CLOSE;
 import graphtest.parsed.TOK_PAR_OPEN;
 import graphtest.parsed.TOK_VARIABLE;
@@ -21,6 +25,8 @@ public class PriorityTools {
     public ArrayList<ParsedToken> addPriority(ArrayList<ParsedToken> lexicalArray){
         ArrayList<ParsedToken> priorityArray = new ArrayList<>();
         priorityArray = setPriorityParenthesis(lexicalArray);
+        
+        int coef = coefficientCalculator(priorityArray);
         
         return priorityArray;
     }
@@ -71,6 +77,23 @@ public class PriorityTools {
         }
         
         return parenthesisArray;
+    }
+    
+    public static int coefficientCalculator(ArrayList<ParsedToken> parenthesisArray){
+        int nbOperandNumberVar = 0;
+        
+        for(int i=0;i<parenthesisArray.size();i++){
+            if(parenthesisArray.get(i) instanceof TOK_NUMBER 
+                || parenthesisArray.get(i) instanceof TOK_VARIABLE 
+                    || parenthesisArray.get(i) instanceof TOK_OPERATOR_MINUS 
+                        || parenthesisArray.get(i) instanceof TOK_OPERATOR_PLUS 
+                            || parenthesisArray.get(i) instanceof TOK_OPERATOR_DIVIDE 
+                                || parenthesisArray.get(i) instanceof TOK_OPERATOR_MULTIPLY){
+                nbOperandNumberVar++;
+            }
+        }
+        
+        return nbOperandNumberVar;
     }
     
 }
