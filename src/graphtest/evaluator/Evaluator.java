@@ -31,6 +31,10 @@ public class Evaluator {
         variables = new ArrayList<>();
     }
 
+    /**
+     * 
+     * @param variable
+     */
     public void addVariable(Variable variable){
         this.variables.add(variable);
     }
@@ -48,6 +52,10 @@ public class Evaluator {
     
     
     public double process(TreeNode node){
+        
+        if(node.getToken().isOperator()){
+            
+        }
         
         return 0;
     }
