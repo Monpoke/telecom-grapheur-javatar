@@ -10,7 +10,7 @@ import graphtest.syntaxor.exception.MultipleTokenException;
  *
  * @author Florent
  */
-public class Tools {
+public class SyntaxTools {
     
     /**
      * Get the unordered ArrayList of Lexem and return the ordered syntax

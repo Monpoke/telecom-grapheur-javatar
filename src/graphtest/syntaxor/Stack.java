@@ -57,4 +57,8 @@ public class Stack {
             return null;
         }
     }
+    
+    public int getMaxLength(){
+        return this.maxLength;
+    }
 }
