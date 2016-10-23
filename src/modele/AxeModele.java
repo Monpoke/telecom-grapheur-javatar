@@ -5,10 +5,21 @@ import java.util.Observable;
 public class AxeModele extends Observable{
 
 	public int borneXLeft, borneXRight, borneYtop, borneYDown;	
-	private int coeffZoom; 
+	private double coeffZoom; 
 	private int tailleCase;
+	private int pas;
 	
 	public AxeModele() {
+	}
+	
+	public int getPas() {
+		return pas;
+	}
+	
+	public void setPas(int pas) {
+		this.pas = pas;
+		setChanged ();
+		notifyObservers ();
 	}
 	
 	public int getTailleCase() {
@@ -21,11 +32,11 @@ public class AxeModele extends Observable{
 		notifyObservers ();
 	}
 	
-	public int getCoeffZoom() {
+	public double getCoeffZoom() {
 		return coeffZoom;
 	}
 	
-	public void setCoeffZoom(int coeffZoom) {
+	public void setCoeffZoom(double coeffZoom) {
 		this.coeffZoom = coeffZoom;
 		setChanged ();
 		notifyObservers ();

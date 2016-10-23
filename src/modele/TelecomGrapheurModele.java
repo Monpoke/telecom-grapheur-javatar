@@ -84,6 +84,7 @@ public class TelecomGrapheurModele extends Observable{
 		this.getAxeModeleX().setBorneYtop(Constantes.height/2);
 		this.getAxeModeleX().setCoeffZoom(1);
 		this.getAxeModeleX().setTailleCase(80);
+		this.getAxeModeleX().setPas(1);
 	}
 	
 	public void initAxeY(){
@@ -93,5 +94,6 @@ public class TelecomGrapheurModele extends Observable{
 		this.getAxeModeleY().setBorneYtop(0);
 		this.getAxeModeleY().setCoeffZoom(1);
 		this.getAxeModeleY().setTailleCase(80);
+		this.getAxeModeleY().setPas(1);
 	}
 }

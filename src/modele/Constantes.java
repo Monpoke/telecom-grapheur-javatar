@@ -9,4 +9,5 @@ public class Constantes {
 	public static int width = (int) dimension.getWidth();
 	public static int height = (int) dimension.getHeight()-35;
 	
+	public static int tailleCaseDefault = 80;
 }
