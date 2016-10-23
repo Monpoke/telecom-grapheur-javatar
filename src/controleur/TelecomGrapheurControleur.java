@@ -82,8 +82,16 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
         	this.modele.getAxeModeleX().setPas(this.modele.getAxeModeleX().getPas()*2);
         	tailleCaseX = Constantes.tailleCaseDefault;
         }
+        else if(tailleCaseX>Constantes.tailleCaseDefault*2){
+        	this.modele.getAxeModeleX().setPas(this.modele.getAxeModeleX().getPas()/2);
+        	tailleCaseX = Constantes.tailleCaseDefault;
+        }
         if(tailleCaseY<Constantes.tailleCaseDefault/2){
         	this.modele.getAxeModeleY().setPas(this.modele.getAxeModeleY().getPas()*2);
+        	tailleCaseY = Constantes.tailleCaseDefault;
+        }
+        else if(tailleCaseY>Constantes.tailleCaseDefault*2){
+        	this.modele.getAxeModeleY().setPas(this.modele.getAxeModeleY().getPas()/2);
         	tailleCaseY = Constantes.tailleCaseDefault;
         }
         this.modele.getAxeModeleX().setTailleCase(tailleCaseX);
