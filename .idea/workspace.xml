@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="a5730ab8-58de-4fbc-b2a2-bae04def7433" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/graphtest/Parser.java" afterPath="$PROJECT_DIR$/src/graphtest/Parser.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/graphtest/evaluator/Evaluator.java" afterPath="$PROJECT_DIR$/src/graphtest/evaluator/Evaluator.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/graphtest/lexem/Matcher_CONSTANT.java" afterPath="$PROJECT_DIR$/src/graphtest/lexem/Matcher_CONSTANT.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/graphtest/parsed/TOK_FCT_POW.java" afterPath="$PROJECT_DIR$/src/graphtest/parsed/TOK_FCT_POW.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/graphtest/parsed/TokenType.java" afterPath="$PROJECT_DIR$/src/graphtest/parsed/TokenType.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test/graphtest/evaluator/EvaluatorTest.java" afterPath="$PROJECT_DIR$/test/graphtest/evaluator/EvaluatorTest.java" />
-    </list>
+    <list default="true" id="a5730ab8-58de-4fbc-b2a2-bae04def7433" name="Default" comment="" />
     <ignored path="GraphTest.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/out/" />
@@ -72,7 +65,6 @@
     </navigator>
     <panes>
       <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
@@ -112,6 +104,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -218,11 +211,12 @@
       <updated>1476953680388</updated>
       <workItem from="1476953681902" duration="328000" />
       <workItem from="1477135620923" duration="657000" />
+      <workItem from="1477248804578" duration="500000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="985000" />
+    <option name="totallyTimeSpent" value="1485000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
