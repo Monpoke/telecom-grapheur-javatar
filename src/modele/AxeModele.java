@@ -7,16 +7,16 @@ public class AxeModele extends Observable{
 	public int borneXLeft, borneXRight, borneYtop, borneYDown;	
 	private double coeffZoom; 
 	private int tailleCase;
-	private int pas;
+	private double pas;
 	
 	public AxeModele() {
 	}
 	
-	public int getPas() {
+	public double getPas() {
 		return pas;
 	}
 	
-	public void setPas(int pas) {
+	public void setPas(double pas) {
 		this.pas = pas;
 		setChanged ();
 		notifyObservers ();
