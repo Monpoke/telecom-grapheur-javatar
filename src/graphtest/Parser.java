@@ -6,6 +6,7 @@
 package graphtest;
 
 import graphtest.exceptions.ParsingException;
+import graphtest.lexem.Matcher_CONSTANT;
 import graphtest.lexem.Matcher_FCT_COS;
 import graphtest.lexem.Matcher_FCT_SIN;
 import graphtest.lexem.Matcher_FCT_TAN;
@@ -127,6 +128,9 @@ class Parser {
         // PARENTHESIS
         registeredMatchers.add(new Matcher_PAR_OPEN());
         registeredMatchers.add(new Matcher_PAR_CLOSE());
+        
+        // detect constant
+        registeredMatchers.add(new Matcher_CONSTANT());
         
         // last rule, variable. If registered before, functions won't be processed
         registeredMatchers.add(new Matcher_VARIABLE());

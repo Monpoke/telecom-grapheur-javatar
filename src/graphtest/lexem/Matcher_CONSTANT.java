@@ -8,6 +8,7 @@ package graphtest.lexem;
 import graphtest.parsed.ParsedToken;
 import graphtest.parsed.TOK_FCT_COS;
 import graphtest.parsed.TOK_FCT_SIN;
+import graphtest.parsed.TOK_VARIABLE;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -15,16 +16,16 @@ import java.util.regex.Pattern;
  *
  * @author A643012
  */
-public class Matcher_FCT_COS extends Lexem implements Rule {
+public class Matcher_CONSTANT extends Lexem implements Rule {
 
-    public final static String NAME = "FCT_COS";
+    public final static String NAME = "CONSTANT";
 
-    public Matcher_FCT_COS() {
+    public Matcher_CONSTANT() {
     }
 
     @Override
     public ParsedToken match(String sentence) {
-        pattern = Pattern.compile("^(cos)");
+        pattern = Pattern.compile("^(pi)");
         Matcher matcher = pattern.matcher(sentence);
 
         boolean r = matcher.find();
@@ -33,7 +34,7 @@ public class Matcher_FCT_COS extends Lexem implements Rule {
             lastMatch = (matcher.group(0));
             movePointerFromX = lastMatch.length();
 
-            return new TOK_FCT_COS();
+            return new TOK_VARIABLE(lastMatch);
         }
 
         return null;

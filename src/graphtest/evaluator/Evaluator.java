@@ -33,6 +33,12 @@ public class Evaluator {
 
     public void resetScope() {
         variables = new HashMap<>();
+        
+        // ADD CONSTANT
+        addVariable(new Variable("pi",Math.PI));
+        
+        
+        
     }
 
     /**
@@ -147,7 +153,7 @@ public class Evaluator {
                 System.out.println("sin(" + leftR + ")");
                 break;
             case FCT_TAN:
-                leftR = Math.cos(process(node.getLeft()));
+                leftR = Math.tan(process(node.getLeft()));
                 result += leftR;
                 System.out.println("tan(" + leftR + ")");
                 break;
