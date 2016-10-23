@@ -66,10 +66,10 @@ public class TelecomGrapheurModele extends Observable{
 	}
 	
 	public void initBornes(){
-		this.getBornes().setBorneXLeft(-10000); // axes caché en dehors de la fenetre pour plus de fluidité et pour ne pas tout recalculer
-		this.getBornes().setBorneXRight(10000);
-		this.getBornes().setBorneYTop(-5000);
-		this.getBornes().setBorneYDown(5000);
+		this.getBornes().setBorneXLeft(-1000); // axes caché en dehors de la fenetre pour plus de fluidité et pour ne pas tout recalculer
+		this.getBornes().setBorneXRight(1000);
+		this.getBornes().setBorneYTop(-1000);
+		this.getBornes().setBorneYDown(1000);
 	}
 	
 	public void initOrigin(){

@@ -40,6 +40,7 @@ public class TelecomGrapheurVue extends JPanel implements Observer{
 		g.clearRect(0, 0, this.fenetre.getWidth(), this.fenetre.getHeight()); //efface tout	
 		this.drawQuadrillage(g);
 		this.drawAxeXY(g);
+		drawFunction(g);
 	}
 
 	public void drawQuadrillage(Graphics g){
@@ -57,7 +58,6 @@ public class TelecomGrapheurVue extends JPanel implements Observer{
 	}
 
 	public void drawEchelonX(Graphics g){
-		//int taille =(int) ( this.modele.getAxeModeleX().getTailleCase()*this.modele.getAxeModeleX().getCoeffZoom()); // 80 pixels par default
 		for(int i = this.modele.getBornes().getBorneXLeft(); i<this.modele.getBornes().getBorneXRight();i++){
 			g.drawLine((int) this.modele.getOrigin().getX()+i*this.modele.getAxeModeleX().getTailleCase(), (int) this.modele.getOrigin().getY()-10, (int) this.modele.getOrigin().getX()+i*this.modele.getAxeModeleX().getTailleCase(), (int) this.modele.getOrigin().getY()+10);
 			if(i!=0){
@@ -67,7 +67,6 @@ public class TelecomGrapheurVue extends JPanel implements Observer{
 	}
 
 	public void drawEchelonY(Graphics g){
-		//int taille = (int) (this.modele.getAxeModeleY().getTailleCase()*this.modele.getAxeModeleY().getCoeffZoom()); // 80 pixels par default
 		for(int i = this.modele.getBornes().getBorneYTop(); i<=this.modele.getBornes().getBorneYDown();i++){
 			g.drawLine((int) this.modele.getOrigin().getX()-10, (int) this.modele.getOrigin().getY()+i*this.modele.getAxeModeleY().getTailleCase(),(int) this.modele.getOrigin().getX()+10, (int) this.modele.getOrigin().getY()+i*this.modele.getAxeModeleY().getTailleCase());
 			if(i!=0){
@@ -77,14 +76,12 @@ public class TelecomGrapheurVue extends JPanel implements Observer{
 	}
 	
 	public void drawQuadrillageVerticale(Graphics g){
-		//int taille =(int) ( this.modele.getAxeModeleX().getTailleCase()*this.modele.getAxeModeleX().getCoeffZoom()); // 80 pixels par default
 		for(int i = this.modele.getBornes().getBorneXLeft(); i <this.modele.getBornes().getBorneXRight();i++){
 			g.drawLine((int) (this.modele.getOrigin().getX()+i*this.modele.getAxeModeleX().getTailleCase()), this.modele.getBornes().getBorneYTop(), (int) (this.modele.getOrigin().getX()+i*this.modele.getAxeModeleX().getTailleCase()), this.modele.getBornes().getBorneYDown());
 		}
 	}
 	
 	public void drawQuadrillageHorizontale(Graphics g){
-		//int taille = (int) (this.modele.getAxeModeleY().getTailleCase()*this.modele.getAxeModeleY().getCoeffZoom()); // 80 pixels par default
 		for(int i = this.modele.getBornes().getBorneYTop(); i <this.modele.getBornes().getBorneYDown();i++){
 			g.drawLine(this.modele.getAxeModeleX().getBorneXLeft(), (int) (this.modele.getOrigin().getY()+i*this.modele.getAxeModeleY().getTailleCase()), this.modele.getAxeModeleX().getBorneXRight(), (int) (this.modele.getOrigin().getY()+i*this.modele.getAxeModeleY().getTailleCase()));
 		}
@@ -93,6 +90,21 @@ public class TelecomGrapheurVue extends JPanel implements Observer{
 	@Override
 	public void update(Observable arg0, Object arg1) {
 		repaint();
+	}
+	
+//	public void drawFunction(Graphics g){
+//		// fonction x=y
+//		for(int i = this.modele.getAxeModeleX().getBorneXLeft(); i < this.modele.getAxeModeleX().getBorneXRight();i++){
+//			g.drawLine((int) (i*this.modele.getAxeModeleX().getPas()+this.modele.getOrigin().getX()), (int) ((-i*this.modele.getAxeModeleY().getTailleCase())/this.modele.getAxeModeleY().getPas()+ this.modele.getOrigin().getY()), (int) (i*this.modele.getAxeModeleX().getPas()+this.modele.getOrigin().getX()), (int) ((-i*this.modele.getAxeModeleY().getTailleCase())/this.modele.getAxeModeleY().getPas()+ this.modele.getOrigin().getY())); // - car y vers le bas
+//		}
+//	}
+	
+	public void drawFunction(Graphics g){
+		// fonction x=y
+		for(int i = this.modele.getBornes().getBorneXLeft(); i < this.modele.getBornes().getBorneXRight();i++){
+			System.out.println("x = " + i + ", y = " + -i);
+			g.drawLine((int) (i+this.modele.getOrigin().getX()), (int) (-i+ this.modele.getOrigin().getY()), (int) (i+this.modele.getOrigin().getX()), (int) (-i+ this.modele.getOrigin().getY())); // - car y vers le bas
+		}
 	}
 
 	//public void drawFunction(Graphics g){
