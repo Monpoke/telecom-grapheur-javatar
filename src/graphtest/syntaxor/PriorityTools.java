@@ -31,7 +31,7 @@ public class PriorityTools {
         BigInteger prio = new BigInteger("0");
         
         for(int i=0;i<priorityArray.size();i++){
-            if(priorityArray.get(i))
+            //if(priorityArray.get(i))
         }
         
         return priorityArray;
@@ -45,11 +45,17 @@ public class PriorityTools {
      */
     public ArrayList<ParsedToken> setPriorityParenthesis(ArrayList<ParsedToken> lexicalArray){
         ArrayList<ParsedToken> parenthesisArray = new ArrayList<>();
-        parenthesisArray = removeUselessParenthesis(parenthesisArray);
+        parenthesisArray = removeUselessParenthesis(lexicalArray);
         
-        for(int i=0;i<parenthesisArray.size();i++){
-            if(parenthesisArray.get(i) instanceof TOK_NUMBER || parenthesisArray.get(i) instanceof TOK_VARIABLE){
-                //TODO
+        for(int i=1;i<parenthesisArray.size();i++){
+            if(parenthesisArray.get(i) instanceof TOK_OPERATOR_MULTIPLY || parenthesisArray.get(i) instanceof TOK_OPERATOR_DIVIDE){
+                if(parenthesisArray.get(i-1) instanceof TOK_PAR_CLOSE && parenthesisArray.get(i+2) instanceof TOK_PAR_OPEN){
+                    parenthesisArray.add(indexOpenParenthesis(parenthesisArray,i), TOK_PAR_OPEN);
+                    parenthesisArray.add(i+2, TOK_PAR_CLOSE);
+                }else if(parenthesisArray.get(i+1) instanceof TOK_PAR_OPEN && !(parenthesisArray.get(i-2) instanceof TOK_PAR_OPEN)){
+                    parenthesisArray.add(indexCloseParenthesis(parenthesisArray,i), TOK_PAR_CLOSE);
+                    parenthesisArray.add(i-2, TOK_PAR_OPEN);
+                }
             }
         }
         
@@ -85,6 +91,12 @@ public class PriorityTools {
         return parenthesisArray;
     }
     
+    /**
+     * Calculate the number of token, except the parenthesis and functions.
+     * This has to be done to multiply or rules of priority by this coef to avoid duplicate priority
+     * @param parenthesisArray
+     * @return int
+     */
     public static int coefficientCalculator(ArrayList<ParsedToken> parenthesisArray){
         int nbOperandNumberVar = 0;
         
@@ -102,4 +114,49 @@ public class PriorityTools {
         return nbOperandNumberVar;
     }
     
+    /**
+     * Give the index where the setPriority method should place the TOK_PAR_CLOSE
+     * @param parenthesisArray
+     * @param index
+     * @return int
+     */
+    public static int indexCloseParenthesis(ArrayList<ParsedToken> parenthesisArray, int index){
+        int nbOpen = 0;
+        int nbClose = 0;
+        int i = index+1;
+        
+        do{
+            if(parenthesisArray.get(i) instanceof TOK_PAR_OPEN){
+                nbOpen++;
+            }else if(parenthesisArray.get(i) instanceof TOK_PAR_CLOSE){
+                nbClose++;
+            }
+            i++;
+        }while(nbOpen > nbClose && !parenthesisArray.isEmpty());
+        
+        return i;
+    }
+    
+    /**
+     * Give the index where the setPriority method should place the TOK_PAR_OPEN
+     * @param parenthesisArray
+     * @param index
+     * @return int
+     */
+    public static int indexOpenParenthesis(ArrayList<ParsedToken> parenthesisArray, int index){
+        int nbOpen = 0;
+        int nbClose = 0;
+        int i = index-1;
+        
+        do{
+            if(parenthesisArray.get(i) instanceof TOK_PAR_OPEN){
+                nbOpen++;
+            }else if(parenthesisArray.get(i) instanceof TOK_PAR_CLOSE){
+                nbClose++;
+            }
+            i++;
+        }while(nbClose > nbOpen && i>=0);
+        
+        return i;
+    }
 }
