@@ -9,7 +9,6 @@ import graphtest.parsed.TOK_OPERATOR_PLUS;
 import graphtest.parsed.TOK_PAR_CLOSE;
 import graphtest.parsed.TOK_PAR_OPEN;
 import graphtest.parsed.TOK_VARIABLE;
-import java.math.BigInteger;
 import java.util.ArrayList;
 
 /**
@@ -28,10 +27,13 @@ public class PriorityTools {
         priorityArray = setPriorityParenthesis(lexicalArray);
         
         int coef = coefficientCalculator(priorityArray);
-        BigInteger prio = new BigInteger("0");
+        long prio = 1;
         
         for(int i=0;i<priorityArray.size();i++){
-            //if(priorityArray.get(i))
+            if(priorityArray.get(i) instanceof TOK_PAR_OPEN){
+                prio = prio*coef*PriorityRules.TOK_PAR_OPEN_RULE.getPriorityValue();
+            }
+            //TOCONTINUE
         }
         
         return priorityArray;

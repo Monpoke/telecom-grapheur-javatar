@@ -58,6 +58,10 @@ public class Stack {
         }
     }
     
+    /**
+     * Return value of the max stack length
+     * @return int
+     */
     public int getMaxLength(){
         return this.maxLength;
     }
