@@ -8,10 +8,10 @@ package graphtest.parsed;
 /**
  * This class reprensents a sin function
  */
-public class TOK_FCT_COS extends ParsedToken implements ParsedTokenInterface {
+public class TOK_FCT_POW extends ParsedToken implements ParsedTokenInterface {
     
-    public TOK_FCT_COS() {
-        this.parsedType = TokenType.FCT_COS;
+    public TOK_FCT_POW() {
+        this.parsedType = TokenType.FCT_POW;
     }
 
     @Override
@@ -21,7 +21,7 @@ public class TOK_FCT_COS extends ParsedToken implements ParsedTokenInterface {
 
     @Override
     public String toString() {
-        return "COS";
+        return "POW";
     }
     
     

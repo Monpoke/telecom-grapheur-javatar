@@ -28,6 +28,7 @@ public enum TokenType {
     FCT_SIN,
     FCT_COS,
     FCT_TAN,
+    FCT_POW,
     
     UNKNOWN_TOKEN;
     

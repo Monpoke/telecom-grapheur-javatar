@@ -15,11 +15,13 @@ import java.util.regex.Pattern;
  *
  * @author A643012
  */
-public class Matcher_FCT_COS extends Lexem implements Rule {
+public class Matcher_CONSTANT extends Lexem implements Rule {
 
+    //TODO
+    
     public final static String NAME = "FCT_COS";
 
-    public Matcher_FCT_COS() {
+    public Matcher_CONSTANT() {
     }
 
     @Override
