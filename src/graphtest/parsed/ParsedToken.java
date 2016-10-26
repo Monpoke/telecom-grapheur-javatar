@@ -28,7 +28,7 @@ public abstract class ParsedToken {
     /**
      * Used for the expression priority
      */
-    protected BigInteger priority = new BigInteger("0");
+    protected long priority = 0;
 
     public TokenType getParsedType() {
         return parsedType;
@@ -54,11 +54,11 @@ public abstract class ParsedToken {
         this.value = value;
     }
     
-    public BigInteger getPriority(){
+    public long getPriority(){
         return this.priority;
     }
     
-    public void setPriority(BigInteger priority){
+    public void setPriority(long priority){
         this.priority = priority;
     }
     
