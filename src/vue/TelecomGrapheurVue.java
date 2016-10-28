@@ -103,7 +103,7 @@ public class TelecomGrapheurVue extends JPanel implements Observer{
 		// fonction x=y
 		for(int i = this.modele.getBornes().getBorneXLeft(); i < this.modele.getBornes().getBorneXRight();i++){
 			System.out.println("x = " + i + ", y = " + -i);
-			g.drawLine((int) (i+this.modele.getOrigin().getX()), (int) (-i+ this.modele.getOrigin().getY()), (int) (i+this.modele.getOrigin().getX()), (int) (-i+ this.modele.getOrigin().getY())); // - car y vers le bas
+			g.drawLine((int) (i+this.modele.getOrigin().getX()), (int) (-Math.cos(i/(this.modele.getAxeModeleY().getTailleCase()/this.modele.getAxeModeleY().getPas()))*this.modele.getAxeModeleY().getTailleCase()/this.modele.getAxeModeleY().getPas()+ this.modele.getOrigin().getY()), (int) (i+this.modele.getOrigin().getX()), (int) (-Math.cos(i/(this.modele.getAxeModeleY().getTailleCase()/this.modele.getAxeModeleY().getPas()))*this.modele.getAxeModeleY().getTailleCase()/this.modele.getAxeModeleY().getPas()+ this.modele.getOrigin().getY())); // - car y vers le bas
 		}
 	}
 
