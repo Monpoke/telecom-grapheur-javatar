@@ -1,12 +1,14 @@
 package vue;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import controleur.TelecomGrapheurControleur;
 import modele.Constantes;
@@ -29,18 +31,21 @@ public class TelecomGrapheurVue extends JPanel implements Observer{
 		this.modele.getAxeModeleX().addObserver(this);
 		this.modele.getAxeModeleY().addObserver(this);
 		this.modele.getBornes().addObserver(this);
+		this.modele.getCourbe().addObserver(this);
 		this.addMouseListener(telecomGrapheurControleur);
 		this.addMouseMotionListener(telecomGrapheurControleur);
 		this.addMouseWheelListener(telecomGrapheurControleur);
 		this.setSize(new Dimension(this.fenetre.getWidth(),this.fenetre.getHeight()));
+		//this.addJtextField();
 	}
 
 	@Override
 	public void paint(Graphics g) {
-		g.clearRect(0, 0, this.fenetre.getWidth(), this.fenetre.getHeight()); //efface tout	
+		g.clearRect(0, 0, this.fenetre.getWidth(), this.fenetre.getHeight()-20); //efface tout	
 		this.drawQuadrillage(g);
 		this.drawAxeXY(g);
-		drawFunction(g);
+		createCourbe();
+		this.drawFunction(g);
 	}
 
 	public void drawQuadrillage(Graphics g){
@@ -61,8 +66,13 @@ public class TelecomGrapheurVue extends JPanel implements Observer{
 		for(int i = this.modele.getBornes().getBorneXLeft(); i<this.modele.getBornes().getBorneXRight();i++){
 			g.drawLine((int) this.modele.getOrigin().getX()+i*this.modele.getAxeModeleX().getTailleCase(), (int) this.modele.getOrigin().getY()-10, (int) this.modele.getOrigin().getX()+i*this.modele.getAxeModeleX().getTailleCase(), (int) this.modele.getOrigin().getY()+10);
 			if(i!=0){
+				if(i%2==0){
 				g.drawString(""+i*this.modele.getAxeModeleX().getPas(), (int) this.modele.getOrigin().getX()+i*this.modele.getAxeModeleX().getTailleCase()-3, (int) this.modele.getOrigin().getY()+ 30);
-			}
+				}
+				else {
+					g.drawString(""+i*this.modele.getAxeModeleX().getPas(), (int) this.modele.getOrigin().getX()+i*this.modele.getAxeModeleX().getTailleCase()-3, (int) this.modele.getOrigin().getY()+ 60);
+				}
+				}
 		}
 	}
 
@@ -92,42 +102,24 @@ public class TelecomGrapheurVue extends JPanel implements Observer{
 		repaint();
 	}
 	
-//	public void drawFunction(Graphics g){
-//		// fonction x=y
-//		for(int i = this.modele.getAxeModeleX().getBorneXLeft(); i < this.modele.getAxeModeleX().getBorneXRight();i++){
-//			g.drawLine((int) (i*this.modele.getAxeModeleX().getPas()+this.modele.getOrigin().getX()), (int) ((-i*this.modele.getAxeModeleY().getTailleCase())/this.modele.getAxeModeleY().getPas()+ this.modele.getOrigin().getY()), (int) (i*this.modele.getAxeModeleX().getPas()+this.modele.getOrigin().getX()), (int) ((-i*this.modele.getAxeModeleY().getTailleCase())/this.modele.getAxeModeleY().getPas()+ this.modele.getOrigin().getY())); // - car y vers le bas
-//		}
-//	}
-	
 	public void drawFunction(Graphics g){
-		// fonction x=y
+		// fonction y=cos(x)
+		for (PointModele point : this.modele.getCourbe().getListePoints()) {
+			g.drawLine((int) point.getX(),(int) point.getY(),(int) point.getX(),(int) point.getY());
+		}
+		this.modele.getCourbe().videListe();
+	}
+	
+	public void createCourbe(){
 		for(int i = this.modele.getBornes().getBorneXLeft(); i < this.modele.getBornes().getBorneXRight();i++){
-			System.out.println("x = " + i + ", y = " + -i);
-			g.drawLine((int) (i+this.modele.getOrigin().getX()), (int) (-Math.cos(i/(this.modele.getAxeModeleY().getTailleCase()/this.modele.getAxeModeleY().getPas()))*this.modele.getAxeModeleY().getTailleCase()/this.modele.getAxeModeleY().getPas()+ this.modele.getOrigin().getY()), (int) (i+this.modele.getOrigin().getX()), (int) (-Math.cos(i/(this.modele.getAxeModeleY().getTailleCase()/this.modele.getAxeModeleY().getPas()))*this.modele.getAxeModeleY().getTailleCase()/this.modele.getAxeModeleY().getPas()+ this.modele.getOrigin().getY())); // - car y vers le bas
+			this.modele.getCourbe().setPoints(new PointModele((int) (i+this.modele.getOrigin().getX()), (int) (-Math.cos(i/(this.modele.getAxeModeleY().getTailleCase()/this.modele.getAxeModeleY().getPas()))*this.modele.getAxeModeleY().getTailleCase()/this.modele.getAxeModeleY().getPas()+ this.modele.getOrigin().getY())));
 		}
 	}
-
-	//public void drawFunction(Graphics g){
-
-	/* fonction : sin(x) */
-
-	/*this.point = new Point(this.borneXLeft, Math.sin(this.borneXLeft));
-		this.coeffX = this.fenetre.getWidth()/(this.borneXRight-this.borneXLeft);
-		double r = 0;
-		for(double i = this.borneXLeft;i<this.borneXRight;i=i+0.5){
-			r = r + 0.5;
-			System.out.println("x = " + point.getX() + " : y = " + point.getY());
-
-			point.setX(r*this.coeffX+0.5);
-			point.setY(Math.sin(r)*this.coeffX+this.origin.getY());
-
-			g.drawLine((int) point.getX(), (int) point.getY(), (int) point.getX(), (int) point.getY());
-			try {
-				Thread.sleep(10);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}*/
+	
+	public void addJtextField(){
+		JTextField text = new JTextField();
+		text.setSize(new Dimension(50, 25));
+		this.add(text);
+		text.setVisible(true);
+	}
 }

@@ -8,6 +8,7 @@ public class TelecomGrapheurModele extends Observable{
 	AxeModele axeModeleY = new AxeModele();
 	PointModele origin = new PointModele();
 	BorneGraphiqueModele bornes = new BorneGraphiqueModele();
+	CourbeModele courbe = new CourbeModele();
 	boolean isClique = false;
 	
 	public TelecomGrapheurModele() {
@@ -15,6 +16,7 @@ public class TelecomGrapheurModele extends Observable{
 		this.initAxeX();
 		this.initAxeY();
 		this.initOrigin();
+		this.initCourbe();
 	}
 	
 	public void setClique(boolean isClique) {
@@ -65,9 +67,19 @@ public class TelecomGrapheurModele extends Observable{
 		notifyObservers ();
 	}
 	
+	public CourbeModele getCourbe() {
+		return courbe;
+	}
+	
+	public void setCourbe(CourbeModele courbe) {
+		this.courbe = courbe;
+		setChanged ();
+		notifyObservers ();
+	}
+	
 	public void initBornes(){
-		this.getBornes().setBorneXLeft(-1000); // axes caché en dehors de la fenetre pour plus de fluidité et pour ne pas tout recalculer
-		this.getBornes().setBorneXRight(1000);
+		this.getBornes().setBorneXLeft(-2000); // axes caché en dehors de la fenetre pour plus de fluidité et pour ne pas tout recalculer
+		this.getBornes().setBorneXRight(2000);
 		this.getBornes().setBorneYTop(-1000);
 		this.getBornes().setBorneYDown(1000);
 	}
@@ -95,5 +107,9 @@ public class TelecomGrapheurModele extends Observable{
 		this.getAxeModeleY().setCoeffZoom(1);
 		this.getAxeModeleY().setTailleCase(80);
 		this.getAxeModeleY().setPas(1);
+	}
+	
+	public void initCourbe(){
+		this.courbe = new CourbeModele();
 	}
 }
