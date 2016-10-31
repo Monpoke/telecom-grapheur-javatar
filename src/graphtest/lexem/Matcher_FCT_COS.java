@@ -7,7 +7,6 @@ package graphtest.lexem;
 
 import graphtest.parsed.ParsedToken;
 import graphtest.parsed.TOK_FCT_COS;
-import graphtest.parsed.TOK_FCT_SIN;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

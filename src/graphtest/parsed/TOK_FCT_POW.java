@@ -21,7 +21,7 @@ public class TOK_FCT_POW extends ParsedToken implements ParsedTokenInterface {
 
     @Override
     public String toString() {
-        return "COS";
+        return "POW";
     }
     
     

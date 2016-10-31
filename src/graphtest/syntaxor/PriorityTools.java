@@ -26,7 +26,30 @@ public class PriorityTools {
         ArrayList<ParsedToken> priorityArray = new ArrayList<>();
         priorityArray = setPriorityParenthesis(lexicalArray);
         
-        int coef = coefficientCalculator(priorityArray);
+        int coefNbToken = coefficientCalculator(priorityArray);
+        long coefTokenRule = coefNbToken;
+        
+        for(int i=0;i<priorityArray.size();i++){
+            if(priorityArray.get(i) instanceof TOK_PAR_OPEN){
+                // incrementing prio value on '('
+                coefTokenRule *= PriorityRules.TOK_PAR_OPEN_RULE.getPriorityValue();
+            }else if(priorityArray.get(i) instanceof TOK_PAR_CLOSE){
+                // decrementing prio value on '('
+                coefTokenRule /= PriorityRules.TOK_PAR_CLOSE_RULE.getPriorityValue();
+            }
+            
+            // Adding priority into ParsedToken
+            if((priorityArray.get(i) instanceof TOK_OPERATOR_MULTIPLY || priorityArray.get(i) instanceof TOK_OPERATOR_DIVIDE )&& priorityArray.get(i+1) instanceof TOK_PAR_OPEN){
+                // Avoiding [(y+x)*(y+x)] multiply's problem priority -> Multiply Token shall have a coef of priority as high as the next parenthesis expression
+                priorityArray.get(i).setPriority(i+coefTokenRule*PriorityRules.TOK_OPERATOR_MULTIPLY_RULE.getPriorityValue());  // Multiply and Divide Token Rule shall be the same for mathemical priority reason
+            }else if(schemaXOperatorY(priorityArray,i)){
+                // When x+y the lexical order prevail -> no use of the token values
+                priorityArray.get(i).setPriority(i+coefTokenRule);
+            }else{
+                // Regular case of calculation
+                priorityArray.get(i).setPriority(regularPriorityCalculation(priorityArray,coefTokenRule,i));
+            }
+        }
         
         return priorityArray;
     }
@@ -39,11 +62,17 @@ public class PriorityTools {
      */
     public ArrayList<ParsedToken> setPriorityParenthesis(ArrayList<ParsedToken> lexicalArray){
         ArrayList<ParsedToken> parenthesisArray = new ArrayList<>();
-        parenthesisArray = removeUselessParenthesis(parenthesisArray);
+        parenthesisArray = removeUselessParenthesis(lexicalArray);
         
-        for(int i=0;i<parenthesisArray.size();i++){
-            if(parenthesisArray.get(i) instanceof TOK_NUMBER || parenthesisArray.get(i) instanceof TOK_VARIABLE){
-                //TODO
+        for(int i=1;i<parenthesisArray.size();i++){
+            if(parenthesisArray.get(i) instanceof TOK_OPERATOR_MULTIPLY || parenthesisArray.get(i) instanceof TOK_OPERATOR_DIVIDE){
+                if(parenthesisArray.get(i-1) instanceof TOK_PAR_CLOSE && parenthesisArray.get(i+2) instanceof TOK_PAR_OPEN){
+                    parenthesisArray.add(indexOpenParenthesis(parenthesisArray,i), new TOK_PAR_OPEN());
+                    parenthesisArray.add(i+2, new TOK_PAR_CLOSE());
+                }else if(parenthesisArray.get(i+1) instanceof TOK_PAR_OPEN && !(parenthesisArray.get(i-2) instanceof TOK_PAR_OPEN)){
+                    parenthesisArray.add(indexCloseParenthesis(parenthesisArray,i), new TOK_PAR_CLOSE());
+                    parenthesisArray.add(i-2, new TOK_PAR_OPEN());
+                }
             }
         }
         
@@ -79,6 +108,12 @@ public class PriorityTools {
         return parenthesisArray;
     }
     
+    /**
+     * Calculate the number of token, except the parenthesis and functions.
+     * This has to be done to multiply or rules of priority by this coef to avoid duplicate priority
+     * @param parenthesisArray
+     * @return int
+     */
     public static int coefficientCalculator(ArrayList<ParsedToken> parenthesisArray){
         int nbOperandNumberVar = 0;
         
@@ -96,4 +131,113 @@ public class PriorityTools {
         return nbOperandNumberVar;
     }
     
+    /**
+     * Give the index where the setPriority method should place the TOK_PAR_CLOSE
+     * @param parenthesisArray
+     * @param index
+     * @return int
+     */
+    public static int indexCloseParenthesis(ArrayList<ParsedToken> parenthesisArray, int index){
+        int nbOpen = 0;
+        int nbClose = 0;
+        int i = index+1;
+        
+        do{
+            if(parenthesisArray.get(i) instanceof TOK_PAR_OPEN){
+                nbOpen++;
+            }else if(parenthesisArray.get(i) instanceof TOK_PAR_CLOSE){
+                nbClose++;
+            }
+            i++;
+        }while(nbOpen > nbClose && !parenthesisArray.isEmpty());
+        
+        return i;
+    }
+    
+    /**
+     * Give the index where the setPriority method should place the TOK_PAR_OPEN
+     * @param parenthesisArray
+     * @param index
+     * @return int
+     */
+    public static int indexOpenParenthesis(ArrayList<ParsedToken> parenthesisArray, int index){
+        int nbOpen = 0;
+        int nbClose = 0;
+        int i = index-1;
+        
+        do{
+            if(parenthesisArray.get(i) instanceof TOK_PAR_OPEN){
+                nbOpen++;
+            }else if(parenthesisArray.get(i) instanceof TOK_PAR_CLOSE){
+                nbClose++;
+            }
+            i++;
+        }while(nbClose > nbOpen && i>=0);
+        
+        return i;
+    }
+    
+    /**
+     * Check if there is parenthesis before or after an operator
+     * If so, this mean that it doesn't match the schema 'x+y'
+     * @param priorityArray
+     * @param i
+     * @return boolean
+     */
+    public static boolean schemaXOperatorY(ArrayList<ParsedToken> priorityArray, int i){
+        return (priorityArray.get(i-1) instanceof TOK_PAR_CLOSE || priorityArray.get(i+1) instanceof TOK_PAR_OPEN) ? false : true;
+    }
+    
+    /**
+     * Associate the token with his priority + calculate the priority at this time
+     * On error return 0
+     * @param priorityArray
+     * @param coefTokenRule
+     * @param i
+     * @return long
+     */
+    public static long regularPriorityCalculation(ArrayList<ParsedToken> priorityArray, long coefTokenRule, int i){
+        long regularPriority = i+coefTokenRule;
+        
+        switch(priorityArray.get(i).getParsedType()){
+            case PAR_OPEN :
+                regularPriority += PriorityRules.TOK_PAR_OPEN_RULE.getPriorityValue();
+                break;
+            case PAR_CLOSE :
+                regularPriority += PriorityRules.TOK_PAR_CLOSE_RULE.getPriorityValue();
+                break;
+            case FCT_COS :
+                regularPriority += PriorityRules.TOK_FCT_COS_RULE.getPriorityValue();
+                break;
+            case FCT_SIN :
+                regularPriority += PriorityRules.TOK_FCT_SIN_RULE.getPriorityValue();
+                break;
+            case FCT_TAN :
+                regularPriority += PriorityRules.TOK_FCT_TAN_RULE.getPriorityValue();
+                break;
+            case OPERATOR_DIVIDE :
+                regularPriority += PriorityRules.TOK_OPERATOR_DIVIDE_RULE.getPriorityValue();
+                break;
+            case OPERATOR_MULTIPLY :
+                regularPriority += PriorityRules.TOK_OPERATOR_MULTIPLY_RULE.getPriorityValue();
+                break;
+            case OPERATOR_MINUS :
+                regularPriority += PriorityRules.TOK_OPERATOR_MINUS_RULE.getPriorityValue();
+                break;
+            case OPERATOR_PLUS :
+                regularPriority += PriorityRules.TOK_OPERATOR_PLUS_RULE.getPriorityValue();
+                break;
+            case NUMBER :
+                regularPriority += PriorityRules.TOK_NUMBER_RULE.getPriorityValue();
+                break;
+            case VARIABLE :
+                regularPriority += PriorityRules.TOK_VARIABLE_RULE.getPriorityValue();
+                break;
+            default :
+                regularPriority = 0;
+                break;
+        }        
+        
+        return regularPriority;
+    }
 }

@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
 public class Matcher_CONSTANT extends Lexem implements Rule {
 
     public final static String NAME = "CONSTANT";
-
+    
     public Matcher_CONSTANT() {
     }
 
