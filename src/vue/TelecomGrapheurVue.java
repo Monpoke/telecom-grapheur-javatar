@@ -21,6 +21,7 @@ public class TelecomGrapheurVue extends JPanel implements Observer{
 
 	private TelecomGrapheurModele modele;
 	private TelecomGrapheurControleur controleur;
+	JTextField text;
 
 	public TelecomGrapheurVue (FenetreContener fenetre, TelecomGrapheurModele telecomGrapheurModele, TelecomGrapheurControleur telecomGrapheurControleur) {
 		this.fenetre = fenetre;
@@ -44,8 +45,8 @@ public class TelecomGrapheurVue extends JPanel implements Observer{
 		g.clearRect(0, 0, this.fenetre.getWidth(), this.fenetre.getHeight()-20); //efface tout	
 		this.drawQuadrillage(g);
 		this.drawAxeXY(g);
-		createCourbe();
 		this.drawFunction(g);
+		this.modele.createCourbe();
 	}
 
 	public void drawQuadrillage(Graphics g){
@@ -54,7 +55,7 @@ public class TelecomGrapheurVue extends JPanel implements Observer{
 		this.drawQuadrillageHorizontale(g);
 		g.setColor(Color.BLACK);
 	}
-	
+
 	public void drawAxeXY(Graphics g){
 		g.drawLine((int) this.modele.getAxeModeleX().getBorneXLeft(), (int) this.modele.getOrigin().getY(), (int) this.modele.getAxeModeleX().getBorneXRight(), (int) this.modele.getOrigin().getY()); // Axe horizontale
 		g.drawLine((int) this.modele.getOrigin().getX(), (int) this.modele.getAxeModeleY().getBorneYtop(), (int) this.modele.getOrigin().getX(), (int) this.modele.getAxeModeleY().getBorneYDown()); // Axe verticale
@@ -67,12 +68,12 @@ public class TelecomGrapheurVue extends JPanel implements Observer{
 			g.drawLine((int) this.modele.getOrigin().getX()+i*this.modele.getAxeModeleX().getTailleCase(), (int) this.modele.getOrigin().getY()-10, (int) this.modele.getOrigin().getX()+i*this.modele.getAxeModeleX().getTailleCase(), (int) this.modele.getOrigin().getY()+10);
 			if(i!=0){
 				if(i%2==0){
-				g.drawString(""+i*this.modele.getAxeModeleX().getPas(), (int) this.modele.getOrigin().getX()+i*this.modele.getAxeModeleX().getTailleCase()-3, (int) this.modele.getOrigin().getY()+ 30);
+					g.drawString(""+i*this.modele.getAxeModeleX().getPas(), (int) this.modele.getOrigin().getX()+i*this.modele.getAxeModeleX().getTailleCase()-3, (int) this.modele.getOrigin().getY()+ 30);
 				}
 				else {
 					g.drawString(""+i*this.modele.getAxeModeleX().getPas(), (int) this.modele.getOrigin().getX()+i*this.modele.getAxeModeleX().getTailleCase()-3, (int) this.modele.getOrigin().getY()+ 60);
 				}
-				}
+			}
 		}
 	}
 
@@ -84,13 +85,13 @@ public class TelecomGrapheurVue extends JPanel implements Observer{
 			}
 		}
 	}
-	
+
 	public void drawQuadrillageVerticale(Graphics g){
 		for(int i = this.modele.getBornes().getBorneXLeft(); i <this.modele.getBornes().getBorneXRight();i++){
 			g.drawLine((int) (this.modele.getOrigin().getX()+i*this.modele.getAxeModeleX().getTailleCase()), this.modele.getBornes().getBorneYTop(), (int) (this.modele.getOrigin().getX()+i*this.modele.getAxeModeleX().getTailleCase()), this.modele.getBornes().getBorneYDown());
 		}
 	}
-	
+
 	public void drawQuadrillageHorizontale(Graphics g){
 		for(int i = this.modele.getBornes().getBorneYTop(); i <this.modele.getBornes().getBorneYDown();i++){
 			g.drawLine(this.modele.getAxeModeleX().getBorneXLeft(), (int) (this.modele.getOrigin().getY()+i*this.modele.getAxeModeleY().getTailleCase()), this.modele.getAxeModeleX().getBorneXRight(), (int) (this.modele.getOrigin().getY()+i*this.modele.getAxeModeleY().getTailleCase()));
@@ -101,7 +102,7 @@ public class TelecomGrapheurVue extends JPanel implements Observer{
 	public void update(Observable arg0, Object arg1) {
 		repaint();
 	}
-	
+
 	public void drawFunction(Graphics g){
 		// fonction y=cos(x)
 		for (PointModele point : this.modele.getCourbe().getListePoints()) {
@@ -109,17 +110,9 @@ public class TelecomGrapheurVue extends JPanel implements Observer{
 		}
 		this.modele.getCourbe().videListe();
 	}
-	
-	public void createCourbe(){
-		for(int i = this.modele.getBornes().getBorneXLeft(); i < this.modele.getBornes().getBorneXRight();i++){
-			this.modele.getCourbe().setPoints(new PointModele((int) (i+this.modele.getOrigin().getX()), (int) (-Math.cos(i/(this.modele.getAxeModeleY().getTailleCase()/this.modele.getAxeModeleY().getPas()))*this.modele.getAxeModeleY().getTailleCase()/this.modele.getAxeModeleY().getPas()+ this.modele.getOrigin().getY())));
-		}
-	}
-	
-	public void addJtextField(){
-		JTextField text = new JTextField();
-		text.setSize(new Dimension(50, 25));
-		this.add(text);
-		text.setVisible(true);
-	}
+
+//	public void addJtextField(){
+//		text = new JTextField();
+//		this.add(text);
+//	}
 }

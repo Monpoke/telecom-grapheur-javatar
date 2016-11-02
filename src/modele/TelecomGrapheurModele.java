@@ -17,6 +17,7 @@ public class TelecomGrapheurModele extends Observable{
 		this.initAxeY();
 		this.initOrigin();
 		this.initCourbe();
+		this.createCourbe();
 	}
 	
 	public void setClique(boolean isClique) {
@@ -111,5 +112,11 @@ public class TelecomGrapheurModele extends Observable{
 	
 	public void initCourbe(){
 		this.courbe = new CourbeModele();
+	}
+	
+	public void createCourbe(){
+		for(int i = getBornes().getBorneXLeft(); i < getBornes().getBorneXRight();i++){
+			getCourbe().setPoints(new PointModele((int) (i+getOrigin().getX()), (int) (-Math.cos(i/(getAxeModeleY().getTailleCase()/getAxeModeleY().getPas()))*getAxeModeleY().getTailleCase()/getAxeModeleY().getPas()+ getOrigin().getY())));
+		}
 	}
 }
