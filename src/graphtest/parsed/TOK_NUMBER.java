@@ -14,6 +14,10 @@ public class TOK_NUMBER extends ParsedToken implements ParsedTokenInterface {
         this.parsedType = TokenType.NUMBER;
         this.setValue(value);
     }
+
+    public TOK_NUMBER() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
     
     @Override

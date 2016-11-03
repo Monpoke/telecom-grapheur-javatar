@@ -33,14 +33,7 @@ public class SyntaxToolsTest {
      */
     @Test
     public void testLexicalIntoSyntax() {
-        System.out.println("lexicalIntoSyntax");
-        ArrayList<ParsedToken> lexicalArray = null;
-        SyntaxTools instance = new SyntaxTools();
-        Stack expResult = null;
-        Stack result = instance.lexicalIntoSyntax(lexicalArray);
-        assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -48,14 +41,7 @@ public class SyntaxToolsTest {
      */
     @Test
     public void testVerifySyntax() {
-        System.out.println("verifySyntax");
-        ArrayList<ParsedToken> lexicalArray = null;
-        SyntaxTools instance = new SyntaxTools();
-        boolean expResult = false;
-        boolean result = instance.verifySyntax(lexicalArray);
-        assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -63,8 +49,6 @@ public class SyntaxToolsTest {
      */
     @Test
     public void testAddHideMultiplyToken() {
-        System.out.println("addHideMultiplyToken");
-        
         // --- Expected already correct lexicalArray ---
         
         /* Testing : cos(3+x) */
@@ -144,8 +128,6 @@ public class SyntaxToolsTest {
      */
     @Test
     public void testExistedHideMultiply() {
-        System.out.println("existedHideMultiply");
-        
         // --- Expected = 0 tests ---
         
         /* Testing : cos(3+x) */
