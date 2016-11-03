@@ -184,8 +184,6 @@ public class SyntaxToolsTest {
      */
     @Test
     public void testVerifyNumberInRow() {
-        System.out.println("verifyNumberInRow");
-        
         // --- Expected true tests ---
         
         /* Testing : cos(3+x) */
@@ -235,8 +233,6 @@ public class SyntaxToolsTest {
      */
     @Test
     public void testVerifyFacingParenthesis() {
-        System.out.println("verifyFacingParenthesis");
-        
         // --- Expected true tests ---
         
         /* Testing : cos(3+x) */
@@ -298,7 +294,6 @@ public class SyntaxToolsTest {
      */
     @Test
     public void testVerifyOperatorInRow() {
-        System.out.println("verifyOperatorInRow");
         // --- Expected true tests ---
         
         /* Testing : cos(3+x) */
@@ -368,7 +363,6 @@ public class SyntaxToolsTest {
      */
     @Test
     public void testVerifyTokenStartAndEnd() {
-        System.out.println("verifyTokenStartAndEnd");
         // --- Expected true tests ---
         
         /* Testing : cos(3+x) */
