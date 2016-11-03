@@ -107,6 +107,7 @@ public class SyntaxTools {
     
     /**
      * Verify that there isn't 2 variables / number in row like 2,2 4 + 3
+     * Test shall be done after the multiply re-affectation
      * @param lexicalArray
      * @return boolean
      */

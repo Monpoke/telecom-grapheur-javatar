@@ -65,4 +65,29 @@ public class Stack {
     public int getMaxLength(){
         return this.maxLength;
     }
+    
+    /**
+     * Display the values in the stack
+     */
+    public void displayStack(){
+        if(!empty()){
+            System.out.println("\n---Stack---");
+            
+            int i= this.maxLength-1;
+            ParsedToken[] ptCopy = new ParsedToken[this.maxLength-1];
+            
+            /* Display and copy depop values */
+            while(!empty()){
+                ptCopy[i] = pop();
+                System.out.println("|  "+ptCopy[i]+"  |");
+                i--;
+            }
+            /* Recopy values into the original stack */
+            while(i<=this.maxLength-1){
+                push(ptCopy[i]);
+            }
+        }else{
+            System.out.println("\nEmpty Stack : Nothing to display\n");
+        }
+    }
 }
