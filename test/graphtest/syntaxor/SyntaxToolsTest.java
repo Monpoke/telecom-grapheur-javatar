@@ -72,7 +72,7 @@ public class SyntaxToolsTest {
         lexicalArray1.add(new TOK_OPERATOR_PLUS());
         lexicalArray1.add(new TOK_NUMBER(5));
         lexicalArray1.add(new TOK_PAR_CLOSE());
-        assertEquals(lexicalArray, SyntaxTools.addHideMultiplyToken(lexicalArray1));
+        assertEquals(lexicalArray1, SyntaxTools.addHideMultiplyToken(lexicalArray1));
         
         // --- Expected changes ---
         
@@ -120,7 +120,6 @@ public class SyntaxToolsTest {
         lexicalArray3Corrected.add(new TOK_VARIABLE("x"));
         lexicalArray3Corrected.add(new TOK_PAR_CLOSE());
         assertEquals(lexicalArray3Corrected,SyntaxTools.addHideMultiplyToken(lexicalArray3));
-        
     }
 
     /**
@@ -341,10 +340,10 @@ public class SyntaxToolsTest {
         
         /* Testing : 7*-x */
         ArrayList<ParsedToken> lexicalArray4 = new ArrayList<>();
-        lexicalArray2.add(new TOK_NUMBER(7));
-        lexicalArray2.add(new TOK_OPERATOR_MULTIPLY());
-        lexicalArray2.add(new TOK_OPERATOR_MINUS());
-        lexicalArray2.add(new TOK_VARIABLE("x"));
+        lexicalArray4.add(new TOK_NUMBER(7));
+        lexicalArray4.add(new TOK_OPERATOR_MULTIPLY());
+        lexicalArray4.add(new TOK_OPERATOR_MINUS());
+        lexicalArray4.add(new TOK_VARIABLE("x"));
         assertEquals(false, SyntaxTools.verifyOperatorInRow(lexicalArray4));
         
         /* Testing : 8*x+/9 */
@@ -433,7 +432,7 @@ public class SyntaxToolsTest {
         lexicalArray6.add(new TOK_OPERATOR_PLUS());
         lexicalArray6.add(new TOK_NUMBER(9));
         lexicalArray6.add(new TOK_OPERATOR_DIVIDE());
-        lexicalArray6.add(new TOK_PAR_CLOSE());
+        lexicalArray6.add(new TOK_PAR_OPEN());
         assertEquals(false, SyntaxTools.verifyTokenStartAndEnd(lexicalArray6));
         
     }

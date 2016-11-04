@@ -51,8 +51,8 @@ public class SyntaxTools {
             ArrayList<ParsedToken> multiplyArray = new ArrayList<>(lexicalArray.size()+additionalSpace);
             int multiplyIndex =0;
             
+            // there is no possible hidding multiply at the end, no point testing it
             for(int i=0;i<lexicalArray.size();i++){
-                multiplyIndex += i;
                 multiplyArray.add(multiplyIndex, lexicalArray.get(i));
                 
                 if((lexicalArray.get(i) instanceof TOK_NUMBER || lexicalArray.get(i) instanceof TOK_VARIABLE) 
@@ -61,6 +61,7 @@ public class SyntaxTools {
                 }else if(lexicalArray.get(i) instanceof TOK_NUMBER && lexicalArray.get(i+1) instanceof TOK_VARIABLE){
                     multiplyArray.add(++multiplyIndex, new TOK_OPERATOR_MULTIPLY());
                 }
+                multiplyIndex++;
             }
             
             return multiplyArray;
@@ -160,8 +161,8 @@ public class SyntaxTools {
     public static boolean verifyTokenStartAndEnd(ArrayList<ParsedToken> lexicalArray){
         int lastArrayIndex = lexicalArray.size()-1;
 
-        // Start check. The start carac must be a number, an open parenthesis or a function
-        if(! (lexicalArray.get(0) instanceof TOK_NUMBER || lexicalArray.get(0).isFunction() || lexicalArray.get(0) instanceof TOK_PAR_OPEN)){
+        // Start check. The start carac must be a number, a variable, an open parenthesis or a function
+        if(! (lexicalArray.get(0) instanceof TOK_NUMBER || lexicalArray.get(0) instanceof TOK_VARIABLE || lexicalArray.get(0).isFunction() || lexicalArray.get(0) instanceof TOK_PAR_OPEN)){
             return false;
         }
         
