@@ -16,6 +16,7 @@ import graphtest.parsed.TOK_PAR_CLOSE;
 import graphtest.parsed.TOK_PAR_OPEN;
 import graphtest.parsed.TOK_VARIABLE;
 import java.util.ArrayList;
+import org.junit.Assert;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -93,7 +94,7 @@ public class SyntaxToolsTest {
         lexicalArray2Corrected.add(new TOK_OPERATOR_PLUS());
         lexicalArray2Corrected.add(new TOK_NUMBER(6));
         lexicalArray2Corrected.add(new TOK_PAR_CLOSE());
-        assertEquals(lexicalArray2Corrected,SyntaxTools.addHideMultiplyToken(lexicalArray2));
+        assertEquals(lexicalArray2Corrected.toString(),SyntaxTools.addHideMultiplyToken(lexicalArray2).toString());
         
         /* Testing : 7+8(4+2x) */
         ArrayList<ParsedToken> lexicalArray3 = new ArrayList<>();
@@ -119,7 +120,7 @@ public class SyntaxToolsTest {
         lexicalArray3Corrected.add(new TOK_OPERATOR_MULTIPLY());
         lexicalArray3Corrected.add(new TOK_VARIABLE("x"));
         lexicalArray3Corrected.add(new TOK_PAR_CLOSE());
-        assertEquals(lexicalArray3Corrected,SyntaxTools.addHideMultiplyToken(lexicalArray3));
+        assertEquals(lexicalArray3Corrected.toString(),SyntaxTools.addHideMultiplyToken(lexicalArray3).toString());
     }
 
     /**

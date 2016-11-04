@@ -60,7 +60,7 @@ public class PriorityTools {
      * @param lexicalArray
      * @return ArrayList<ParsedToken>
      */
-    public ArrayList<ParsedToken> setPriorityParenthesis(ArrayList<ParsedToken> lexicalArray){
+    public static ArrayList<ParsedToken> setPriorityParenthesis(ArrayList<ParsedToken> lexicalArray){
         ArrayList<ParsedToken> parenthesisArray = new ArrayList<>();
         parenthesisArray = removeUselessParenthesis(lexicalArray);
         
@@ -84,7 +84,7 @@ public class PriorityTools {
      * @param lexicalArray
      * @return ArrayList<ParsedToken>
      */
-    public ArrayList<ParsedToken> removeUselessParenthesis(ArrayList<ParsedToken> lexicalArray){
+    public static ArrayList<ParsedToken> removeUselessParenthesis(ArrayList<ParsedToken> lexicalArray){
         ArrayList<ParsedToken> parenthesisArray = new ArrayList<>();
         parenthesisArray = lexicalArray;
         
@@ -96,7 +96,8 @@ public class PriorityTools {
         }
         
         // Remove useless parenthesis surrounding number/variables : for exemple '3+(1)' -> '3+1'
-        for(int i=0;i+2<parenthesisArray.size();i++){
+        for(int i=0;i<parenthesisArray.size();i++){
+            System.out.println(i);
             if(parenthesisArray.get(i) instanceof TOK_PAR_OPEN 
                 && parenthesisArray.get(i+2) instanceof TOK_PAR_CLOSE 
                     && (parenthesisArray.get(i+1) instanceof TOK_VARIABLE || parenthesisArray.get(i+1) instanceof TOK_NUMBER)){
@@ -120,10 +121,8 @@ public class PriorityTools {
         for(int i=0;i<parenthesisArray.size();i++){
             if(parenthesisArray.get(i) instanceof TOK_NUMBER 
                 || parenthesisArray.get(i) instanceof TOK_VARIABLE 
-                    || parenthesisArray.get(i) instanceof TOK_OPERATOR_MINUS 
-                        || parenthesisArray.get(i) instanceof TOK_OPERATOR_PLUS 
-                            || parenthesisArray.get(i) instanceof TOK_OPERATOR_DIVIDE 
-                                || parenthesisArray.get(i) instanceof TOK_OPERATOR_MULTIPLY){
+                    || parenthesisArray.get(i).isFunction()
+                        || parenthesisArray.get(i).isOperator()){
                 nbOperandNumberVar++;
             }
         }
@@ -180,12 +179,13 @@ public class PriorityTools {
     /**
      * Check if there is parenthesis before or after an operator
      * If so, this mean that it doesn't match the schema 'x+y'
+     * i has to be index of an operator
      * @param priorityArray
      * @param i
      * @return boolean
      */
     public static boolean schemaXOperatorY(ArrayList<ParsedToken> priorityArray, int i){
-        return (priorityArray.get(i-1) instanceof TOK_PAR_CLOSE || priorityArray.get(i+1) instanceof TOK_PAR_OPEN) ? false : true;
+        return (priorityArray.get(i-1) instanceof TOK_PAR_CLOSE || priorityArray.get(i+1) instanceof TOK_PAR_OPEN || !priorityArray.get(i).isOperator()) ? false : true;
     }
     
     /**
