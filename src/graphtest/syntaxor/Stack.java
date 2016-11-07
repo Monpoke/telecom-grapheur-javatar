@@ -67,6 +67,14 @@ public class Stack {
     }
     
     /**
+     * Check if the Stack is full
+     * @return boolean
+     */
+    public boolean isFull(){
+        return this.top==this.maxLength-1;
+    }
+    
+    /**
      * Display the values in the stack
      */
     public void displayStack(){

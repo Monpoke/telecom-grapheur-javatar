@@ -14,8 +14,6 @@ import graphtest.parsed.TOK_PAR_CLOSE;
 import graphtest.parsed.TOK_PAR_OPEN;
 import graphtest.parsed.TOK_VARIABLE;
 import java.util.ArrayList;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 

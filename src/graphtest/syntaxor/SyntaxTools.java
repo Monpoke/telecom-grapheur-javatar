@@ -15,22 +15,35 @@ import java.util.ArrayList;
 public class SyntaxTools {
     
     /**
-     * Get the unordered ArrayList of Lexem and return the ordered syntax
+     * Transform the lexicalArray into a syntaxArray (no more syntax error)
      * @param lexicalArray
      * @return Stack
      */
-    public Stack lexicalIntoSyntax(ArrayList<ParsedToken> lexicalArray){
-        Stack orderedStack = new Stack(lexicalArray.size());
+    public static ArrayList<ParsedToken> lexicalIntoSyntax(ArrayList<ParsedToken> lexicalArray){
+        ArrayList<ParsedToken> syntaxArray = new ArrayList<>();
         
         if(verifySyntax(lexicalArray)){
-            return orderedStack;
+            syntaxArray = addHideMultiplyToken(lexicalArray);
+            return syntaxArray;
         }else{
+            if(!verifyNumberInRow(lexicalArray)){
+                System.out.println("Error number in row");
+            }
+            //TODO -> Exceptions
+            
             return null;
         }
     }
     
-    public boolean verifySyntax(ArrayList<ParsedToken> lexicalArray){
-        if(verifyOperatorInRow(lexicalArray) == false || verifyTokenStartAndEnd(lexicalArray) == false){
+    /**
+     * Verify that all the methods are correct
+     * @param lexicalArray
+     * @return boolean
+     */
+    public static boolean verifySyntax(ArrayList<ParsedToken> lexicalArray){
+        if(verifyOperatorInRow(lexicalArray) == false 
+                || verifyTokenStartAndEnd(lexicalArray) == false
+                    || verifyFacingParenthesis(lexicalArray) == false){
             return false;
         }else{
             return true;

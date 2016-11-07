@@ -22,7 +22,7 @@ public class PriorityTools {
      * @param lexicalArray
      * @return ArrayList<ParsedToken> 
      */
-    public ArrayList<ParsedToken> addPriority(ArrayList<ParsedToken> lexicalArray){
+    public static ArrayList<ParsedToken> addPriority(ArrayList<ParsedToken> lexicalArray){
         ArrayList<ParsedToken> priorityArray = new ArrayList<>();
         priorityArray = setPriorityParenthesis(lexicalArray);
         
@@ -34,7 +34,7 @@ public class PriorityTools {
                 // incrementing prio value on '('
                 coefTokenRule *= PriorityRules.TOK_PAR_OPEN_RULE.getPriorityValue();
             }else if(priorityArray.get(i) instanceof TOK_PAR_CLOSE){
-                // decrementing prio value on '('
+                // decrementing prio value on ')'
                 coefTokenRule /= PriorityRules.TOK_PAR_CLOSE_RULE.getPriorityValue();
             }
             
@@ -88,22 +88,29 @@ public class PriorityTools {
         ArrayList<ParsedToken> parenthesisArray = new ArrayList<>();
         parenthesisArray = lexicalArray;
         
+        // Allow to redo the function to remove multiple surrounding parenthesis : '((x))'
+        boolean existingUselessParenthesis = false;
+        
         // Remove useless parenthesis at start and end : for exemple '(3+1)' -> '3+1'
         if(parenthesisArray.get(0) instanceof TOK_PAR_OPEN 
                 && parenthesisArray.get(parenthesisArray.size()-1) instanceof TOK_PAR_CLOSE){
-            parenthesisArray.remove(0);
             parenthesisArray.remove(parenthesisArray.size()-1);
+            parenthesisArray.remove(0);
         }
         
         // Remove useless parenthesis surrounding number/variables : for exemple '3+(1)' -> '3+1'
-        for(int i=0;i<parenthesisArray.size();i++){
-            System.out.println(i);
-            if(parenthesisArray.get(i) instanceof TOK_PAR_OPEN 
-                && parenthesisArray.get(i+2) instanceof TOK_PAR_CLOSE 
-                    && (parenthesisArray.get(i+1) instanceof TOK_VARIABLE || parenthesisArray.get(i+1) instanceof TOK_NUMBER)){
+        for(int i=0;i+2<parenthesisArray.size();i++){
+            if(parenthesisArray.get(i) instanceof TOK_PAR_OPEN
+                    && parenthesisArray.get(i+2) instanceof TOK_PAR_CLOSE 
+                        && (parenthesisArray.get(i+1) instanceof TOK_VARIABLE || parenthesisArray.get(i+1) instanceof TOK_NUMBER)){
+                parenthesisArray.remove(i+2);   // remove i+2 first because of shifting remove()
                 parenthesisArray.remove(i);
-                parenthesisArray.remove(i+2);
+                existingUselessParenthesis = true;
             }
+        }
+        
+        while(existingUselessParenthesis){
+            return removeUselessParenthesis(parenthesisArray);
         }
         
         return parenthesisArray;
