@@ -7,7 +7,10 @@ import graphtest.syntaxor.SyntaxTools;
 import java.util.ArrayList;
 
 /**
- *
+ * Main class of the 2nd Grapheur part.
+ * Designed to use all the syntaxTools and PriorityTools methods.
+ * This class allows to go from the lexical part into the the syntaxical part.
+ * Transform the lexicalArray into a priorityArray and then into a Stack (fill with the priorityArray to be in the good order)
  * @author Florent
  */
 public class Syntaxor {
@@ -42,8 +45,6 @@ public class Syntaxor {
                 
                 this.orderedStack.push(priorityArray.get(indexMinPrio));
             }
-            
-            orderedStack.displayStack();
         }
     }
     
@@ -53,5 +54,9 @@ public class Syntaxor {
      */
     public Stack getOrderedStack(){
         return this.orderedStack;
+    }
+    
+    public void displayOrderedStack(){
+        this.orderedStack.displayStack();
     }
 }

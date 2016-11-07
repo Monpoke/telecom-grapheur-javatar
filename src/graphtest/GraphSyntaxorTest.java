@@ -36,14 +36,11 @@ public class GraphSyntaxorTest {
             
             //---Syntax Part---
             Syntaxor syntaxor = new Syntaxor(parsedTokenList);
+            syntaxor.displayOrderedStack();
             
         } catch (ParsingException ex) {
             Logger.getLogger(GraphTest.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
-        
-        
     }
     
     private static void displayList(ArrayList<ParsedToken> parsedTokenList) {
