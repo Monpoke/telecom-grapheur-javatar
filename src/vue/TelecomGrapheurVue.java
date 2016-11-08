@@ -2,8 +2,14 @@ package vue;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.text.DecimalFormat;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -33,20 +39,23 @@ public class TelecomGrapheurVue extends JPanel implements Observer{
 		this.modele.getAxeModeleY().addObserver(this);
 		this.modele.getBornes().addObserver(this);
 		this.modele.getCourbe().addObserver(this);
+		this.modele.getCursor().addObserver(this);
 		this.addMouseListener(telecomGrapheurControleur);
 		this.addMouseMotionListener(telecomGrapheurControleur);
 		this.addMouseWheelListener(telecomGrapheurControleur);
+		this.fenetre.addControllerOnJTextField(telecomGrapheurControleur);
 		this.setSize(new Dimension(this.fenetre.getWidth(),this.fenetre.getHeight()));
-		//this.addJtextField();
 	}
 
 	@Override
 	public void paint(Graphics g) {
-		g.clearRect(0, 0, this.fenetre.getWidth(), this.fenetre.getHeight()-20); //efface tout	
+		g.clearRect(0, 0, this.fenetre.getWidth(), this.fenetre.getHeight()); //efface tout	
 		this.drawQuadrillage(g);
 		this.drawAxeXY(g);
 		this.drawFunction(g);
+		this.drawCursor(g);
 		this.modele.createCourbe();
+		this.drawPoints(g);
 	}
 
 	public void drawQuadrillage(Graphics g){
@@ -111,8 +120,29 @@ public class TelecomGrapheurVue extends JPanel implements Observer{
 		this.modele.getCourbe().videListe();
 	}
 
-//	public void addJtextField(){
-//		text = new JTextField();
-//		this.add(text);
-//	}
+	public void drawCursor(Graphics g){
+		g.drawLine((int) this.modele.getCursor().getX()-10, (int) this.modele.getCursor().getY(), (int) this.modele.getCursor().getX()+10, (int) this.modele.getCursor().getY());
+		g.drawLine((int) this.modele.getCursor().getX(), (int) this.modele.getCursor().getY()-10, (int) this.modele.getCursor().getX(), (int) this.modele.getCursor().getY()+10);
+
+		double x = ((this.modele.getCursor().getX()-this.modele.getOrigin().getX())/this.modele.getAxeModeleX().getTailleCase())*this.modele.getAxeModeleX().getPas();
+		double y = -((this.modele.getCursor().getY()-this.modele.getOrigin().getY())/this.modele.getAxeModeleY().getTailleCase())*this.modele.getAxeModeleY().getPas();
+		DecimalFormat df = new DecimalFormat ( ) ; 
+		df.setMaximumFractionDigits ( 2 ) ;
+		g.drawString("Coordonnées ( " + df.format(x) + " , " + df.format(y) + " ) ", 50, 50);
+	}
+
+	public void drawPoints(Graphics g){
+		for (PointModele point : this.modele.getPoints()) {
+			if(point.getY()>0)
+			{
+				g.fillOval((int) point.getX()-3, (int) point.getY()-3, 6, 6);
+				double x = ((point.getX()-this.modele.getOrigin().getX())/this.modele.getAxeModeleX().getTailleCase())*this.modele.getAxeModeleX().getPas();
+				double y = -((point.getY()-this.modele.getOrigin().getY())/this.modele.getAxeModeleY().getTailleCase())*this.modele.getAxeModeleY().getPas();
+				DecimalFormat df = new DecimalFormat ( ) ; 
+				df.setMaximumFractionDigits ( 2 ) ;
+				System.out.println(y);
+				g.drawString("( " + df.format(x) + " , " + df.format(y) + " ) ", (int) point.getX()+10, (int) point.getY());
+			}
+		}
+	}
 }

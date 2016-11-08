@@ -1,15 +1,18 @@
 package modele;
 
+import java.util.ArrayList;
 import java.util.Observable;
 
 public class TelecomGrapheurModele extends Observable{
 
-	AxeModele axeModeleX = new AxeModele();
-	AxeModele axeModeleY = new AxeModele();
-	PointModele origin = new PointModele();
-	BorneGraphiqueModele bornes = new BorneGraphiqueModele();
-	CourbeModele courbe = new CourbeModele();
-	boolean isClique = false;
+	private AxeModele axeModeleX = new AxeModele();
+	private AxeModele axeModeleY = new AxeModele();
+	private PointModele origin = new PointModele();
+	private BorneGraphiqueModele bornes = new BorneGraphiqueModele();
+	private CourbeModele courbe = new CourbeModele();
+	private boolean isClique = false;
+	private PointModele cursor = new PointModele(0,0);
+	private ArrayList<PointModele> points = new ArrayList<PointModele>();
 	
 	public TelecomGrapheurModele() {
 		this.initBornes();
@@ -18,6 +21,14 @@ public class TelecomGrapheurModele extends Observable{
 		this.initOrigin();
 		this.initCourbe();
 		this.createCourbe();
+	}
+	
+	public ArrayList<PointModele> getPoints() {
+		return points;
+	}
+	
+	public void setPoints(ArrayList<PointModele> points) {
+		this.points = points;
 	}
 	
 	public void setClique(boolean isClique) {
@@ -74,6 +85,16 @@ public class TelecomGrapheurModele extends Observable{
 	
 	public void setCourbe(CourbeModele courbe) {
 		this.courbe = courbe;
+		setChanged ();
+		notifyObservers ();
+	}
+	
+	public PointModele getCursor() {
+		return cursor;
+	}
+	
+	public void setCursor(PointModele cursor) {
+		this.cursor = cursor;
 		setChanged ();
 		notifyObservers ();
 	}
