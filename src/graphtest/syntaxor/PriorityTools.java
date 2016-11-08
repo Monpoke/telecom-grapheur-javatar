@@ -24,7 +24,7 @@ public class PriorityTools {
      */
     public static ArrayList<ParsedToken> addPriority(ArrayList<ParsedToken> lexicalArray){
         ArrayList<ParsedToken> priorityArray = new ArrayList<>();
-        priorityArray = setPriorityParenthesis(lexicalArray);
+        // priorityArray = setPriorityParenthesis(lexicalArray); Commented for now resolve setPriorityParenthesis
         
         int coefNbToken = coefficientCalculator(priorityArray);
         long coefTokenRule = coefNbToken;
@@ -57,18 +57,21 @@ public class PriorityTools {
     /**
      * Add some parenthesis in the expression in order to respect the priority setter rules
      * See @Florent for more details about the priority setter rules
+     * 
+     * Try remember what it does ...
+     * 
      * @param lexicalArray
      * @return ArrayList<ParsedToken>
      */
-    public static ArrayList<ParsedToken> setPriorityParenthesis(ArrayList<ParsedToken> lexicalArray){
+    /*public static ArrayList<ParsedToken> setPriorityParenthesis(ArrayList<ParsedToken> lexicalArray){
         ArrayList<ParsedToken> parenthesisArray = new ArrayList<>();
         parenthesisArray = removeUselessParenthesis(lexicalArray);
         
-        for(int i=1;i<parenthesisArray.size();i++){
-            if(parenthesisArray.get(i) instanceof TOK_OPERATOR_MULTIPLY || parenthesisArray.get(i) instanceof TOK_OPERATOR_DIVIDE){
+        for(int i=1;i<parenthesisArray.size()-1;i++){
+            if(parenthesisArray.get(i).isOperator()){
                 if(parenthesisArray.get(i-1) instanceof TOK_PAR_CLOSE && parenthesisArray.get(i+2) instanceof TOK_PAR_OPEN){
-                    parenthesisArray.add(indexOpenParenthesis(parenthesisArray,i), new TOK_PAR_OPEN());
                     parenthesisArray.add(i+2, new TOK_PAR_CLOSE());
+                    parenthesisArray.add(indexOpenParenthesis(parenthesisArray,i), new TOK_PAR_OPEN());
                 }else if(parenthesisArray.get(i+1) instanceof TOK_PAR_OPEN && !(parenthesisArray.get(i-2) instanceof TOK_PAR_OPEN)){
                     parenthesisArray.add(indexCloseParenthesis(parenthesisArray,i), new TOK_PAR_CLOSE());
                     parenthesisArray.add(i-2, new TOK_PAR_OPEN());
@@ -77,7 +80,7 @@ public class PriorityTools {
         }
         
         return parenthesisArray;
-    }
+    }*/
     
     /**
      * Remove the useless parenthesis in the expression
