@@ -25,25 +25,25 @@ public class Syntaxor {
     
     private void startSyntaxor(){
         ArrayList<ParsedToken> syntaxArray = new ArrayList<>();
-        ArrayList<ParsedToken> priorityArray = new ArrayList<>();
         
         if(!this.lexicalArray.isEmpty()){
             syntaxArray = SyntaxTools.lexicalIntoSyntax(this.lexicalArray);
-            priorityArray = PriorityTools.addPriority(syntaxArray);
-            this.orderedStack = new Stack(PriorityTools.coefficientCalculator(priorityArray));
+            PriorityTools.addPriority(syntaxArray);
+            
+            this.orderedStack = new Stack(PriorityTools.coefficientCalculator(syntaxArray));
 
-            long minPrio = priorityArray.get(0).getPriority();
+            long minPrio = syntaxArray.get(0).getPriority();
             int indexMinPrio = 0;
             
             while(!this.orderedStack.isFull()){
-                for(int i=0;i<priorityArray.size()-2;i++){
-                    if(priorityArray.get(i).getPriority() < minPrio){
-                        minPrio = priorityArray.get(i).getPriority();
+                for(int i=0;i<syntaxArray.size()-2;i++){
+                    if(syntaxArray.get(i).getPriority() < minPrio){
+                        minPrio = syntaxArray.get(i).getPriority();
                         indexMinPrio = i;
                     }
                 }
                 
-                this.orderedStack.push(priorityArray.get(indexMinPrio));
+                this.orderedStack.push(syntaxArray.get(indexMinPrio));
             }
         }
     }
