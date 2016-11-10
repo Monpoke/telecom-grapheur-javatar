@@ -12,7 +12,10 @@ import graphtest.parsed.TOK_VARIABLE;
 import java.util.ArrayList;
 
 /**
- *
+ * Tools class which allows on a syntaxical parsed phrase to set up priorities
+ * in the operation. Priorities will be used to read the phrase in the mathemical
+ * correct order.
+ * 
  * @author Florent
  */
 public class PriorityTools {
