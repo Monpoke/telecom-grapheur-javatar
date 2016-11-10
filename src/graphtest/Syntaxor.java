@@ -33,17 +33,27 @@ public class Syntaxor {
             this.orderedStack = new Stack(PriorityTools.coefficientCalculator(syntaxArray));
 
             long minPrio = syntaxArray.get(0).getPriority();
-            int indexMinPrio = 0;
+            ParsedToken indexMinPrio = syntaxArray.get(0);
+            long maxPrio = 0;
+            
+            for(ParsedToken element : syntaxArray){
+                if(element.getPriority() > maxPrio){
+                    maxPrio = element.getPriority();
+                }
+            }
             
             while(!this.orderedStack.isFull()){
-                for(int i=0;i<syntaxArray.size()-2;i++){
-                    if(syntaxArray.get(i).getPriority() < minPrio){
-                        minPrio = syntaxArray.get(i).getPriority();
-                        indexMinPrio = i;
+                
+                for(ParsedToken element : syntaxArray){
+                    if(element.getPriority() <= minPrio){
+                        minPrio = element.getPriority();
+                        indexMinPrio = element;
                     }
                 }
                 
-                this.orderedStack.push(syntaxArray.get(indexMinPrio));
+                this.orderedStack.push(indexMinPrio);
+                syntaxArray.remove(indexMinPrio);
+                minPrio = maxPrio;
             }
         }
     }

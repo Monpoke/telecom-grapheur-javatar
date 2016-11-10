@@ -70,12 +70,12 @@ public class PriorityTools {
      * Add some parenthesis in the expression in order to respect the priority setter rules
      * See @Florent for more details about the priority setter rules
      * 
-     * Try remember what it does ... : put parenthesis around x and / to ensure their working
+     * Try remember what it does ... : put parenthesis around * and / to ensure their working
      * 
      * @param lexicalArray
      * @return ArrayList<ParsedToken>
      */
-    /*public static ArrayList<ParsedToken> setPriorityParenthesis(ArrayList<ParsedToken> lexicalArray){
+    public static ArrayList<ParsedToken> setPriorityParenthesis(ArrayList<ParsedToken> lexicalArray){
         ArrayList<ParsedToken> parenthesisArray = new ArrayList<>();
         parenthesisArray = removeUselessParenthesis(lexicalArray);
         
@@ -92,7 +92,7 @@ public class PriorityTools {
         }
         
         return parenthesisArray;
-    }*/
+    }
     
     /**
      * Remove the useless parenthesis in the expression
