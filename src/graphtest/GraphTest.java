@@ -38,6 +38,8 @@ public class GraphTest {
         System.out.println("Lancement du parsage...");
 
         try {
+            System.out.println("-----------\nPARSER ["+math+"]\n-----------\n");
+            
             // FIRST STEP
             Parser parser = new Parser(math);
 
@@ -45,21 +47,26 @@ public class GraphTest {
             ArrayList<ParsedToken> parsedTokenList = parser.getParsedTokenList();
             displayList(parsedTokenList);
 
+            System.out.println("-----------\nCONVERTER ["+math+"]\n-----------\n");
+            
             // CORRECT SYNTAX
             // TREE
-            TreeNode tree = new TreeNode(null);
             TreeConverter converter = new TreeConverter(parsedTokenList);
-            
-            System.out.println("-----------\nConverter\n-----------\n");
+            TreeNode root = converter.getRoot();
             displayList(converter.getParsedTokenList());
+
             
+            if(root==null){
+                System.out.println("result null");
+                System.exit(1);
+            }
             
+            System.out.println("-----------\nEVALUATOR ["+math+"]\n-----------\n");
             
-            /*
             // EVALUATOR
-            Evaluator evaluator = new Evaluator(tree);
+            Evaluator evaluator = new Evaluator(root);
             evaluator.addVariable(new Variable("x", 2));
-            System.out.println("Resultat=" + evaluator.evaluate());*/
+            System.out.println("Resultat=" + evaluator.evaluate());
             
         } catch (ParsingException ex) {
             Logger.getLogger(GraphTest.class.getName()).log(Level.SEVERE, null, ex);

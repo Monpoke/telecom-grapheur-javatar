@@ -16,10 +16,10 @@ public enum TokenType {
     OPERATOR_DIVIDE(5),
     OPERATOR_MULTIPLY(6),
     OPERATOR_MODULO(5),
-    NUMBER,
+    NUMBER(1),
     PAR_OPEN(8),
     PAR_CLOSE(8),
-    VARIABLE,
+    VARIABLE(1),
     /**
      * FUNCTIONS
      */

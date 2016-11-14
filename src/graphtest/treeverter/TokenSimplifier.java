@@ -37,10 +37,15 @@ class TokenSimplifier {
                 - 12 ( XXXXX )
                 - myVar ( XXXXX )
                 - ( XXX ) ( XXX )
-            
+                - ( XXX) $variable
+                - 12x
             */
             
-            else if((next instanceof TOK_PAR_OPEN) &&
+            else if((
+                    next instanceof TOK_PAR_OPEN ||
+                    next instanceof  TOK_VARIABLE
+                    ) 
+                    &&
                     (
                     current instanceof TOK_NUMBER ||
                     current instanceof TOK_PAR_CLOSE ||
@@ -49,6 +54,7 @@ class TokenSimplifier {
                 
                 parsedTokenList.add(i+1, new TOK_OPERATOR_MULTIPLY());
             }
+            
             
         }
         
