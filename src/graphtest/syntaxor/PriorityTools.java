@@ -12,7 +12,10 @@ import graphtest.parsed.TOK_VARIABLE;
 import java.util.ArrayList;
 
 /**
- *
+ * Tools class which allows on a syntaxical parsed phrase to set up priorities
+ * in the operation. Priorities will be used to read the phrase in the mathemical
+ * correct order.
+ * 
  * @author Florent
  */
 public class PriorityTools {
@@ -28,31 +31,28 @@ public class PriorityTools {
         
         int coefNbToken = coefficientCalculator(priorityArray);
         long coefTokenRule = coefNbToken;
+        boolean reverseDivide = false;
         
         for(int i=0;i<priorityArray.size();i++){
-            System.out.println("i :"+i+"size : "+priorityArray.get(i));
             
             if(priorityArray.get(i) instanceof TOK_PAR_OPEN){
-                System.out.println("1st");
                 // incrementing prio value on '('
                 coefTokenRule *= PriorityRules.TOK_PAR_OPEN_RULE.getPriorityValue();
             }else if(priorityArray.get(i) instanceof TOK_PAR_CLOSE){
-                System.out.println("2nd");
                 // decrementing prio value on ')'
                 coefTokenRule /= PriorityRules.TOK_PAR_CLOSE_RULE.getPriorityValue();
             }
             
             // Adding priority into ParsedToken
             if((priorityArray.get(i) instanceof TOK_OPERATOR_MULTIPLY || priorityArray.get(i) instanceof TOK_OPERATOR_DIVIDE )&& priorityArray.get(i+1) instanceof TOK_PAR_OPEN){
-                System.out.println("if");
                 // Avoiding [(y+x)*(y+x)] multiply's problem priority -> Multiply Token shall have a coef of priority as high as the next parenthesis expression
                 priorityArray.get(i).setPriority(i+coefTokenRule*PriorityRules.TOK_OPERATOR_MULTIPLY_RULE.getPriorityValue());  // Multiply and Divide Token Rule shall be the same for mathemical priority reason
+            }else if(false){
+                // reverse divide
             }else if(schemaXOperatorY(priorityArray,i)){
-                System.out.println("else if");
                 // When x+y the lexical order prevail -> no use of the token values
                 priorityArray.get(i).setPriority(i+coefTokenRule);
             }else{
-                System.out.println("else");
                 // Regular case of calculation
                 priorityArray.get(i).setPriority(regularPriorityCalculation(priorityArray,coefTokenRule,i));
             }
@@ -70,12 +70,12 @@ public class PriorityTools {
      * Add some parenthesis in the expression in order to respect the priority setter rules
      * See @Florent for more details about the priority setter rules
      * 
-     * Try remember what it does ... : put parenthesis around x and / to ensure their working
+     * Try remember what it does ... : put parenthesis around * and / to ensure their working
      * 
      * @param lexicalArray
      * @return ArrayList<ParsedToken>
      */
-    /*public static ArrayList<ParsedToken> setPriorityParenthesis(ArrayList<ParsedToken> lexicalArray){
+    public static ArrayList<ParsedToken> setPriorityParenthesis(ArrayList<ParsedToken> lexicalArray){
         ArrayList<ParsedToken> parenthesisArray = new ArrayList<>();
         parenthesisArray = removeUselessParenthesis(lexicalArray);
         
@@ -92,7 +92,7 @@ public class PriorityTools {
         }
         
         return parenthesisArray;
-    }*/
+    }
     
     /**
      * Remove the useless parenthesis in the expression

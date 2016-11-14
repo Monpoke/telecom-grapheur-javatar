@@ -12,8 +12,8 @@ public class Stack {
     
     public Stack(int maxLength){
         this.maxLength = maxLength;
-        this.parsedTokenStack = new ParsedToken[maxLength-1];
-        this.top += 1;
+        this.parsedTokenStack = new ParsedToken[maxLength];
+        this.top = -1;
     }
     
     /**
@@ -82,17 +82,17 @@ public class Stack {
             System.out.println("\n---Stack---");
             
             int i= this.maxLength-1;
-            ParsedToken[] ptCopy = new ParsedToken[this.maxLength-1];
+            ParsedToken[] ptCopy = new ParsedToken[this.maxLength];
             
             /* Display and copy depop values */
             while(!empty()){
                 ptCopy[i] = pop();
-                System.out.println("|  "+ptCopy[i]+"  |");
+                System.out.println("|   "+ptCopy[i]+"   |");
                 i--;
             }
             /* Recopy values into the original stack */
-            while(i<=this.maxLength-1){
-                push(ptCopy[i]);
+            while(i<this.maxLength-1){
+                push(ptCopy[++i]);
             }
         }else{
             System.out.println("\nEmpty Stack : Nothing to display\n");

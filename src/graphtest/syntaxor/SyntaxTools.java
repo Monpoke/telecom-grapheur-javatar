@@ -9,7 +9,10 @@ import graphtest.parsed.TOK_VARIABLE;
 import java.util.ArrayList;
 
 /**
- *
+ * Tools class which allows to transform a lexical phrase into a syntaxical phrase.
+ * Meaned that all the mathemaical syntax verification have to be done here such
+ * as : no double operator in row, number of close and open parenthesis ...
+ * 
  * @author Florent
  */
 public class SyntaxTools {
@@ -89,7 +92,7 @@ public class SyntaxTools {
     public static int existedHideMultiply(ArrayList<ParsedToken> lexicalArray){
         int nbHideMultiply = 0;
         
-        for(int i=0;i<lexicalArray.size();i++){
+        for(int i=0;i<lexicalArray.size()-1;i++){
             if((lexicalArray.get(i) instanceof TOK_NUMBER || lexicalArray.get(i) instanceof TOK_VARIABLE) 
                     && (lexicalArray.get(i+1) instanceof TOK_PAR_OPEN || lexicalArray.get(i+1).isFunction())){
                 nbHideMultiply++;
