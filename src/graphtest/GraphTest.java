@@ -7,7 +7,6 @@ package graphtest;
 
 import graphtest.exceptions.ParsingException;
 import graphtest.parsed.ParsedToken;
-import graphtest.syntaxor.Syntaxor;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -43,8 +42,7 @@ public class GraphTest {
             // SECOND STEP
             ArrayList<ParsedToken> parsedTokenList = parser.getParsedTokenList();
             displayList(parsedTokenList);
-            // THIRD STEP, SYNTAX CHECK
-            Syntaxor syntaxor = new graphtest.syntaxor.Syntaxor(parsedTokenList);
+            
             
             
         } catch (ParsingException ex) {
