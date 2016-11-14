@@ -49,7 +49,7 @@ public class Evaluator {
         this.variables.put(variable.getName(), variable);
     }
 
-    double evaluate() throws Exception {
+    public double evaluate() throws Exception {
         double result = 0;
 
         /**
@@ -66,9 +66,9 @@ public class Evaluator {
      * @param node
      * @return
      */
-    public double process(TreeNode node) throws Exception {
+    protected double process(TreeNode node) throws Exception {
         double result = 0;
-
+        
         if (node.getToken().isOperator()) {
             result += processOperators(node);
 

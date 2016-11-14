@@ -9,7 +9,7 @@ package graphtest.evaluator;
  *
  * @author A643012
  */
-class Variable {
+public class Variable {
     protected String name;
     protected double value;
 

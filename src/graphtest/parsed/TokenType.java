@@ -10,26 +10,41 @@ package graphtest.parsed;
  * @author A643012
  */
 public enum TokenType {
-    
-    OPERATOR_PLUS(),
-    OPERATOR_MINUS,
-    OPERATOR_DIVIDE(),
-    OPERATOR_MULTIPLY(),
-    OPERATOR_MODULO(),
-    
+
+    OPERATOR_PLUS(3),
+    OPERATOR_MINUS(3),
+    OPERATOR_DIVIDE(5),
+    OPERATOR_MULTIPLY(6),
+    OPERATOR_MODULO(5),
     NUMBER,
-    
-    PAR_OPEN,
-    PAR_CLOSE,
-    
+    PAR_OPEN(8),
+    PAR_CLOSE(8),
     VARIABLE,
-    
-    /** FUNCTIONS */
+    /**
+     * FUNCTIONS
+     */
     FCT_SIN,
     FCT_COS,
     FCT_TAN,
     FCT_POW,
-    
     UNKNOWN_TOKEN;
-    
+
+    private int defaultPriority = 1;
+
+    private TokenType(int priority) {
+        defaultPriority = priority;
+    }
+
+    private TokenType() {
+    }
+
+    /**
+     * Returns the default priority of the token.
+     *
+     * @return
+     */
+    public int getDefaultPriority() {
+        return defaultPriority;
+    }
+
 }

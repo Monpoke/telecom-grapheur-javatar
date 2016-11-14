@@ -29,7 +29,7 @@ public class Matcher_NUMBER extends Lexem implements Rule {
          * Pattern for a number:
          * 1,0000 and 1.000 supported
          */
-        pattern = Pattern.compile("^(-?[0-9]+((,|\\.)[0-9])?)");
+        pattern = Pattern.compile("^(-?[0-9]+((,|\\.)[0-9]+)?)");
         Matcher matcher = pattern.matcher(sentence);
 
         boolean r = matcher.find();
