@@ -21,43 +21,35 @@ import java.util.ArrayList;
 class TokenSimplifier {
 
     static void simplify(ArrayList<ParsedToken> parsedTokenList) {
-        
-        for(int i=0;i<parsedTokenList.size()-1;i++){
-            
+
+        for (int i = 0; i < parsedTokenList.size() - 1; i++) {
+
             ParsedToken current = parsedTokenList.get(i);
-            ParsedToken next = parsedTokenList.get(i+1);
-            
+            ParsedToken next = parsedTokenList.get(i + 1);
+
             // 2 numbers, add a + operator => needed for this type: 12 - 10  (TOK_NUMBER(12) TOK_NUMBER(-10))
-            if(current instanceof TOK_NUMBER && next instanceof TOK_NUMBER){
-                parsedTokenList.add(i+1, new TOK_OPERATOR_PLUS());
-            }
-            
-            /*
+            if (current instanceof TOK_NUMBER
+                    && (next instanceof TOK_NUMBER)) {
+                parsedTokenList.add(i + 1, new TOK_OPERATOR_PLUS());
+            } /*
             In order to add a multiplication for these cases:
                 - 12 ( XXXXX )
                 - myVar ( XXXXX )
                 - ( XXX ) ( XXX )
                 - ( XXX) $variable
                 - 12x
-            */
-            
-            else if((
-                    next instanceof TOK_PAR_OPEN ||
-                    next instanceof  TOK_VARIABLE
-                    ) 
-                    &&
-                    (
-                    current instanceof TOK_NUMBER ||
-                    current instanceof TOK_PAR_CLOSE ||
-                    current instanceof TOK_VARIABLE
-                    )) {
-                
-                parsedTokenList.add(i+1, new TOK_OPERATOR_MULTIPLY());
+             */ else if ((next instanceof TOK_PAR_OPEN
+                    || next instanceof TOK_VARIABLE
+                     || next instanceof TOK_NUMBER)
+                    && (current instanceof TOK_NUMBER
+                    || current instanceof TOK_PAR_CLOSE
+                    || current instanceof TOK_VARIABLE)) {
+
+                parsedTokenList.add(i + 1, new TOK_OPERATOR_MULTIPLY());
             }
-            
-            
+
         }
-        
+
     }
-    
+
 }

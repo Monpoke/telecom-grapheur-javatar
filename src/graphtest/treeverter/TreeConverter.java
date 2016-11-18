@@ -6,10 +6,14 @@
 package graphtest.treeverter;
 
 import graphtest.TreeNode;
+import graphtest.evaluator.Evaluator;
 import graphtest.parsed.ParsedToken;
 import graphtest.parsed.TOK_PAR_CLOSE;
 import graphtest.parsed.TOK_PAR_OPEN;
+import graphtest.tools.TokensTools;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  *
@@ -29,33 +33,38 @@ public class TreeConverter {
 
         // add the plus
         TokenSimplifier.simplify(parsedTokenList);
+//        Evaluator.simplifyCompute(parsedTokenList);
 
         this.createTree();
     }
 
     private void createTree() {
 
+        // Priorities
         processPriorities();
+
+        // not needed
+        removeParenthesis();
 
         /**
          * Tokens not processed yet
          */
-        while (true != this.tokensAreAllProcessed()) {
+        while (true != TokensTools.areAllProcessed(parsedTokenList)) {
 
             System.out.println("tour");
 
             // highest operator
-            ParsedToken operator = getMostOperatorPriority();
+            ParsedToken operator = TokensTools.getMostOperatorPriority(parsedTokenList);
             int operatorPosition = parsedTokenList.indexOf(operator);
 
             TreeNode thisNode = new TreeNode(operator);
 
             // get left operand
-            ParsedToken leftOperand = getLeftOperand(operatorPosition);
+            ParsedToken leftOperand = TokensTools.getLeftOperand(parsedTokenList, operatorPosition);
             thisNode.setLeft(new TreeNode(leftOperand));
 
             // get right operand
-            ParsedToken rightOperand = getRightOperand(operatorPosition);
+            ParsedToken rightOperand = TokensTools.getRightOperand(parsedTokenList, operatorPosition);
             thisNode.setRight(new TreeNode(rightOperand));
 
             // associate the root child
@@ -63,20 +72,42 @@ public class TreeConverter {
                 root = thisNode;
             } else {
 
+                /**
+                 * If different from 0: => negative: the operator to find is on
+                 * the left
+                 */
+                int operatorDirection = 0;
+
                 // find the LEFT parent because it's already processed with an other operator
-                if(leftOperand.isProcessed()){
+                if (leftOperand != null && leftOperand.isProcessed()) {
                     TreeNode leftParent = findParent(root, leftOperand);
-                    thisNode.setLeft(leftParent);
+
+                    if (leftParent != null) {
+                        System.out.println("Oh! LEFT used... " + leftOperand.toString() + "<-" + leftParent.getToken());
+                        thisNode.setLeft(leftParent);
+                    } else {
+                        System.out.println("Oh! LEFT used... " + leftOperand.toString() + "<- NULL");
+
+                        // it's the parent
+                    }
                 }
+
                 // find the RIGHT parent because it's already processed with an other operator
-                if(rightOperand.isProcessed()){
+                if (rightOperand != null && rightOperand.isProcessed()) {
                     TreeNode rightParent = findParent(root, rightOperand);
-                    thisNode.setRight(rightParent);
+
+                    if (rightParent != null) {
+                        System.out.println("Oh! RIGHT used... " + rightOperand.toString() + "<-" + rightParent.getToken());
+                        thisNode.setRight(rightParent);
+                    } else {
+                        System.out.println("Oh! RIGHT used... " + rightOperand.toString() + "<- NULL");
+                    }
                 }
-                
-                
-                root=thisNode;
+
+                root = thisNode;
             }
+            
+            
 
             operator.setProcessed(true);
             leftOperand.setProcessed(true);
@@ -92,10 +123,6 @@ public class TreeConverter {
 
     }
 
-    private TreeNode newNode() {
-        return null;
-    }
-
     public ArrayList<ParsedToken> getParsedTokenList() {
         return parsedTokenList;
     }
@@ -104,6 +131,9 @@ public class TreeConverter {
         return root;
     }
 
+    /**
+     * This function computes the token priorities
+     */
     private void processPriorities() {
         // count how many parenthesis they are
         int parenthesisLevel = 1;
@@ -122,71 +152,50 @@ public class TreeConverter {
     }
 
     /**
-     * Gets the operator with the highest priority.
-     *
-     * @return
+     * Removes useless parenthesis, because priorities have been set.
      */
-    private ParsedToken getMostOperatorPriority() {
-        ParsedToken mostOperator = null;
+    private void removeParenthesis() {
 
-        for (ParsedToken parsedToken : parsedTokenList) {
-            if (!parsedToken.isOperator() || parsedToken.isProcessed()) {
-                continue;
-            }
-            if (mostOperator == null || mostOperator.getPriority() < parsedToken.getPriority()) {
-                mostOperator = parsedToken;
+        Iterator<ParsedToken> iterator = parsedTokenList.iterator();
+        List<ParsedToken> toRemove = new ArrayList<>();
+        while (iterator.hasNext()) {
+            ParsedToken current = iterator.next();
+            if (current instanceof TOK_PAR_CLOSE || current instanceof TOK_PAR_OPEN) {
+                toRemove.add(current);
             }
         }
 
-        return mostOperator;
-    }
-
-    /**
-     * Returns true when all operators have been processed.
-     *
-     * @return
-     */
-    private boolean tokensAreAllProcessed() {
-        for (ParsedToken parsedToken : parsedTokenList) {
-            if (!parsedToken.isProcessed()) {
-                return false;
-            }
+        // remove...
+        for (ParsedToken parsedToken : toRemove) {
+            parsedTokenList.remove(parsedToken);
         }
-        return true;
-    }
 
-    /**
-     * Gets left operand.
-     *
-     * @param operatorPosition
-     * @return
-     */
-    private ParsedToken getLeftOperand(int operatorPosition) {
-        return parsedTokenList.get(operatorPosition - 1);
-    }
-
-    private ParsedToken getRightOperand(int operatorPosition) {
-        return parsedTokenList.get(operatorPosition + 1);
     }
 
     /**
      * Find the parent.
+     *
      * @param tree
      * @param tok
-     * @return 
+     * @return
      */
     private TreeNode findParent(TreeNode tree, ParsedToken tok) {
-        if (!tok.isProcessed()) {
+        if (tok == null || !tok.isProcessed()) {
             return null;
         }
 
-        if (tree.getLeft().getToken() == tok || tree.getRight().getToken() == tok) {
+        if (tree.getLeft() != null && tree.getLeft().getToken() == tok || tree.getRight() != null && tree.getRight().getToken() == tok) {
             return tree;
         }
 
         // left, then right
-        TreeNode toR = findParent(tree.getLeft(), tok);
-        if (toR == null) {
+        TreeNode toR = null;
+
+        if (tree.getLeft() != null) {
+            findParent(tree.getLeft(), tok);
+        }
+
+        if (toR == null && tree.getRight() != null) {
             toR = findParent(tree.getRight(), tok);
         }
 
