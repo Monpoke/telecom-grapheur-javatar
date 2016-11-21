@@ -5,6 +5,7 @@
  */
 package graphtest.treeverter;
 
+import graphtest.BTreePrinter;
 import graphtest.TreeNode;
 import graphtest.evaluator.Evaluator;
 import graphtest.parsed.ParsedToken;
@@ -24,6 +25,9 @@ public class TreeConverter {
     private final ArrayList<ParsedToken> parsedTokenList;
     private TreeNode root = null;
 
+    
+    private BTreePrinter bTreePrinter = new BTreePrinter();
+    
     /**
      *
      * @param parsedTokenList
@@ -119,6 +123,9 @@ public class TreeConverter {
             System.out.println("RIGT child: " + rightOperand.toString());
 
             System.out.println("");
+            
+            
+            bTreePrinter.printNode(root);
         }
 
     }
