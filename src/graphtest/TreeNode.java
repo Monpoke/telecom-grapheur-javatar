@@ -76,4 +76,33 @@ public class TreeNode {
         this.right = right;
     }
 
+    /**
+     * Returns true if the tree contains the operand.
+     * @param operand
+     * @return 
+     */
+    public boolean childContains(ParsedToken operand) {
+        
+        if(getLeft() != null){
+            if(getLeft().getToken() == operand || getLeft().childContains(operand)) {
+                return true;
+            }
+        }
+         if(getRight()!= null){
+            if(getRight().getToken() == operand || getRight().childContains(operand)) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+
+    
+    
+    public String toString(){
+        return "["+this.getToken().toString()+"] ["+getLeft()+"] [" + getRight() + "]";
+    }
+    
+    
+    
 }

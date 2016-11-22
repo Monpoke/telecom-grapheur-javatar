@@ -69,6 +69,7 @@ public class TokensTools {
      * @return
      */
     public static ParsedToken getLeftOperand(ArrayList<ParsedToken> parsedTokenList, int operatorPosition) {
+        System.out.println("looking for left operand: " + operatorPosition);
         return parsedTokenList.get(operatorPosition - 1);
     }
 

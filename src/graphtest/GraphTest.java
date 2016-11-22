@@ -76,7 +76,7 @@ public class GraphTest {
             // EVALUATOR
             Evaluator evaluator = new Evaluator(root);
             evaluator.addVariable(new Variable("x", 2));
-          //  System.out.println("Resultat=" + evaluator.evaluate());
+            System.out.println("Resultat=" + evaluator.evaluate());
 
         } catch (ParsingException ex) {
             Logger.getLogger(GraphTest.class.getName()).log(Level.SEVERE, null, ex);
