@@ -12,7 +12,7 @@ public class TelecomGrapheurModele extends Observable{
 	private CourbeModele courbe = new CourbeModele();
 	private boolean isClique = false;
 	private PointModele cursor = new PointModele(0,0);
-	private ArrayList<PointModele> points = new ArrayList<PointModele>();
+	private CourbeModele listesPoints = new CourbeModele();
 	
 	public TelecomGrapheurModele() {
 		this.initBornes();
@@ -23,12 +23,12 @@ public class TelecomGrapheurModele extends Observable{
 		this.createCourbe();
 	}
 	
-	public ArrayList<PointModele> getPoints() {
-		return points;
+	public CourbeModele getListesPoints() {
+		return listesPoints;
 	}
 	
-	public void setPoints(ArrayList<PointModele> points) {
-		this.points = points;
+	public void setListesPoints(CourbeModele listesPoints) {
+		this.listesPoints = listesPoints;
 	}
 	
 	public void setClique(boolean isClique) {

@@ -10,7 +10,7 @@ public class PointModele extends Observable{
 
 	}
 	
-	public PointModele(int x, int y){
+	public PointModele(double x, double y){
 		this.x = x;
 		this.y = y;
 	}

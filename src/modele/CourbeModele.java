@@ -1,6 +1,7 @@
 package modele;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Observable;
 
 public class CourbeModele extends Observable{
@@ -29,5 +30,7 @@ public class CourbeModele extends Observable{
 	
 	public void videListe(){
 		this.listePoints = new ArrayList<PointModele>();
+		setChanged ();
+		notifyObservers ();
 	}
 }
