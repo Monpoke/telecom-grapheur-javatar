@@ -5,13 +5,15 @@
  */
 package graphtest.lexem;
 
+import graphtest.parsed.ParsedToken;
+
 /**
  *
  * @author A643012
  */
 public interface Rule {
     
-    public boolean match(String sentence);
+    public ParsedToken match(String sentence);
     
     public void init();
     

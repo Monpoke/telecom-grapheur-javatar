@@ -5,6 +5,8 @@
  */
 package graphtest.lexem;
 
+import graphtest.parsed.ParsedToken;
+import graphtest.parsed.TOK_NUMBER;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -12,35 +14,35 @@ import java.util.regex.Pattern;
  *
  * @author A643012
  */
-public class NUMBER extends Lexem implements Rule {
+public class Matcher_NUMBER extends Lexem implements Rule {
 
     public final static String NAME = "NUMBER";
 
-    public NUMBER() {
-        pattern = Pattern.compile("^([0-9]+)");
-        System.out.println("+++> " + pattern.pattern());
-        System.out.println("===> " + pattern.matcher("sin(8)").find());
-
+    public Matcher_NUMBER() {
+      
     }
 
     @Override
-    public boolean match(String sentence) {
+    public ParsedToken match(String sentence) {
 
+        /**
+         * Pattern for a number:
+         * 1,0000 and 1.000 supported
+         */
+        pattern = Pattern.compile("^(-?[0-9]+((,|\\.)[0-9]+)?)");
         Matcher matcher = pattern.matcher(sentence);
 
         boolean r = matcher.find();
-
-        System.out.println("+++> " + pattern.pattern());
-        System.out.println("Test de >> " + pattern.matcher("sin(8)").find());
-
         if (r) {
             lastMatch = (matcher.group(0));
             movePointerFromX = lastMatch.length();
 
-            return true;
+            TOK_NUMBER tok_number = new TOK_NUMBER(Double.parseDouble(lastMatch));
+            
+            return tok_number;
         }
 
-        return false;
+        return null;
 
     }
 
