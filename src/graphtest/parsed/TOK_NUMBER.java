@@ -22,7 +22,7 @@ public class TOK_NUMBER extends ParsedToken implements ParsedTokenInterface {
     
     @Override
     public String toString() {
-        return  ""+this.getValue();
+        return  ""+this.getValue() ;
     }
     
 }
