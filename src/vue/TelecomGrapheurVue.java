@@ -27,7 +27,7 @@ public class TelecomGrapheurVue extends JPanel implements Observer{
 
 	private TelecomGrapheurModele modele;
 	private TelecomGrapheurControleur controleur;
-	JTextField text;
+	private JTextField text = new JTextField();
 
 	public TelecomGrapheurVue (FenetreContener fenetre, TelecomGrapheurModele telecomGrapheurModele, TelecomGrapheurControleur telecomGrapheurControleur) {
 		this.fenetre = fenetre;
@@ -39,6 +39,7 @@ public class TelecomGrapheurVue extends JPanel implements Observer{
 		this.addMouseWheelListener(telecomGrapheurControleur);
 		this.fenetre.addControllerOnJTextField(telecomGrapheurControleur);
 		this.setSize(new Dimension(this.fenetre.getWidth()-50,this.fenetre.getHeight()));
+		this.text.addActionListener(telecomGrapheurControleur); 
 	}
 	
 	/**
@@ -65,7 +66,7 @@ public class TelecomGrapheurVue extends JPanel implements Observer{
 		this.drawAxeXY(g);
 		this.drawFunction(g);
 		this.drawCursor(g);
-		this.modele.createCourbe();
+		//this.modele.createCourbe();
 		this.drawPoints(g);
 	}
 
@@ -157,9 +158,10 @@ public class TelecomGrapheurVue extends JPanel implements Observer{
 	public void drawFunction(Graphics g){
 		// fonction y=cos(x) temp
 		for (PointModele point : this.modele.getCourbe().getListePoints()) {
+			System.out.println("x = " + point.getX());
+			System.out.println("y = " +point.getY());
 			g.drawLine((int) point.getX(),(int) point.getY(),(int) point.getX(),(int) point.getY());
 		}
-		this.modele.getCourbe().videListe();
 	}
 
 	/**

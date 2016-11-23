@@ -13,6 +13,7 @@ public class TelecomGrapheurModele extends Observable{
 	private boolean isClique = false;
 	private PointModele cursor = new PointModele(0,0);
 	private CourbeModele listesPoints = new CourbeModele();
+	private String jtext = "";
 	
 	public TelecomGrapheurModele() {
 		this.initBornes();
@@ -20,7 +21,7 @@ public class TelecomGrapheurModele extends Observable{
 		this.initAxeY();
 		this.initOrigin();
 		this.initCourbe();
-		this.createCourbe();
+		//this.createCourbe();
 	}
 	
 	public CourbeModele getListesPoints() {
@@ -31,8 +32,20 @@ public class TelecomGrapheurModele extends Observable{
 		this.listesPoints = listesPoints;
 	}
 	
+	public String getJtext() {
+		return jtext;
+	}
+	
+	public void setJtext(String jtext) {
+		this.jtext = jtext;
+		setChanged ();
+		notifyObservers ();
+	}
+	
 	public void setClique(boolean isClique) {
 		this.isClique = isClique;
+		setChanged ();
+		notifyObservers ();
 	}
 	
 	public boolean isClique(){
@@ -135,9 +148,9 @@ public class TelecomGrapheurModele extends Observable{
 		this.courbe = new CourbeModele();
 	}
 	
-	public void createCourbe(){
-		for(int i = getBornes().getBorneXLeft(); i < getBornes().getBorneXRight();i++){
-			getCourbe().setPoints(new PointModele((int) (i+getOrigin().getX()), (int) (-Math.cos(i/(getAxeModeleY().getTailleCase()/getAxeModeleY().getPas()))*getAxeModeleY().getTailleCase()/getAxeModeleY().getPas()+ getOrigin().getY())));
-		}
-	}
+//	public void createCourbe(){
+//		for(int i = getBornes().getBorneXLeft(); i < getBornes().getBorneXRight();i++){
+//			getCourbe().setPoints(new PointModele((int) (i+getOrigin().getX()), (int) (-Math.cos(i/(getAxeModeleY().getTailleCase()/getAxeModeleY().getPas()))*getAxeModeleY().getTailleCase()/getAxeModeleY().getPas()+ getOrigin().getY())));
+//		}
+//	}
 }

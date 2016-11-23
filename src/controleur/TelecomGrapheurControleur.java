@@ -1,5 +1,8 @@
 package controleur;
 
+import graphtest.GraphTest;
+import graphtest.evaluator.Evaluator;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -122,6 +125,7 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
 
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
+		this.modele.getCourbe().videListe();
 		ArrayList<PointModele> listeTemp = new ArrayList<PointModele>();
 		int notches = e.getWheelRotation(); 
 		if (notches < 0) { 
@@ -167,7 +171,7 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
 		}
 		this.modele.getAxeModeleX().setTailleCase(tailleCaseX);
 		this.modele.getAxeModeleY().setTailleCase(tailleCaseY);
-		this.modele.createCourbe();
+		//this.modele.createCourbe();
 		this.modele.getCursor().setX(e.getX());
 		for (PointModele p : this.modele.getCourbe().getListePoints()) {
 			if(p.getX()==e.getX()){
@@ -185,8 +189,13 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getID()==1001){ // le jtextfield
-			//Write ici l'appel aux autres parties
-			//System.out.println("test");
+			this.modele.getCourbe().videListe();
+			Evaluator eval = GraphTest.lancementProjet(e.getActionCommand());
+			for(int i = this.modele.getBornes().getBorneXLeft(); i < this.modele.getBornes().getBorneXRight();i++){
+				double x = (i+this.modele.getOrigin().getX());
+				//System.out.println("test iciiiiiiiii : " );
+				this.modele.getCourbe().setPoints(new PointModele((int) (x),  (int) (-GraphTest.evaluateur(eval, (i/(this.modele.getAxeModeleY().getTailleCase()/this.modele.getAxeModeleY().getPas())))*this.modele.getAxeModeleY().getTailleCase()/this.modele.getAxeModeleY().getPas()+ this.modele.getOrigin().getY())));
+			}
 		}
 	}
 
