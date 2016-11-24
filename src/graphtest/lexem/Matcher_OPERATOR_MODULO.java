@@ -5,29 +5,27 @@
  */
 package graphtest.lexem;
 
-import static graphtest.lexem.Lexem.pattern;
 import graphtest.parsed.ParsedToken;
-import java.util.regex.Pattern;
 
 /**
  *
  * @author A643012
  */
-public class OPERATOR_PLUS extends Lexem implements Rule {
+public class Matcher_OPERATOR_MODULO extends Lexem implements Rule {
 
-    public final static String NAME = "OPERATOR_PLUS";
+    public final static String NAME = "OPERATOR_MODULO";
 
-    public OPERATOR_PLUS() {
+    public Matcher_OPERATOR_MODULO() {
     }
 
     @Override
     public ParsedToken match(String sentence) {
         movePointerFromX = 1;
-        lastMatch = "+";
+        lastMatch = "%";
         
         
-        if(sentence.charAt(0) == '+'){
-            return new graphtest.parsed.TOK_OPERATOR_PLUS();
+        if(sentence.charAt(0) == '%'){
+            return new graphtest.parsed.TOK_OPERATOR_MODULO();
         }
         
         return null;

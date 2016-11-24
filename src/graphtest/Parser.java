@@ -13,11 +13,12 @@ import graphtest.lexem.Matcher_FCT_TAN;
 import graphtest.lexem.Matcher_NUMBER;
 import graphtest.lexem.Matcher_OPERATOR_DIVIDE;
 import graphtest.lexem.Matcher_OPERATOR_MINUS;
+import graphtest.lexem.Matcher_OPERATOR_MODULO;
 import graphtest.lexem.Matcher_OPERATOR_MULTIPLY;
 import graphtest.lexem.Matcher_PAR_CLOSE;
 import graphtest.lexem.Matcher_PAR_OPEN;
 import graphtest.lexem.Matcher_VARIABLE;
-import graphtest.lexem.OPERATOR_PLUS;
+import graphtest.lexem.Matcher_OPERATOR_PLUS;
 import graphtest.lexem.Rule;
 import graphtest.parsed.ParsedToken;
 import java.util.ArrayList;
@@ -114,10 +115,11 @@ class Parser {
         registeredMatchers.add(new Matcher_NUMBER());
         
         // OPERATORS
-        registeredMatchers.add(new OPERATOR_PLUS());
+        registeredMatchers.add(new Matcher_OPERATOR_PLUS());
         registeredMatchers.add(new Matcher_OPERATOR_MINUS());
         registeredMatchers.add(new Matcher_OPERATOR_DIVIDE());
         registeredMatchers.add(new Matcher_OPERATOR_MULTIPLY());
+        registeredMatchers.add(new Matcher_OPERATOR_MODULO());
 
 
         // FCTS

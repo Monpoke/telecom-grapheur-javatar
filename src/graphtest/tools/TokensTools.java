@@ -5,6 +5,7 @@
  */
 package graphtest.tools;
 
+import graphtest.exceptions.UnexpectedException;
 import graphtest.parsed.ParsedToken;
 import java.util.ArrayList;
 
@@ -86,12 +87,13 @@ public class TokensTools {
 
     /**
      * Computes two operands with an operator.
+     *
      * @param operator
      * @param leftR
      * @param rightR
-     * @return 
+     * @return
      */
-    public static double compute(ParsedToken operator, double leftR, double rightR) {
+    public static double compute(ParsedToken operator, double leftR, double rightR) throws UnexpectedException {
         double result = 0;
         switch (operator.getParsedType()) {
             case OPERATOR_PLUS:
@@ -110,6 +112,13 @@ public class TokensTools {
                 result += leftR - rightR;
                 System.out.println(leftR + "-" + rightR);
                 break;
+            case OPERATOR_MODULO:
+                result += leftR % rightR;
+                System.out.println(leftR + "%" + rightR);
+                break;
+
+            default:
+                throw new UnexpectedException("Un opérateur est inconnu.");
         }
         return result;
 
