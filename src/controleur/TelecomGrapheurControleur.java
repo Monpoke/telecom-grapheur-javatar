@@ -13,6 +13,7 @@ import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
 
 import javax.lang.model.type.DeclaredType;
+import javax.swing.SwingUtilities;
 
 import modele.Constantes;
 import modele.PointModele;
@@ -22,6 +23,7 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
 
 	private TelecomGrapheurModele modele;
 	private int decalageXOrigin, decalageYOrigin, decalageXPoints, decalageYPoints;
+	private String fonction;
 
 	public TelecomGrapheurControleur(TelecomGrapheurModele modele) {
 		this.modele = modele;
@@ -46,6 +48,7 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
 
 	@Override
 	public void mousePressed(MouseEvent e) {
+		if(!SwingUtilities.isRightMouseButton(e)){
 		this.modele.setClique(true);
 		int i = 0;
 		boolean exist = false;
@@ -62,6 +65,10 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
 		}
 		if(!exist){
 			this.modele.getListesPoints().getListePoints().add(new PointModele(e.getX(), e.getY()-1000000000));
+		}
+		}
+		else{
+			
 		}
 	}
 
@@ -104,6 +111,14 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
 			p.setY(this.modele.getOrigin().getY()+(liste.get(i).getY()));
 			i++;
 		}
+		this.modele.getCourbe().videListe();
+		if(fonction!=null){
+		Evaluator eval = GraphTest.lancementProjet(fonction);
+		for(int j = this.modele.getBornes().getBorneXLeft(); j < this.modele.getBornes().getBorneXRight();j++){
+			double x = (j+this.modele.getOrigin().getX());
+			this.modele.getCourbe().setPoints(new PointModele((int) (x),  (int) (-GraphTest.evaluateur(eval, (j/(this.modele.getAxeModeleY().getTailleCase()/this.modele.getAxeModeleY().getPas())))*this.modele.getAxeModeleY().getTailleCase()/this.modele.getAxeModeleY().getPas()+ this.modele.getOrigin().getY())));
+		}
+		}
 	}
 
 	@Override
@@ -145,10 +160,6 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
 			double x = ((p.getX()-this.modele.getOrigin().getX())/this.modele.getAxeModeleX().getTailleCase())*this.modele.getAxeModeleX().getPas();
 			double y = -((p.getY()-this.modele.getOrigin().getY())/this.modele.getAxeModeleY().getTailleCase())*this.modele.getAxeModeleY().getPas();
 			listeTemp.add(new PointModele(x,y));
-//			p.setX(p.getX()-7*this.modele.getAxeModeleX().getCoeffZoom()); // soucis ici presque bon
-//			p.setY(p.getY()-10*this.modele.getAxeModeleY().getCoeffZoom());
-//			p.setX(p.getX()+(this.modele.getAxeModeleX().getTailleCase()-tailleCaseX)); // soucis ici
-//			p.setY(p.getY()-10*this.modele.getAxeModeleY().getCoeffZoom());
 		}
 		int tailleCaseX = (int) (Constantes.tailleCaseDefault*this.modele.getAxeModeleX().getPas()*this.modele.getAxeModeleX().getCoeffZoom());
 		int tailleCaseY = (int) (Constantes.tailleCaseDefault*this.modele.getAxeModeleY().getPas()*this.modele.getAxeModeleY().getCoeffZoom());
@@ -189,11 +200,11 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getID()==1001){ // le jtextfield
+			this.fonction = e.getActionCommand();
 			this.modele.getCourbe().videListe();
 			Evaluator eval = GraphTest.lancementProjet(e.getActionCommand());
 			for(int i = this.modele.getBornes().getBorneXLeft(); i < this.modele.getBornes().getBorneXRight();i++){
 				double x = (i+this.modele.getOrigin().getX());
-				//System.out.println("test iciiiiiiiii : " );
 				this.modele.getCourbe().setPoints(new PointModele((int) (x),  (int) (-GraphTest.evaluateur(eval, (i/(this.modele.getAxeModeleY().getTailleCase()/this.modele.getAxeModeleY().getPas())))*this.modele.getAxeModeleY().getTailleCase()/this.modele.getAxeModeleY().getPas()+ this.modele.getOrigin().getY())));
 			}
 		}
