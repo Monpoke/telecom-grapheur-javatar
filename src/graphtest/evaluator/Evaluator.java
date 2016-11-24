@@ -90,7 +90,7 @@ public class Evaluator {
             return variables.get(node.getToken().getVariableName()).getValue();
         }
 
-        System.out.println("returns=> " + result);
+        //System.out.println("returns=> " + result);
         return result;
     }
 
@@ -122,17 +122,17 @@ public class Evaluator {
             case FCT_COS:
                 leftR = Math.cos(process(node.getLeft()));
                 result += leftR;
-                System.out.println("cos(" + leftR + ")");
+                //System.out.println("cos(" + leftR + ")");
                 break;
             case FCT_SIN:
                 leftR = Math.sin(process(node.getLeft()));
                 result += leftR;
-                System.out.println("sin(" + leftR + ")");
+                //System.out.println("sin(" + leftR + ")");
                 break;
             case FCT_TAN:
                 leftR = Math.tan(process(node.getLeft()));
                 result += leftR;
-                System.out.println("tan(" + leftR + ")");
+                //System.out.println("tan(" + leftR + ")");
                 break;
 
         }
@@ -181,7 +181,7 @@ public class Evaluator {
 
             // simplify
             TOK_NUMBER simplification = new TOK_NUMBER(TokensTools.compute(operator, leftOperand.getValue(), rightOperand.getValue()));
-            System.out.println("Simplification: " + leftOperand.toString() + " " + operator.toString() + " " + rightOperand.toString() + " => " + simplification.toString());
+            //System.out.println("Simplification: " + leftOperand.toString() + " " + operator.toString() + " " + rightOperand.toString() + " => " + simplification.toString());
 
         }
 

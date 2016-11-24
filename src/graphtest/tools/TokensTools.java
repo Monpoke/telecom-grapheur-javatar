@@ -96,19 +96,19 @@ public class TokensTools {
         switch (operator.getParsedType()) {
             case OPERATOR_PLUS:
                 result += leftR + rightR;
-                System.out.println(leftR + "+" + rightR);
+                //System.out.println(leftR + "+" + rightR);
                 break;
             case OPERATOR_DIVIDE:
                 result += leftR / rightR;
-                System.out.println(leftR + "/" + rightR);
+                //System.out.println(leftR + "/" + rightR);
                 break;
             case OPERATOR_MULTIPLY:
                 result += leftR * rightR;
-                System.out.println(leftR + "*" + rightR);
+                //System.out.println(leftR + "*" + rightR);
                 break;
             case OPERATOR_MINUS:
                 result += leftR - rightR;
-                System.out.println(leftR + "-" + rightR);
+                //System.out.println(leftR + "-" + rightR);
                 break;
         }
         return result;

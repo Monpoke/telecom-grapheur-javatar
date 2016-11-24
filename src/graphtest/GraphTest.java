@@ -42,13 +42,13 @@ public class GraphTest {
 
 			// SECOND STEP
 			ArrayList<ParsedToken> parsedTokenList = parser.getParsedTokenList();
-			displayList(parsedTokenList);
+			//displayList(parsedTokenList);
 
 			// CORRECT SYNTAX
 			// TREE
 			TreeConverter converter = new TreeConverter(parsedTokenList);
 			TreeNode root = converter.getRoot();
-			displayList(converter.getParsedTokenList());
+			//displayList(converter.getParsedTokenList());
 
 			if (root == null) {
 				System.exit(1);
@@ -83,10 +83,10 @@ public class GraphTest {
 
 	private static void displayList(ArrayList<ParsedToken> parsedTokenList) {
 		for (ParsedToken parsedToken : parsedTokenList) {
-			System.out.print(parsedToken.toString() + " (" + parsedToken.getPriority() + ") ");
+			//System.out.print(parsedToken.toString() + " (" + parsedToken.getPriority() + ") ");
 		}
 
-		System.out.println("");
+		//System.out.println("");
 	}
 
 }
