@@ -147,10 +147,10 @@ class Parser {
      * @param parsedTokenList 
      */
     private void displayTokensList(List<ParsedToken> parsedTokenList) {
-        //System.out.println("FIRST STEP: ANALYSE SYNTAXIQUE");
+        System.out.println("FIRST STEP: ANALYSE SYNTAXIQUE");
         
         for(ParsedToken parsed : parsedTokenList){
-            //System.out.println(parsed.getClass().getName() +"\t" + parsed.getValue() + "\t" + parsed.getVariableName());
+            System.out.println(parsed.getClass().getName() +"\t" + parsed.getValue() + "\t" + parsed.getVariableName());
         }
     }
 

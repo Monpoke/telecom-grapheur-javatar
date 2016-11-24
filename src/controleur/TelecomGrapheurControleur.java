@@ -13,7 +13,6 @@ import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
 
 import javax.lang.model.type.DeclaredType;
-import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import modele.Constantes;
@@ -25,7 +24,6 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
 	private TelecomGrapheurModele modele;
 	private int decalageXOrigin, decalageYOrigin, decalageXPoints, decalageYPoints;
 	private String fonction;
-	private Evaluator eval;
 
 	public TelecomGrapheurControleur(TelecomGrapheurModele modele) {
 		this.modele = modele;
@@ -51,31 +49,26 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
 	@Override
 	public void mousePressed(MouseEvent e) {
 		if(!SwingUtilities.isRightMouseButton(e)){
-			this.modele.setClique(true);
-			int i = 0;
-			boolean exist = false;
-			for (PointModele p : this.modele.getListesPoints().getListePoints()) {
-				//System.out.println("e.getY() : " +e.getY());
-				//System.out.println("p.getY() : " +(int) (p.getY()+100000));
-				if(e.getX()==p.getX() && e.getY()==((int) (p.getY()+1000000000))){
-					//System.out.println("test");
-					this.modele.getListesPoints().getListePoints().remove(p);
-					this.modele.getListesPoints().getListePoints().add(new PointModele(e.getX(),e.getY()));
-					exist = true;
-				}
-				i++;
+		this.modele.setClique(true);
+		int i = 0;
+		boolean exist = false;
+		for (PointModele p : this.modele.getListesPoints().getListePoints()) {
+			//System.out.println("e.getY() : " +e.getY());
+			//System.out.println("p.getY() : " +(int) (p.getY()+100000));
+			if(e.getX()==p.getX() && e.getY()==((int) (p.getY()+1000000000))){
+				//System.out.println("test");
+				this.modele.getListesPoints().getListePoints().remove(p);
+				this.modele.getListesPoints().getListePoints().add(new PointModele(e.getX(),e.getY()));
+				exist = true;
 			}
-			if(!exist){
-				this.modele.getListesPoints().getListePoints().add(new PointModele(e.getX(), e.getY()-1000000000));
-			}
+			i++;
 		}
-		else if(!this.modele.getListesPoints().getListePoints().isEmpty()){
-			for (PointModele p : this.modele.getListesPoints().getListePoints()) {
-				if(e.getX()>p.getX()-3 && e.getX()<p.getX()+3 && e.getY()>p.getY()-3 && e.getY()<p.getY()+3){
-					this.modele.getListesPoints().getListePoints().remove(p);
-					break;
-				}
-			}
+		if(!exist){
+			this.modele.getListesPoints().getListePoints().add(new PointModele(e.getX(), e.getY()-1000000000));
+		}
+		}
+		else{
+			
 		}
 	}
 
@@ -106,12 +99,10 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
 		}
 		this.modele.getOrigin().setX(e.getX()+this.decalageXOrigin);
 		this.modele.getOrigin().setY(e.getY()+this.decalageYOrigin);
-		if(fonction!=null){
-			this.modele.getCursor().setX(e.getX());
-			for (PointModele p : this.modele.getCourbe().getListePoints()) {
-				if(p.getX()==e.getX()){
-					this.modele.getCursor().setY(p.getY());
-				}
+		this.modele.getCursor().setX(e.getX());
+		for (PointModele p : this.modele.getCourbe().getListePoints()) {
+			if(p.getX()==e.getX()){
+				this.modele.getCursor().setY(p.getY());
 			}
 		}
 		int i = 0;
@@ -120,23 +111,22 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
 			p.setY(this.modele.getOrigin().getY()+(liste.get(i).getY()));
 			i++;
 		}
+		this.modele.getCourbe().videListe();
 		if(fonction!=null){
-			this.modele.getCourbe().videListe();
-			for(int j = this.modele.getBornes().getBorneXLeft(); j < this.modele.getBornes().getBorneXRight();j+=2){
-				double x = (j+this.modele.getOrigin().getX());
-				this.modele.getCourbe().setPoints(new PointModele((int) (x),  (int) (-GraphTest.evaluateur(eval, (j/(this.modele.getAxeModeleY().getTailleCase()/this.modele.getAxeModeleY().getPas())))*this.modele.getAxeModeleY().getTailleCase()/this.modele.getAxeModeleY().getPas()+ this.modele.getOrigin().getY())));
-			}
+		Evaluator eval = GraphTest.lancementProjet(fonction);
+		for(int j = this.modele.getBornes().getBorneXLeft(); j < this.modele.getBornes().getBorneXRight();j++){
+			double x = (j+this.modele.getOrigin().getX());
+			this.modele.getCourbe().setPoints(new PointModele((int) (x),  (int) (-GraphTest.evaluateur(eval, (j/(this.modele.getAxeModeleY().getTailleCase()/this.modele.getAxeModeleY().getPas())))*this.modele.getAxeModeleY().getTailleCase()/this.modele.getAxeModeleY().getPas()+ this.modele.getOrigin().getY())));
+		}
 		}
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		if(fonction!=null){
-			this.modele.getCursor().setX(e.getX());
-			for (PointModele p : this.modele.getCourbe().getListePoints()) {
-				if(p.getX()==e.getX()){
-					this.modele.getCursor().setY(p.getY());
-				}
+		this.modele.getCursor().setX(e.getX());
+		for (PointModele p : this.modele.getCourbe().getListePoints()) {
+			if(p.getX()==e.getX()){
+				this.modele.getCursor().setY(p.getY());
 			}
 		}
 		if(this.modele.isClique()){
@@ -173,7 +163,7 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
 		}
 		int tailleCaseX = (int) (Constantes.tailleCaseDefault*this.modele.getAxeModeleX().getPas()*this.modele.getAxeModeleX().getCoeffZoom());
 		int tailleCaseY = (int) (Constantes.tailleCaseDefault*this.modele.getAxeModeleY().getPas()*this.modele.getAxeModeleY().getCoeffZoom());
-
+		
 		if(tailleCaseX<Constantes.tailleCaseDefault/2){
 			this.modele.getAxeModeleX().setPas(this.modele.getAxeModeleX().getPas()*2);
 			tailleCaseX = Constantes.tailleCaseDefault;
@@ -193,12 +183,10 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
 		this.modele.getAxeModeleX().setTailleCase(tailleCaseX);
 		this.modele.getAxeModeleY().setTailleCase(tailleCaseY);
 		//this.modele.createCourbe();
-		if(fonction!=null){
-			this.modele.getCursor().setX(e.getX());
-			for (PointModele p : this.modele.getCourbe().getListePoints()) {
-				if(p.getX()==e.getX()){
-					this.modele.getCursor().setY(p.getY());
-				}
+		this.modele.getCursor().setX(e.getX());
+		for (PointModele p : this.modele.getCourbe().getListePoints()) {
+			if(p.getX()==e.getX()){
+				this.modele.getCursor().setY(p.getY());
 			}
 		}
 		this.modele.getListesPoints().videListe();
@@ -207,28 +195,18 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
 			double graphY = -p.getY()*this.modele.getAxeModeleY().getTailleCase()/this.modele.getAxeModeleY().getPas()+ this.modele.getOrigin().getY();
 			this.modele.getListesPoints().setPoints(new PointModele(graphX, graphY));
 		}
-		if(fonction!=null){
-			this.modele.getCourbe().videListe();
-			for(int j = this.modele.getBornes().getBorneXLeft(); j < this.modele.getBornes().getBorneXRight();j+=2){
-				double x = (j+this.modele.getOrigin().getX());
-				this.modele.getCourbe().setPoints(new PointModele((int) (x),  (int) (-GraphTest.evaluateur(eval, (j/(this.modele.getAxeModeleY().getTailleCase()/this.modele.getAxeModeleY().getPas())))*this.modele.getAxeModeleY().getTailleCase()/this.modele.getAxeModeleY().getPas()+ this.modele.getOrigin().getY())));
-			}
-		}
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getActionCommand()!="Aide"){ // le jtextfield
+		if(e.getID()==1001){ // le jtextfield
 			this.fonction = e.getActionCommand();
 			this.modele.getCourbe().videListe();
-			eval = GraphTest.lancementProjet(e.getActionCommand());
-			for(int i = this.modele.getBornes().getBorneXLeft(); i < this.modele.getBornes().getBorneXRight();i+=2){
+			Evaluator eval = GraphTest.lancementProjet(e.getActionCommand());
+			for(int i = this.modele.getBornes().getBorneXLeft(); i < this.modele.getBornes().getBorneXRight();i++){
 				double x = (i+this.modele.getOrigin().getX());
 				this.modele.getCourbe().setPoints(new PointModele((int) (x),  (int) (-GraphTest.evaluateur(eval, (i/(this.modele.getAxeModeleY().getTailleCase()/this.modele.getAxeModeleY().getPas())))*this.modele.getAxeModeleY().getTailleCase()/this.modele.getAxeModeleY().getPas()+ this.modele.getOrigin().getY())));
 			}
-		}
-		else if (e.getActionCommand()=="Aide"){
-			this.modele.setDialog(true);
 		}
 	}
 

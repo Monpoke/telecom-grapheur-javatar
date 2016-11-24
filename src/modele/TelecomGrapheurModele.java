@@ -14,7 +14,6 @@ public class TelecomGrapheurModele extends Observable{
 	private PointModele cursor = new PointModele(0,0);
 	private CourbeModele listesPoints = new CourbeModele();
 	private String jtext = "";
-	private boolean dialog = false;
 	
 	public TelecomGrapheurModele() {
 		this.initBornes();
@@ -25,24 +24,12 @@ public class TelecomGrapheurModele extends Observable{
 		//this.createCourbe();
 	}
 	
-	public boolean getDialog(){
-		return this.dialog;
-	}
-	
-	public void setDialog(boolean dialog){
-		this.dialog = dialog;
-		setChanged ();
-		notifyObservers ();
-	}
-	
 	public CourbeModele getListesPoints() {
 		return listesPoints;
 	}
 	
 	public void setListesPoints(CourbeModele listesPoints) {
 		this.listesPoints = listesPoints;
-		setChanged ();
-		notifyObservers ();
 	}
 	
 	public String getJtext() {

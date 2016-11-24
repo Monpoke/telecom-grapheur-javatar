@@ -13,7 +13,6 @@ import java.text.DecimalFormat;
 import java.util.Observable;
 import java.util.Observer;
 
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -35,11 +34,10 @@ public class TelecomGrapheurVue extends JPanel implements Observer{
 		this.controleur = telecomGrapheurControleur;
 		this.modele = telecomGrapheurModele;
 		this.ajoutObserver();
-		this.fenetre.addControllerOnJTextField(telecomGrapheurControleur);
-		this.fenetre.addControllerOnBtn(telecomGrapheurControleur);
 		this.addMouseListener(telecomGrapheurControleur);
 		this.addMouseMotionListener(telecomGrapheurControleur);
 		this.addMouseWheelListener(telecomGrapheurControleur);
+		this.fenetre.addControllerOnJTextField(telecomGrapheurControleur);
 		this.setSize(new Dimension(this.fenetre.getWidth()-50,this.fenetre.getHeight()));
 		this.text.addActionListener(telecomGrapheurControleur); 
 	}
@@ -63,11 +61,6 @@ public class TelecomGrapheurVue extends JPanel implements Observer{
 	 */
 	@Override
 	public void paint(Graphics g) {
-		if(this.modele.getDialog()){
-			this.modele.setDialog(false);
-			JOptionPane.showMessageDialog(this,
-				    "Eggs are not supposed to be green.");
-		}
 		g.clearRect(0, 0, this.fenetre.getWidth(), this.fenetre.getHeight()); //efface tout	
 		this.drawQuadrillage(g);
 		this.drawAxeXY(g);
@@ -165,10 +158,9 @@ public class TelecomGrapheurVue extends JPanel implements Observer{
 	public void drawFunction(Graphics g){
 		// fonction y=cos(x) temp
 		for (PointModele point : this.modele.getCourbe().getListePoints()) {
-//			System.out.println("x = " + point.getX());
-//			System.out.println("y = " +point.getY());
-			//g.drawLine((int) point.getX(),(int) point.getY(),(int) point.getX(),(int) point.getY());
-			g.fillOval((int) point.getX()-3,(int) point.getY()-3,6,6);
+			System.out.println("x = " + point.getX());
+			System.out.println("y = " +point.getY());
+			g.drawLine((int) point.getX(),(int) point.getY(),(int) point.getX(),(int) point.getY());
 		}
 	}
 
@@ -206,9 +198,5 @@ public class TelecomGrapheurVue extends JPanel implements Observer{
 				i++; //permet de passer à la lettre d'après
 			}
 		}
-	}
-	
-	public FenetreContener getFenetre() {
-		return fenetre;
 	}
 }
