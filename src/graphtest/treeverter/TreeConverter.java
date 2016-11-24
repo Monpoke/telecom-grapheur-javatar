@@ -44,20 +44,16 @@ public class TreeConverter {
         if (createTree.size() == 1) {
             root = createTree.iterator().next();
         } else {
-            System.out.println("How to process??");
-
-            for (TreeNode treeNode : createTree) {
-                bTreePrinter.printNode(treeNode);
-            }
-
+            throw new ParsingException("Erreur de parsage.");
         }
 
     }
 
     /**
      * Creates a tree.
+     *
      * @return
-     * @throws ParsingException 
+     * @throws ParsingException
      */
     private List<TreeNode> createTree() throws ParsingException {
 
@@ -88,11 +84,6 @@ public class TreeConverter {
 
             System.out.println("[NOUVEAU TOUR -> nodes:" + allNodes.size() + "] ");
 
-            System.out.println("Nodes list:");
-            for (TreeNode allNode : allNodes) {
-                bTreePrinter.printNode(allNode);
-            }
-
             ParsedToken operator = TokensTools.getMostOperatorPriority(parsedTokenList);
 
             // stop the loop, no operator
@@ -115,8 +106,6 @@ public class TreeConverter {
             if (leftOperand.isProcessed() || rightOperand.isProcessed()) {
                 nbProcessed++;
 
-                System.out.println("IM THE OPERATOR " + operator.toString());
-
                 /**
                  * L'opérande GAUCHE est traitée
                  */
@@ -138,9 +127,6 @@ public class TreeConverter {
                     // add new tree
                     allNodes.add(newNode);
 
-                    // printing the new node
-                    bTreePrinter.printNode(newNode);
-
                 } else if (!leftOperand.isProcessed() && rightOperand.isProcessed()) {
                     System.out.println("right only processed...");
 
@@ -161,10 +147,6 @@ public class TreeConverter {
 
                     // add new tree
                     allNodes.add(newNode);
-
-                    // printing the new node
-                    bTreePrinter.printNode(newNode);
-
                 } else {
 
                     System.out.println("both processed");
@@ -190,8 +172,6 @@ public class TreeConverter {
                     // add new tree
                     allNodes.add(newNode);
 
-                    // printing the new node
-                    bTreePrinter.printNode(newNode);
                 }
 
                 System.out.println("SIZE=" + allNodes.size());
@@ -204,7 +184,6 @@ public class TreeConverter {
             // push in the list
             allNodes.add(thisNode);
             System.out.println("Adding to node list:");
-            bTreePrinter.printNode(thisNode);
 
             // set processed
             operator.setProcessed(true);
@@ -218,6 +197,13 @@ public class TreeConverter {
         return allNodes;
     }
 
+    /**
+     * Find the parent of an operand.
+     *
+     * @param list
+     * @param operand
+     * @return
+     */
     private TreeNode findParent(List<TreeNode> list, ParsedToken operand) {
         for (TreeNode treeNode : list) {
             if (treeNode.childContains(operand)) {

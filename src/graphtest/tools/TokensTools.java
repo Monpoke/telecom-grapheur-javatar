@@ -5,6 +5,7 @@
  */
 package graphtest.tools;
 
+import graphtest.exceptions.ParsingException;
 import graphtest.exceptions.UnexpectedException;
 import graphtest.parsed.ParsedToken;
 import java.util.ArrayList;
@@ -69,9 +70,12 @@ public class TokensTools {
      * @param operatorPosition
      * @return
      */
-    public static ParsedToken getLeftOperand(ArrayList<ParsedToken> parsedTokenList, int operatorPosition) {
+    public static ParsedToken getLeftOperand(ArrayList<ParsedToken> parsedTokenList, int operatorPosition) throws ParsingException {
         System.out.println("looking for left operand: " + operatorPosition);
-        return parsedTokenList.get(operatorPosition - 1);
+        operatorPosition--;
+        if(operatorPosition<0) throw new ParsingException("Problème d'index d'opérateur.");
+        
+        return parsedTokenList.get(operatorPosition);
     }
 
     /**
@@ -81,8 +85,10 @@ public class TokensTools {
      * @param operatorPosition
      * @return
      */
-    public static ParsedToken getRightOperand(ArrayList<ParsedToken> parsedTokenList, int operatorPosition) {
-        return parsedTokenList.get(operatorPosition + 1);
+    public static ParsedToken getRightOperand(ArrayList<ParsedToken> parsedTokenList, int operatorPosition) throws ParsingException {
+        operatorPosition++;
+        if(parsedTokenList.size()<operatorPosition) throw new ParsingException("Problème d'index d'opérateur.");
+        return parsedTokenList.get(operatorPosition);
     }
 
     /**

@@ -7,6 +7,7 @@ package graphtest.evaluator;
 
 import graphtest.BTreePrinter;
 import graphtest.TreeNode;
+import graphtest.exceptions.ParsingException;
 import graphtest.exceptions.UnexpectedException;
 import graphtest.exceptions.VariableException;
 import graphtest.parsed.ParsedToken;
@@ -86,6 +87,11 @@ public class Evaluator {
     protected double process(TreeNode node) throws Exception {
         double result = 0;
 
+        // NO OPERATOR? KILLL
+        if(node == null || node.getToken()==null){
+            throw new ParsingException("Token nul...");
+        }
+        
         if (node.getToken().isOperator()) {
             result += processOperators(node);
 
@@ -157,7 +163,7 @@ public class Evaluator {
      *
      * @param parsedTokenList
      */
-    public static void simplifyCompute(ArrayList<ParsedToken> parsedTokenList) throws UnexpectedException {
+    public static void simplifyCompute(ArrayList<ParsedToken> parsedTokenList) throws UnexpectedException, ParsingException {
 
         // foreach each token, simplify
         while (true != TokensTools.areAllProcessed(parsedTokenList)) {

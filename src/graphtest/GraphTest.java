@@ -62,15 +62,7 @@ public class GraphTest {
                 System.exit(1);
             }
             
-            System.out.println("OUT RESULT:\n");
             
-            BTreePrinter bTreePrinter = new BTreePrinter();
-            bTreePrinter.printNode(root);
-    
-            
-            
-            
-
             System.out.println("-----------\nEVALUATOR [" + math + "]\n-----------\n");
             
             // EVALUATOR
