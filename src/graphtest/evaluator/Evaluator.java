@@ -109,7 +109,7 @@ public class Evaluator {
             return variables.get(node.getToken().getVariableName()).getValue();
         }
 
-        System.out.println("returns=> " + result);
+      //  System.out.println("returns=> " + result);
         return result;
     }
 
@@ -120,7 +120,7 @@ public class Evaluator {
      * @return
      */
     private double processOperators(TreeNode node) throws Exception {
-        double leftR, rightR, result = 0;
+        double leftR, rightR;
 
         leftR = process(node.getLeft());
         rightR = process(node.getRight());
@@ -135,23 +135,20 @@ public class Evaluator {
      * @return
      */
     private double processFunction(TreeNode node) throws Exception {
-        double leftR, rightR, result = 0;
+        double leftR, result = 0;
 
         switch (node.getToken().getParsedType()) {
             case FCT_COS:
                 leftR = Math.cos(process(node.getLeft()));
                 result += leftR;
-                System.out.println("cos(" + leftR + ")");
                 break;
             case FCT_SIN:
                 leftR = Math.sin(process(node.getLeft()));
                 result += leftR;
-                System.out.println("sin(" + leftR + ")");
                 break;
             case FCT_TAN:
                 leftR = Math.tan(process(node.getLeft()));
                 result += leftR;
-                System.out.println("tan(" + leftR + ")");
                 break;
 
         }
