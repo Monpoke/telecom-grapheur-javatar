@@ -12,8 +12,6 @@ import graphtest.parsed.ParsedToken;
 import graphtest.treeverter.TreeConverter;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,69 +22,62 @@ import java.util.logging.Logger;
  */
 public class GraphTest {
 
-	/**
-	 * @param args the command line arguments
-	 */
-	public static void main(String[] args) {
 
+    public static Evaluator lancementProjet(String fonction) {
+        Scanner s = new Scanner(System.in);
 
-	}
+        String math = "";
+        try {
+            // FIRST STEP
+            Parser parser = new Parser(fonction);
 
-	public static Evaluator lancementProjet(String fonction){
-		Scanner s = new Scanner(System.in);
+            // SECOND STEP
+            ArrayList<ParsedToken> parsedTokenList = parser.getParsedTokenList();
+            displayList(parsedTokenList);
 
-		String math = "";
-		try {
-			// FIRST STEP
-			Parser parser = new Parser(fonction);
+            // CORRECT SYNTAX
+            // TREE
+            TreeConverter converter = new TreeConverter(parsedTokenList);
+            TreeNode root = converter.getRoot();
+            displayList(converter.getParsedTokenList());
 
-			// SECOND STEP
-			ArrayList<ParsedToken> parsedTokenList = parser.getParsedTokenList();
-			displayList(parsedTokenList);
+            if (root == null) {
+                System.exit(1);
+            }
 
-			// CORRECT SYNTAX
-			// TREE
-			TreeConverter converter = new TreeConverter(parsedTokenList);
-			TreeNode root = converter.getRoot();
-			displayList(converter.getParsedTokenList());
+            BTreePrinter bTreePrinter = new BTreePrinter();
+            bTreePrinter.printNode(root);
 
-			if (root == null) {
-				System.exit(1);
-			}
+            // EVALUATOR
+            Evaluator evaluator = new Evaluator(root);
+            return evaluator;
+        } catch (ParsingException ex) {
+            Logger.getLogger(GraphTest.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(GraphTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
 
+    public static double evaluateur(Evaluator eval, double x) {
+        eval.resetScope();
+        eval.addVariable(new Variable("x", x));
+        try {
+            return eval.evaluate();
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return new Double(0);
+    }
 
-			BTreePrinter bTreePrinter = new BTreePrinter();
-			bTreePrinter.printNode(root);
+    private static void displayList(ArrayList<ParsedToken> parsedTokenList) {
+        for (ParsedToken parsedToken : parsedTokenList) {
+            System.out.print(parsedToken.toString() + " (" + parsedToken.getPriority() + ") ");
+        }
 
-			// EVALUATOR
-			Evaluator evaluator = new Evaluator(root);
-			return evaluator;
-		} catch (ParsingException ex) {
-			Logger.getLogger(GraphTest.class.getName()).log(Level.SEVERE, null, ex);
-		} catch (Exception ex) {
-			Logger.getLogger(GraphTest.class.getName()).log(Level.SEVERE, null, ex);
-		}
-		return null; 
-	}
-
-	public static double evaluateur(Evaluator eval, double x){
-		eval.resetScope();
-		eval.addVariable(new Variable("x", x));
-		try {
-			return eval.evaluate();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return new Double(0);
-	}
-
-	private static void displayList(ArrayList<ParsedToken> parsedTokenList) {
-		for (ParsedToken parsedToken : parsedTokenList) {
-			System.out.print(parsedToken.toString() + " (" + parsedToken.getPriority() + ") ");
-		}
-
-		System.out.println("");
-	}
-
+        System.out.println("");
+    }
+    
+    
 }
