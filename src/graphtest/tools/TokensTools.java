@@ -117,7 +117,7 @@ public class TokensTools {
      */
     public static ParsedToken getRightOperand(ArrayList<ParsedToken> parsedTokenList, int operatorPosition) throws ParsingException {
         operatorPosition++;
-        if (parsedTokenList.size() < operatorPosition) {
+        if (parsedTokenList.size() <= operatorPosition) {
             throw new ParsingException("Problème d'index d'opérateur.");
         }
         return parsedTokenList.get(operatorPosition);
@@ -136,27 +136,21 @@ public class TokensTools {
         switch (operator.getParsedType()) {
             case OPERATOR_PLUS:
                 result += leftR + rightR;
-                System.out.println(leftR + "+" + rightR);
                 break;
             case OPERATOR_DIVIDE:
                 result += leftR / rightR;
-                System.out.println(leftR + "/" + rightR);
                 break;
             case OPERATOR_MULTIPLY:
                 result += leftR * rightR;
-                System.out.println(leftR + "*" + rightR);
                 break;
             case OPERATOR_MINUS:
                 result += leftR - rightR;
-                System.out.println(leftR + "-" + rightR);
                 break;
             case OPERATOR_MODULO:
                 result += leftR % rightR;
-                System.out.println(leftR + "%" + rightR);
                 break;
             case OPERATOR_POWER:
                 result += Math.pow(leftR, rightR);
-                System.out.println(leftR + "^" + rightR);
                 break;
 
             default:

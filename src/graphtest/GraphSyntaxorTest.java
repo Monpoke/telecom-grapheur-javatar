@@ -39,7 +39,7 @@ public class GraphSyntaxorTest {
             syntaxor.displayOrderedStack();
             
         } catch (ParsingException ex) {
-            Logger.getLogger(GraphTest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MathParser.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

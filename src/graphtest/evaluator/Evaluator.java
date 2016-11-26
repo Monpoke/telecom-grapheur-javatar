@@ -36,7 +36,7 @@ public class Evaluator {
         this.simplifyCompute(root);
 
         BTreePrinter bTreePrinter = new BTreePrinter();
-        System.out.println("simpliocation result");
+        System.out.println("Simplified tree:");
         bTreePrinter.printNode(root);
         
         resetScope();

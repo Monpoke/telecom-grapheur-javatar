@@ -21,182 +21,190 @@ import modele.Constantes;
 import modele.PointModele;
 import modele.TelecomGrapheurModele;
 
-public class TelecomGrapheurVue extends JPanel implements Observer{
+public class TelecomGrapheurVue extends JPanel implements Observer {
 
-	private FenetreContener fenetre; //Frame qui contient le jeu
+    private FenetreContener fenetre; //Frame qui contient le jeu
 
-	private TelecomGrapheurModele modele;
-	private TelecomGrapheurControleur controleur;
-	private JTextField text = new JTextField();
+    private TelecomGrapheurModele modele;
+    private TelecomGrapheurControleur controleur;
+    private JTextField text = new JTextField();
 
-	public TelecomGrapheurVue (FenetreContener fenetre, TelecomGrapheurModele telecomGrapheurModele, TelecomGrapheurControleur telecomGrapheurControleur) {
-		this.fenetre = fenetre;
-		this.controleur = telecomGrapheurControleur;
-		this.modele = telecomGrapheurModele;
-		this.ajoutObserver();
-		this.addMouseListener(telecomGrapheurControleur);
-		this.addMouseMotionListener(telecomGrapheurControleur);
-		this.addMouseWheelListener(telecomGrapheurControleur);
-		this.fenetre.addControllerOnJTextField(telecomGrapheurControleur);
-		this.setSize(new Dimension(this.fenetre.getWidth()-50,this.fenetre.getHeight()));
-		this.text.addActionListener(telecomGrapheurControleur); 
-	}
-	
-	/**
-	 * Ajout les observers aux modeles
-	 */
-	public void ajoutObserver(){
-		this.modele.addObserver(this);
-		this.modele.getOrigin().addObserver(this);
-		this.modele.getAxeModeleX().addObserver(this);
-		this.modele.getAxeModeleY().addObserver(this);
-		this.modele.getBornes().addObserver(this);
-		this.modele.getCourbe().addObserver(this);
-		this.modele.getCursor().addObserver(this);
-		this.modele.getListesPoints().addObserver(this);
-	}
+    public TelecomGrapheurVue(FenetreContener fenetre, TelecomGrapheurModele telecomGrapheurModele, TelecomGrapheurControleur telecomGrapheurControleur) {
+        this.fenetre = fenetre;
+        this.controleur = telecomGrapheurControleur;
+        this.modele = telecomGrapheurModele;
+        this.ajoutObserver();
+        this.addMouseListener(telecomGrapheurControleur);
+        this.addMouseMotionListener(telecomGrapheurControleur);
+        this.addMouseWheelListener(telecomGrapheurControleur);
+        this.fenetre.addControllerOnJTextField(telecomGrapheurControleur);
+        this.setSize(new Dimension(this.fenetre.getWidth() - 50, this.fenetre.getHeight()));
+        this.text.addActionListener(telecomGrapheurControleur);
+    }
 
-	/**
-	 * dessine sur la fenetre
-	 */
-	@Override
-	public void paint(Graphics g) {
-		g.clearRect(0, 0, this.fenetre.getWidth(), this.fenetre.getHeight()); //efface tout	
-		this.drawQuadrillage(g);
-		this.drawAxeXY(g);
-		this.drawFunction(g);
-		this.drawCursor(g);
-		//this.modele.createCourbe();
-		this.drawPoints(g);
-	}
+    /**
+     * Ajout les observers aux modeles
+     */
+    public void ajoutObserver() {
+        this.modele.addObserver(this);
+        this.modele.getOrigin().addObserver(this);
+        this.modele.getAxeModeleX().addObserver(this);
+        this.modele.getAxeModeleY().addObserver(this);
+        this.modele.getBornes().addObserver(this);
+        this.modele.getCourbe().addObserver(this);
+        this.modele.getCursor().addObserver(this);
+        this.modele.getListesPoints().addObserver(this);
+    }
 
-	/**
-	 * dessine le quadrillage en gris clair
-	 * @param g
-	 */
-	public void drawQuadrillage(Graphics g){
-		g.setColor(Color.GRAY.brighter());
-		this.drawQuadrillageVerticale(g);
-		this.drawQuadrillageHorizontale(g);
-		g.setColor(Color.BLACK);
-	}
+    /**
+     * dessine sur la fenetre
+     */
+    @Override
+    public void paint(Graphics g) {
+        g.clearRect(0, 0, this.fenetre.getWidth(), this.fenetre.getHeight()); //efface tout	
+        this.drawQuadrillage(g);
+        this.drawAxeXY(g);
+        this.drawFunction(g);
+        this.drawCursor(g);
+        //this.modele.createCourbe();
+        this.drawPoints(g);
+    }
 
-	/**
-	 * dessine les axes X et Y
-	 * @param g
-	 */
-	public void drawAxeXY(Graphics g){
-		g.drawLine((int) this.modele.getAxeModeleX().getBorneXLeft(), (int) this.modele.getOrigin().getY(), (int) this.modele.getAxeModeleX().getBorneXRight(), (int) this.modele.getOrigin().getY()); // Axe horizontale
-		g.drawLine((int) this.modele.getOrigin().getX(), (int) this.modele.getAxeModeleY().getBorneYtop(), (int) this.modele.getOrigin().getX(), (int) this.modele.getAxeModeleY().getBorneYDown()); // Axe verticale
-		this.drawEchelonX(g);
-		this.drawEchelonY(g);
-	}
+    /**
+     * dessine le quadrillage en gris clair
+     *
+     * @param g
+     */
+    public void drawQuadrillage(Graphics g) {
+        g.setColor(Color.GRAY.brighter());
+        this.drawQuadrillageVerticale(g);
+        this.drawQuadrillageHorizontale(g);
+        g.setColor(Color.BLACK);
+    }
 
-	/**
-	 * dessine les �chelons pour l'axe des X
-	 * @param g
-	 */
-	public void drawEchelonX(Graphics g){
-		for(int i = this.modele.getBornes().getBorneXLeft(); i<this.modele.getBornes().getBorneXRight();i++){
-			g.drawLine((int) this.modele.getOrigin().getX()+i*this.modele.getAxeModeleX().getTailleCase(), (int) this.modele.getOrigin().getY()-10, (int) this.modele.getOrigin().getX()+i*this.modele.getAxeModeleX().getTailleCase(), (int) this.modele.getOrigin().getY()+10);
-			if(i!=0){
-				if(i%2==0){
-					g.drawString(""+i*this.modele.getAxeModeleX().getPas(), (int) this.modele.getOrigin().getX()+i*this.modele.getAxeModeleX().getTailleCase()-3, (int) this.modele.getOrigin().getY()+ 30);
-				}
-				else {
-					g.drawString(""+i*this.modele.getAxeModeleX().getPas(), (int) this.modele.getOrigin().getX()+i*this.modele.getAxeModeleX().getTailleCase()-3, (int) this.modele.getOrigin().getY()+ 60);
-				}
-			}
-		}
-	}
+    /**
+     * dessine les axes X et Y
+     *
+     * @param g
+     */
+    public void drawAxeXY(Graphics g) {
+        g.drawLine((int) this.modele.getAxeModeleX().getBorneXLeft(), (int) this.modele.getOrigin().getY(), (int) this.modele.getAxeModeleX().getBorneXRight(), (int) this.modele.getOrigin().getY()); // Axe horizontale
+        g.drawLine((int) this.modele.getOrigin().getX(), (int) this.modele.getAxeModeleY().getBorneYtop(), (int) this.modele.getOrigin().getX(), (int) this.modele.getAxeModeleY().getBorneYDown()); // Axe verticale
+        this.drawEchelonX(g);
+        this.drawEchelonY(g);
+    }
 
-	/**
-	 * dessine les �chelons pour l'axe des Y
-	 * @param g
-	 */
-	public void drawEchelonY(Graphics g){
-		for(int i = this.modele.getBornes().getBorneYTop(); i<=this.modele.getBornes().getBorneYDown();i++){
-			g.drawLine((int) this.modele.getOrigin().getX()-10, (int) this.modele.getOrigin().getY()+i*this.modele.getAxeModeleY().getTailleCase(),(int) this.modele.getOrigin().getX()+10, (int) this.modele.getOrigin().getY()+i*this.modele.getAxeModeleY().getTailleCase());
-			if(i!=0){
-				g.drawString(""+i*(-1)*this.modele.getAxeModeleY().getPas(), (int) this.modele.getOrigin().getX()+ 20, (int) this.modele.getOrigin().getY()+i*this.modele.getAxeModeleY().getTailleCase()); // *-1 car invers� (haut les plus, bas les -)
-			}
-		}
-	}
+    /**
+     * dessine les �chelons pour l'axe des X
+     *
+     * @param g
+     */
+    public void drawEchelonX(Graphics g) {
+        for (int i = this.modele.getBornes().getBorneXLeft(); i < this.modele.getBornes().getBorneXRight(); i++) {
+            g.drawLine((int) this.modele.getOrigin().getX() + i * this.modele.getAxeModeleX().getTailleCase(), (int) this.modele.getOrigin().getY() - 10, (int) this.modele.getOrigin().getX() + i * this.modele.getAxeModeleX().getTailleCase(), (int) this.modele.getOrigin().getY() + 10);
+            if (i != 0) {
+                if (i % 2 == 0) {
+                    g.drawString("" + i * this.modele.getAxeModeleX().getPas(), (int) this.modele.getOrigin().getX() + i * this.modele.getAxeModeleX().getTailleCase() - 3, (int) this.modele.getOrigin().getY() + 30);
+                } else {
+                    g.drawString("" + i * this.modele.getAxeModeleX().getPas(), (int) this.modele.getOrigin().getX() + i * this.modele.getAxeModeleX().getTailleCase() - 3, (int) this.modele.getOrigin().getY() + 60);
+                }
+            }
+        }
+    }
 
-	/**
-	 * Dessine les axes verticaux
-	 * @param g
-	 */
-	public void drawQuadrillageVerticale(Graphics g){
-		for(int i = this.modele.getBornes().getBorneXLeft(); i <this.modele.getBornes().getBorneXRight();i++){
-			g.drawLine((int) (this.modele.getOrigin().getX()+i*this.modele.getAxeModeleX().getTailleCase()), this.modele.getBornes().getBorneYTop(), (int) (this.modele.getOrigin().getX()+i*this.modele.getAxeModeleX().getTailleCase()), this.modele.getBornes().getBorneYDown());
-		}
-	}
+    /**
+     * dessine les �chelons pour l'axe des Y
+     *
+     * @param g
+     */
+    public void drawEchelonY(Graphics g) {
+        for (int i = this.modele.getBornes().getBorneYTop(); i <= this.modele.getBornes().getBorneYDown(); i++) {
+            g.drawLine((int) this.modele.getOrigin().getX() - 10, (int) this.modele.getOrigin().getY() + i * this.modele.getAxeModeleY().getTailleCase(), (int) this.modele.getOrigin().getX() + 10, (int) this.modele.getOrigin().getY() + i * this.modele.getAxeModeleY().getTailleCase());
+            if (i != 0) {
+                g.drawString("" + i * (-1) * this.modele.getAxeModeleY().getPas(), (int) this.modele.getOrigin().getX() + 20, (int) this.modele.getOrigin().getY() + i * this.modele.getAxeModeleY().getTailleCase()); // *-1 car invers� (haut les plus, bas les -)
+            }
+        }
+    }
 
-	/**
-	 * dessine les axes horizontaux
-	 * @param g
-	 */
-	public void drawQuadrillageHorizontale(Graphics g){
-		for(int i = this.modele.getBornes().getBorneYTop(); i <this.modele.getBornes().getBorneYDown();i++){
-			g.drawLine(this.modele.getAxeModeleX().getBorneXLeft(), (int) (this.modele.getOrigin().getY()+i*this.modele.getAxeModeleY().getTailleCase()), this.modele.getAxeModeleX().getBorneXRight(), (int) (this.modele.getOrigin().getY()+i*this.modele.getAxeModeleY().getTailleCase()));
-		}
-	}
+    /**
+     * Dessine les axes verticaux
+     *
+     * @param g
+     */
+    public void drawQuadrillageVerticale(Graphics g) {
+        for (int i = this.modele.getBornes().getBorneXLeft(); i < this.modele.getBornes().getBorneXRight(); i++) {
+            g.drawLine((int) (this.modele.getOrigin().getX() + i * this.modele.getAxeModeleX().getTailleCase()), this.modele.getBornes().getBorneYTop(), (int) (this.modele.getOrigin().getX() + i * this.modele.getAxeModeleX().getTailleCase()), this.modele.getBornes().getBorneYDown());
+        }
+    }
 
-	/**
-	 * A chaque fois qu'une donn�e change dans le modele, cette m�thode est appel�e. Elle redessine avec les nouvelles valeurs
-	 */
-	@Override
-	public void update(Observable arg0, Object arg1) {
-		repaint();
-	}
-	
-	/**
-	 * Dessine la fonction
-	 * @param g
-	 */
-	public void drawFunction(Graphics g){
-		// fonction y=cos(x) temp
-		for (PointModele point : this.modele.getCourbe().getListePoints()) {
-			//System.out.println("x = " + point.getX());
-			//System.out.println("y = " +point.getY());
-			g.drawLine((int) point.getX(),(int) point.getY(),(int) point.getX(),(int) point.getY());
-		}
-	}
+    /**
+     * dessine les axes horizontaux
+     *
+     * @param g
+     */
+    public void drawQuadrillageHorizontale(Graphics g) {
+        for (int i = this.modele.getBornes().getBorneYTop(); i < this.modele.getBornes().getBorneYDown(); i++) {
+            g.drawLine(this.modele.getAxeModeleX().getBorneXLeft(), (int) (this.modele.getOrigin().getY() + i * this.modele.getAxeModeleY().getTailleCase()), this.modele.getAxeModeleX().getBorneXRight(), (int) (this.modele.getOrigin().getY() + i * this.modele.getAxeModeleY().getTailleCase()));
+        }
+    }
 
-	/**
-	 * dessine le curseur
-	 * @param g
-	 */
-	public void drawCursor(Graphics g){
-		g.drawLine((int) this.modele.getCursor().getX()-10, (int) this.modele.getCursor().getY(), (int) this.modele.getCursor().getX()+10, (int) this.modele.getCursor().getY());
-		g.drawLine((int) this.modele.getCursor().getX(), (int) this.modele.getCursor().getY()-10, (int) this.modele.getCursor().getX(), (int) this.modele.getCursor().getY()+10);
+    /**
+     * A chaque fois qu'une donn�e change dans le modele, cette m�thode est
+     * appel�e. Elle redessine avec les nouvelles valeurs
+     */
+    @Override
+    public void update(Observable arg0, Object arg1) {
+        repaint();
+    }
 
-		double x = ((this.modele.getCursor().getX()-this.modele.getOrigin().getX())/this.modele.getAxeModeleX().getTailleCase())*this.modele.getAxeModeleX().getPas();
-		double y = -((this.modele.getCursor().getY()-this.modele.getOrigin().getY())/this.modele.getAxeModeleY().getTailleCase())*this.modele.getAxeModeleY().getPas();
-		DecimalFormat df = new DecimalFormat ( ) ; 
-		df.setMaximumFractionDigits ( 2 ) ;
-		g.drawString("Coordonnées ( " + df.format(x) + " , " + df.format(y) + " ) ", 50, 50);
-	}
+    /**
+     * Dessine la fonction
+     *
+     * @param g
+     */
+    public void drawFunction(Graphics g) {
+        // fonction y=cos(x) temp
+        for (PointModele point : this.modele.getCourbe().getListePoints()) {
+            //System.out.println("x = " + point.getX());
+            //System.out.println("y = " +point.getY());
+            g.drawLine((int) point.getX(), (int) point.getY(), (int) point.getX(), (int) point.getY());
+        }
+    }
 
-	/**
-	 * dessine l'ensemble de points cr�� par l'utilisateur
-	 * @param g
-	 */
-	public void drawPoints(Graphics g){
-		int i = 65;
-		for (PointModele point : this.modele.getListesPoints().getListePoints()) {
-			if(point.getY()>0)
-			{
-				g.fillOval((int) point.getX()-3, (int) point.getY()-3, 6, 6); //dessine le point
-				double x = ((point.getX()-this.modele.getOrigin().getX())/this.modele.getAxeModeleX().getTailleCase())*this.modele.getAxeModeleX().getPas(); //permet de changer le x du graph en sa valeur sur le graphique
-				double y = -((point.getY()-this.modele.getOrigin().getY())/this.modele.getAxeModeleY().getTailleCase())*this.modele.getAxeModeleY().getPas(); //permet de changer le y du graph en sa valeur sur le graphique
-				DecimalFormat df = new DecimalFormat ( ) ; 
-				df.setMaximumFractionDigits ( 2 ) ; // permet de limiter � 2 chiffre apr�s la virgule
-				g.drawString("( " + df.format(x) + " , " + df.format(y) + " ) ", (int) point.getX()+10, (int) point.getY()-5); //dessine les coordonn�es
-				g.drawString(""+(char) i, (int) point.getX()+2,(int) point.getY()-5); //dessine sa lettre associ�e
-				i++; //permet de passer � la lettre d'apr�s
-			}
-		}
-	}
+    /**
+     * dessine le curseur
+     *
+     * @param g
+     */
+    public void drawCursor(Graphics g) {
+        g.drawLine((int) this.modele.getCursor().getX() - 10, (int) this.modele.getCursor().getY(), (int) this.modele.getCursor().getX() + 10, (int) this.modele.getCursor().getY());
+        g.drawLine((int) this.modele.getCursor().getX(), (int) this.modele.getCursor().getY() - 10, (int) this.modele.getCursor().getX(), (int) this.modele.getCursor().getY() + 10);
+
+        double x = ((this.modele.getCursor().getX() - this.modele.getOrigin().getX()) / this.modele.getAxeModeleX().getTailleCase()) * this.modele.getAxeModeleX().getPas();
+        double y = -((this.modele.getCursor().getY() - this.modele.getOrigin().getY()) / this.modele.getAxeModeleY().getTailleCase()) * this.modele.getAxeModeleY().getPas();
+        DecimalFormat df = new DecimalFormat();
+        df.setMaximumFractionDigits(2);
+        g.drawString("Coordonnées ( " + df.format(x) + " , " + df.format(y) + " ) ", 50, 50);
+    }
+
+    /**
+     * dessine l'ensemble de points cr�� par l'utilisateur
+     *
+     * @param g
+     */
+    public void drawPoints(Graphics g) {
+        int i = 65;
+        for (PointModele point : this.modele.getListesPoints().getListePoints()) {
+            if (point.getY() > 0) {
+                g.fillOval((int) point.getX() - 3, (int) point.getY() - 3, 6, 6); //dessine le point
+                double x = ((point.getX() - this.modele.getOrigin().getX()) / this.modele.getAxeModeleX().getTailleCase()) * this.modele.getAxeModeleX().getPas(); //permet de changer le x du graph en sa valeur sur le graphique
+                double y = -((point.getY() - this.modele.getOrigin().getY()) / this.modele.getAxeModeleY().getTailleCase()) * this.modele.getAxeModeleY().getPas(); //permet de changer le y du graph en sa valeur sur le graphique
+                DecimalFormat df = new DecimalFormat();
+                df.setMaximumFractionDigits(2); // permet de limiter � 2 chiffre apr�s la virgule
+                g.drawString("( " + df.format(x) + " , " + df.format(y) + " ) ", (int) point.getX() + 10, (int) point.getY() - 5); //dessine les coordonn�es
+                g.drawString("" + (char) i, (int) point.getX() + 2, (int) point.getY() - 5); //dessine sa lettre associ�e
+                i++; //permet de passer � la lettre d'apr�s
+            }
+        }
+    }
 }

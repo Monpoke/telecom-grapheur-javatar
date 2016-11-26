@@ -15,7 +15,7 @@ public enum TokenType {
     OPERATOR_MINUS(3),
     OPERATOR_DIVIDE(5),
     OPERATOR_MULTIPLY(6),
-    OPERATOR_POWER(6),
+    OPERATOR_POWER(7),
     OPERATOR_MODULO(5),
     NUMBER(1),
     PAR_OPEN(10),

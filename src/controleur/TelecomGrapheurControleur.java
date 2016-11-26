@@ -1,6 +1,6 @@
 package controleur;
 
-import graphtest.GraphTest;
+import graphtest.MathParser;
 import graphtest.evaluator.Evaluator;
 
 import java.awt.event.ActionEvent;
@@ -111,7 +111,7 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
         }
         this.modele.getCourbe().videListe();
         if (fonction != null) {
-            Evaluator eval = GraphTest.lancementProjet(fonction);
+            Evaluator eval = MathParser.getEvaluatorFromMathString(fonction);
 
             // error, so skip
             if (eval == null) {
@@ -120,7 +120,7 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
 
             for (int j = this.modele.getBornes().getBorneXLeft(); j < this.modele.getBornes().getBorneXRight(); j++) {
                 double x = (j + this.modele.getOrigin().getX());
-                this.modele.getCourbe().setPoints(new PointModele((int) (x), (int) (-GraphTest.evaluateur(eval, (j / (this.modele.getAxeModeleY().getTailleCase() / this.modele.getAxeModeleY().getPas()))) * this.modele.getAxeModeleY().getTailleCase() / this.modele.getAxeModeleY().getPas() + this.modele.getOrigin().getY())));
+                this.modele.getCourbe().setPoints(new PointModele((int) (x), (int) (-MathParser.evaluate(eval, (j / (this.modele.getAxeModeleY().getTailleCase() / this.modele.getAxeModeleY().getPas()))) * this.modele.getAxeModeleY().getTailleCase() / this.modele.getAxeModeleY().getPas() + this.modele.getOrigin().getY())));
             }
         }
     }
@@ -204,13 +204,13 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
         if (e.getID() == 1001) { // le jtextfield
             this.fonction = e.getActionCommand();
             this.modele.getCourbe().videListe();
-            Evaluator eval = GraphTest.lancementProjet(e.getActionCommand());
+            Evaluator eval = MathParser.getEvaluatorFromMathString(e.getActionCommand());
             if (eval == null) {
                 return; // skip on error
             }
             for (int i = this.modele.getBornes().getBorneXLeft(); i < this.modele.getBornes().getBorneXRight(); i++) {
                 double x = (i + this.modele.getOrigin().getX());
-                this.modele.getCourbe().setPoints(new PointModele((int) (x), (int) (-GraphTest.evaluateur(eval, (i / (this.modele.getAxeModeleY().getTailleCase() / this.modele.getAxeModeleY().getPas()))) * this.modele.getAxeModeleY().getTailleCase() / this.modele.getAxeModeleY().getPas() + this.modele.getOrigin().getY())));
+                this.modele.getCourbe().setPoints(new PointModele((int) (x), (int) (-MathParser.evaluate(eval, (i / (this.modele.getAxeModeleY().getTailleCase() / this.modele.getAxeModeleY().getPas()))) * this.modele.getAxeModeleY().getTailleCase() / this.modele.getAxeModeleY().getPas() + this.modele.getOrigin().getY())));
             }
         }
     }
