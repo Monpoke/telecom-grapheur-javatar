@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -52,6 +53,7 @@ public class GraphTest {
             Evaluator evaluator = new Evaluator(root);
             return evaluator;
         } catch (ParsingException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
             Logger.getLogger(GraphTest.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
             Logger.getLogger(GraphTest.class.getName()).log(Level.SEVERE, null, ex);
@@ -60,6 +62,9 @@ public class GraphTest {
     }
 
     public static double evaluateur(Evaluator eval, double x) {
+        if(eval==null){
+            return 0;
+        }
         eval.resetScope();
         eval.addVariable(new Variable("x", x));
         try {

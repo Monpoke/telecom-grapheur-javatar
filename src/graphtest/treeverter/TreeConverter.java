@@ -137,6 +137,11 @@ public class TreeConverter {
             // left operand
             ParsedToken leftOperand = TokensTools.getLeftOperand(parsedTokenList, operatorPosition);
 
+            if(leftOperand.isOperator() || rightOperand.isOperator()){
+                throw new ParsingException("Deux opérateurs ne peuvent se suivre...");
+            }
+            
+            
             System.out.println("Have to process: " + leftOperand.toString() + " " + operator.toString() + " " + rightOperand.toString());
 
             // check not processed
