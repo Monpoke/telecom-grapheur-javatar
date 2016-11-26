@@ -13,7 +13,6 @@ import java.text.DecimalFormat;
 import java.util.Observable;
 import java.util.Observer;
 
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -35,11 +34,10 @@ public class TelecomGrapheurVue extends JPanel implements Observer{
 		this.controleur = telecomGrapheurControleur;
 		this.modele = telecomGrapheurModele;
 		this.ajoutObserver();
-		this.fenetre.addControllerOnJTextField(telecomGrapheurControleur);
-		this.fenetre.addControllerOnBtn(telecomGrapheurControleur);
 		this.addMouseListener(telecomGrapheurControleur);
 		this.addMouseMotionListener(telecomGrapheurControleur);
 		this.addMouseWheelListener(telecomGrapheurControleur);
+		this.fenetre.addControllerOnJTextField(telecomGrapheurControleur);
 		this.setSize(new Dimension(this.fenetre.getWidth()-50,this.fenetre.getHeight()));
 		this.text.addActionListener(telecomGrapheurControleur); 
 	}
@@ -63,11 +61,6 @@ public class TelecomGrapheurVue extends JPanel implements Observer{
 	 */
 	@Override
 	public void paint(Graphics g) {
-		if(this.modele.getDialog()){
-			this.modele.setDialog(false);
-			JOptionPane.showMessageDialog(this,
-				    "Eggs are not supposed to be green.");
-		}
 		g.clearRect(0, 0, this.fenetre.getWidth(), this.fenetre.getHeight()); //efface tout	
 		this.drawQuadrillage(g);
 		this.drawAxeXY(g);
@@ -100,7 +93,7 @@ public class TelecomGrapheurVue extends JPanel implements Observer{
 	}
 
 	/**
-	 * dessine les échelons pour l'axe des X
+	 * dessine les ï¿½chelons pour l'axe des X
 	 * @param g
 	 */
 	public void drawEchelonX(Graphics g){
@@ -118,14 +111,14 @@ public class TelecomGrapheurVue extends JPanel implements Observer{
 	}
 
 	/**
-	 * dessine les échelons pour l'axe des Y
+	 * dessine les ï¿½chelons pour l'axe des Y
 	 * @param g
 	 */
 	public void drawEchelonY(Graphics g){
 		for(int i = this.modele.getBornes().getBorneYTop(); i<=this.modele.getBornes().getBorneYDown();i++){
 			g.drawLine((int) this.modele.getOrigin().getX()-10, (int) this.modele.getOrigin().getY()+i*this.modele.getAxeModeleY().getTailleCase(),(int) this.modele.getOrigin().getX()+10, (int) this.modele.getOrigin().getY()+i*this.modele.getAxeModeleY().getTailleCase());
 			if(i!=0){
-				g.drawString(""+i*(-1)*this.modele.getAxeModeleY().getPas(), (int) this.modele.getOrigin().getX()+ 20, (int) this.modele.getOrigin().getY()+i*this.modele.getAxeModeleY().getTailleCase()); // *-1 car inversé (haut les plus, bas les -)
+				g.drawString(""+i*(-1)*this.modele.getAxeModeleY().getPas(), (int) this.modele.getOrigin().getX()+ 20, (int) this.modele.getOrigin().getY()+i*this.modele.getAxeModeleY().getTailleCase()); // *-1 car inversï¿½ (haut les plus, bas les -)
 			}
 		}
 	}
@@ -151,7 +144,7 @@ public class TelecomGrapheurVue extends JPanel implements Observer{
 	}
 
 	/**
-	 * A chaque fois qu'une donnée change dans le modele, cette méthode est appelée. Elle redessine avec les nouvelles valeurs
+	 * A chaque fois qu'une donnï¿½e change dans le modele, cette mï¿½thode est appelï¿½e. Elle redessine avec les nouvelles valeurs
 	 */
 	@Override
 	public void update(Observable arg0, Object arg1) {
@@ -165,10 +158,9 @@ public class TelecomGrapheurVue extends JPanel implements Observer{
 	public void drawFunction(Graphics g){
 		// fonction y=cos(x) temp
 		for (PointModele point : this.modele.getCourbe().getListePoints()) {
-//			System.out.println("x = " + point.getX());
-//			System.out.println("y = " +point.getY());
-			//g.drawLine((int) point.getX(),(int) point.getY(),(int) point.getX(),(int) point.getY());
-			g.fillOval((int) point.getX()-3,(int) point.getY()-3,6,6);
+			//System.out.println("x = " + point.getX());
+			//System.out.println("y = " +point.getY());
+			g.drawLine((int) point.getX(),(int) point.getY(),(int) point.getX(),(int) point.getY());
 		}
 	}
 
@@ -184,11 +176,11 @@ public class TelecomGrapheurVue extends JPanel implements Observer{
 		double y = -((this.modele.getCursor().getY()-this.modele.getOrigin().getY())/this.modele.getAxeModeleY().getTailleCase())*this.modele.getAxeModeleY().getPas();
 		DecimalFormat df = new DecimalFormat ( ) ; 
 		df.setMaximumFractionDigits ( 2 ) ;
-		g.drawString("Coordonnées ( " + df.format(x) + " , " + df.format(y) + " ) ", 50, 50);
+		g.drawString("CoordonnÃ©es ( " + df.format(x) + " , " + df.format(y) + " ) ", 50, 50);
 	}
 
 	/**
-	 * dessine l'ensemble de points créé par l'utilisateur
+	 * dessine l'ensemble de points crï¿½ï¿½ par l'utilisateur
 	 * @param g
 	 */
 	public void drawPoints(Graphics g){
@@ -200,15 +192,11 @@ public class TelecomGrapheurVue extends JPanel implements Observer{
 				double x = ((point.getX()-this.modele.getOrigin().getX())/this.modele.getAxeModeleX().getTailleCase())*this.modele.getAxeModeleX().getPas(); //permet de changer le x du graph en sa valeur sur le graphique
 				double y = -((point.getY()-this.modele.getOrigin().getY())/this.modele.getAxeModeleY().getTailleCase())*this.modele.getAxeModeleY().getPas(); //permet de changer le y du graph en sa valeur sur le graphique
 				DecimalFormat df = new DecimalFormat ( ) ; 
-				df.setMaximumFractionDigits ( 2 ) ; // permet de limiter à 2 chiffre après la virgule
-				g.drawString("( " + df.format(x) + " , " + df.format(y) + " ) ", (int) point.getX()+10, (int) point.getY()-5); //dessine les coordonnées
-				g.drawString(""+(char) i, (int) point.getX()+2,(int) point.getY()-5); //dessine sa lettre associée
-				i++; //permet de passer à la lettre d'après
+				df.setMaximumFractionDigits ( 2 ) ; // permet de limiter ï¿½ 2 chiffre aprï¿½s la virgule
+				g.drawString("( " + df.format(x) + " , " + df.format(y) + " ) ", (int) point.getX()+10, (int) point.getY()-5); //dessine les coordonnï¿½es
+				g.drawString(""+(char) i, (int) point.getX()+2,(int) point.getY()-5); //dessine sa lettre associï¿½e
+				i++; //permet de passer ï¿½ la lettre d'aprï¿½s
 			}
 		}
-	}
-	
-	public FenetreContener getFenetre() {
-		return fenetre;
 	}
 }

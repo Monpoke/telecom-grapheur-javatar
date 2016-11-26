@@ -15,18 +15,18 @@ public enum TokenType {
     OPERATOR_MINUS(3),
     OPERATOR_DIVIDE(5),
     OPERATOR_MULTIPLY(6),
+    OPERATOR_POWER(6),
     OPERATOR_MODULO(5),
     NUMBER(1),
-    PAR_OPEN(8),
-    PAR_CLOSE(8),
+    PAR_OPEN(10),
+    PAR_CLOSE(10),
     VARIABLE(1),
     /**
      * FUNCTIONS
      */
-    FCT_SIN,
-    FCT_COS,
-    FCT_TAN,
-    FCT_POW,
+    FCT_SIN(8),
+    FCT_COS(8),
+    FCT_TAN(8),
     UNKNOWN_TOKEN;
 
     private int defaultPriority = 1;

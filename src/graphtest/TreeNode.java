@@ -51,6 +51,11 @@ public class TreeNode {
         this.token = token;
         this.left = left;
     }
+    
+    public TreeNode(ParsedToken token, ParsedToken left) {
+        this.token = token;
+        this.left = new TreeNode(left);
+    }
 
     public ParsedToken getToken() {
         return token;
