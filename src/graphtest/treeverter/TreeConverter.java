@@ -17,6 +17,7 @@ import graphtest.tools.TokensTools;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import jdk.nashorn.internal.ir.FunctionNode;
 
 /**
  *
@@ -25,20 +26,33 @@ import java.util.List;
 public class TreeConverter {
 
     private final ArrayList<ParsedToken> parsedTokenList;
+
+    private List<TreeNode> allNodes;
+
     private TreeNode root = null;
 
     private BTreePrinter bTreePrinter = new BTreePrinter();
 
+    private int leftLimit = 0;
+    private int rightLimit = 0;
+
     /**
      *
      * @param parsedTokenList
+     * @throws graphtest.exceptions.ParsingException
      */
     public TreeConverter(ArrayList<ParsedToken> parsedTokenList) throws ParsingException {
         this.parsedTokenList = parsedTokenList;
 
         // add the plus
         TokenSimplifier.simplify(parsedTokenList);
-        //        Evaluator.simplifyCompute(parsedTokenList);
+
+        // process limits
+        resetLimits();
+
+        // create a list of all processed nodes
+        allNodes = new ArrayList<>();
+
         List<TreeNode> createTree = this.createTree();
 
         if (createTree.size() == 1) {
@@ -50,6 +64,23 @@ public class TreeConverter {
     }
 
     /**
+     * Resets limits
+     */
+    private void resetLimits() {
+        leftLimit = 0;
+        rightLimit = parsedTokenList.size();
+    }
+
+    /**
+     * Returns the nb in the list, following the limits
+     * @return 
+     */
+    private int nbElementsInList() {
+        System.out.println((rightLimit - leftLimit));
+        return (rightLimit - leftLimit) ;
+    }
+
+    /**
      * Creates a tree.
      *
      * @return
@@ -57,32 +88,36 @@ public class TreeConverter {
      */
     private List<TreeNode> createTree() throws ParsingException {
 
+        System.out.println("CREATE TREE FOR THESE LIMITS: " + leftLimit + " -> " + rightLimit);
+
         // for only one token
-        if (parsedTokenList.size() == 1) {
-            ParsedToken number = parsedTokenList.get(0);
+        if (nbElementsInList() == 1) {
+            ParsedToken number = parsedTokenList.get(leftLimit);
             if (number instanceof TOK_NUMBER || number instanceof TOK_VARIABLE) {
-                root = new TreeNode(number);
+                allNodes.add(new TreeNode(number));
             } else {
-                throw new ParsingException("L'expression n'est pas valide.");
+                throw new ParsingException("L'expression n'est pas valide. Expected: number|variable. Found: "+number.toString());
             }
-            return new ArrayList<>();
+            return allNodes;
         }
 
-        // Priorities
-        processPriorities();
+        if (leftLimit == 0) {
 
-        // not needed
-        removeParenthesis();
+            // Priorities
+            processPriorities();
 
-        List<TreeNode> allNodes = new ArrayList<>();
+            // FUNCTIONS
+            processFunctions();
 
-        int nbProcessed = 0;
-        int listSize = parsedTokenList.size();
+            // not needed -> USEFUL FOR FUNCTIONS
+            removeParenthesis();
+
+        }
 
         // création de tout les noeuds 
-        while (listSize != nbProcessed && true != TokensTools.areAllProcessed(parsedTokenList)) {
+        while (true != TokensTools.areAllProcessed(parsedTokenList, leftLimit, rightLimit)) {
 
-            System.out.println("[NOUVEAU TOUR -> nodes:" + allNodes.size() + "] ");
+            System.out.println("[NOUVEAU TOUR -> nodes:" + allNodes.size() + "] with following limits: " + leftLimit + " -> " + rightLimit);
 
             ParsedToken operator = TokensTools.getMostOperatorPriority(parsedTokenList);
 
@@ -94,85 +129,20 @@ public class TreeConverter {
 
             int operatorPosition = parsedTokenList.indexOf(operator);
 
-            // left operand
-            ParsedToken leftOperand = TokensTools.getLeftOperand(parsedTokenList, operatorPosition);
-
+            System.out.println("Found operator: "+ operator.toString() + " at position: " + operatorPosition);
+            
             // right
             ParsedToken rightOperand = TokensTools.getRightOperand(parsedTokenList, operatorPosition);
+
+            // left operand
+            ParsedToken leftOperand = TokensTools.getLeftOperand(parsedTokenList, operatorPosition);
 
             System.out.println("Have to process: " + leftOperand.toString() + " " + operator.toString() + " " + rightOperand.toString());
 
             // check not processed
             if (leftOperand.isProcessed() || rightOperand.isProcessed()) {
-                nbProcessed++;
 
-                /**
-                 * L'opérande GAUCHE est traitée
-                 */
-                if (leftOperand.isProcessed() && !rightOperand.isProcessed()) {
-                    System.out.println("left only processed...");
-
-                    System.out.println("findind parent for leftOper: " + leftOperand.toString());
-                    TreeNode leftTree = findParent(allNodes, leftOperand);
-                    System.out.println("-> " + leftTree);
-
-                    TreeNode newNode = new TreeNode(operator, leftTree, rightOperand);
-
-                    operator.setProcessed(true);
-                    rightOperand.setProcessed(true);
-
-                    // suppression de la liste
-                    allNodes.remove(leftTree);
-
-                    // add new tree
-                    allNodes.add(newNode);
-
-                } else if (!leftOperand.isProcessed() && rightOperand.isProcessed()) {
-                    System.out.println("right only processed...");
-
-                    System.out.println("findind parent for rightOper: " + rightOperand.toString());
-                    TreeNode rightTree = findParent(allNodes, rightOperand);
-                    System.out.println("-> " + rightTree);
-
-                    TreeNode newNode = new TreeNode(operator, leftOperand, rightTree);
-
-                    operator.setProcessed(true);
-                    leftOperand.setProcessed(true);
-
-                    System.out.println("Before: " + allNodes.size());
-
-                    // suppression de la liste
-                    allNodes.remove(rightTree);
-                    System.out.println("After: " + allNodes.size());
-
-                    // add new tree
-                    allNodes.add(newNode);
-                } else {
-
-                    System.out.println("both processed");
-
-                    System.out.println("findind parent for leftOper: " + leftOperand.toString());
-                    TreeNode leftTree = findParent(allNodes, leftOperand);
-                    System.out.println("-> " + leftTree);
-
-                    System.out.println("findind parent for rightOper: " + rightOperand.toString());
-                    TreeNode rightTree = findParent(allNodes, rightOperand);
-                    System.out.println("-> " + rightTree);
-
-                    TreeNode newNode = new TreeNode(operator, leftTree, rightTree);
-
-                    operator.setProcessed(true);
-                    leftOperand.setProcessed(true);
-                    rightOperand.setProcessed(true);
-
-                    // suppression de la liste
-                    allNodes.remove(leftTree);
-                    allNodes.remove(rightTree);
-
-                    // add new tree
-                    allNodes.add(newNode);
-
-                }
+                processLeftOrRight(operator, leftOperand, rightOperand);
 
                 System.out.println("SIZE=" + allNodes.size());
 
@@ -189,10 +159,12 @@ public class TreeConverter {
             operator.setProcessed(true);
             leftOperand.setProcessed(true);
             rightOperand.setProcessed(true);
-            nbProcessed += 3;
 
             System.out.println("___________________________");
         }
+
+        // reset limits
+        resetLimits();
 
         return allNodes;
     }
@@ -208,9 +180,42 @@ public class TreeConverter {
         for (TreeNode treeNode : list) {
             if (treeNode.childContains(operand)) {
                 return treeNode;
+            } else if (treeNode.getToken() == operand) {
+                return treeNode;
             }
         }
+
         return null;
+    }
+
+    /**
+     * Find the parent.
+     *
+     * @param tree
+     * @param tok
+     * @return
+     */
+    private TreeNode findParent(TreeNode tree, ParsedToken tok) {
+        if (tok == null || !tok.isProcessed()) {
+            return null;
+        }
+
+        if (tree.getLeft() != null && tree.getLeft().getToken() == tok || tree.getRight() != null && tree.getRight().getToken() == tok) {
+            return tree;
+        }
+
+        // left, then right
+        TreeNode toR = null;
+
+        if (tree.getLeft() != null) {
+            findParent(tree.getLeft(), tok);
+        }
+
+        if (toR == null && tree.getRight() != null) {
+            toR = findParent(tree.getRight(), tok);
+        }
+
+        return toR;
     }
 
     public ArrayList<ParsedToken> getParsedTokenList() {
@@ -219,6 +224,38 @@ public class TreeConverter {
 
     public TreeNode getRoot() {
         return root;
+    }
+
+    /**
+     * Gets position
+     *
+     * @param firstPosition
+     * @return
+     * @throws ParsingException
+     */
+    private int findLastParenthesisPosition(int firstPosition) throws ParsingException {
+        int level = 1;
+
+        for (int i = firstPosition, t = parsedTokenList.size(); i < t; i++) {
+            if (parsedTokenList.get(i) instanceof TOK_PAR_OPEN) {
+                level++;
+            }
+            if (parsedTokenList.get(i) instanceof TOK_PAR_CLOSE) {
+                level--;
+
+                if (level == 0) {
+                    return i;
+                } else // niveau de parenthèse non correspondant
+                {
+                    if (level < 0) {
+                        throw new ParsingException("Niveau de parenthèsage incohérent.");
+                    }
+                }
+            }
+
+        }
+
+        throw new ParsingException("Niveau de parenthèsage incohérent.");
     }
 
     /**
@@ -263,32 +300,149 @@ public class TreeConverter {
     }
 
     /**
-     * Find the parent.
+     * Process the operands.
      *
-     * @param tree
-     * @param tok
-     * @return
+     * @param operator
+     * @param leftOperand
+     * @param rightOperand
      */
-    private TreeNode findParent(TreeNode tree, ParsedToken tok) {
-        if (tok == null || !tok.isProcessed()) {
-            return null;
+    private void processLeftOrRight(ParsedToken operator, ParsedToken leftOperand, ParsedToken rightOperand) {
+
+        /**
+         * L'opérande GAUCHE est traitée
+         */
+        if (leftOperand.isProcessed() && !rightOperand.isProcessed()) {
+            System.out.println("left only processed...");
+
+            System.out.println("findind parent for leftOper: " + leftOperand.toString());
+            TreeNode leftTree = findParent(allNodes, leftOperand);
+            System.out.println("-> " + leftTree);
+
+            TreeNode newNode = new TreeNode(operator, leftTree, rightOperand);
+
+            operator.setProcessed(true);
+            rightOperand.setProcessed(true);
+
+            // suppression de la liste
+            allNodes.remove(leftTree);
+
+            // add new tree
+            allNodes.add(newNode);
+
+        } else if (!leftOperand.isProcessed() && rightOperand.isProcessed()) {
+            System.out.println("right only processed...");
+
+            System.out.println("findind parent for rightOper: " + rightOperand.toString());
+            TreeNode rightTree = findParent(allNodes, rightOperand);
+            System.out.println("-> " + rightTree);
+
+            TreeNode newNode = new TreeNode(operator, leftOperand, rightTree);
+
+            operator.setProcessed(true);
+            leftOperand.setProcessed(true);
+
+            System.out.println("Before: " + allNodes.size());
+
+            // suppression de la liste
+            allNodes.remove(rightTree);
+            System.out.println("After: " + allNodes.size());
+
+            // add new tree
+            allNodes.add(newNode);
+        } else {
+
+            System.out.println("both processed");
+
+            System.out.println("findind parent for leftOper: " + leftOperand.toString());
+            TreeNode leftTree = findParent(allNodes, leftOperand);
+            System.out.println("-> " + leftTree);
+
+            System.out.println("findind parent for rightOper: " + rightOperand.toString());
+            TreeNode rightTree = findParent(allNodes, rightOperand);
+            System.out.println("-> " + rightTree);
+
+            TreeNode newNode = new TreeNode(operator, leftTree, rightTree);
+
+            operator.setProcessed(true);
+            leftOperand.setProcessed(true);
+            rightOperand.setProcessed(true);
+
+            // suppression de la liste
+            allNodes.remove(leftTree);
+            allNodes.remove(rightTree);
+
+            // add new tree
+            allNodes.add(newNode);
+
         }
+    }
 
-        if (tree.getLeft() != null && tree.getLeft().getToken() == tok || tree.getRight() != null && tree.getRight().getToken() == tok) {
-            return tree;
+    private void processFunctions() throws ParsingException {
+
+        while(true != TokensTools.allFunctionsAreProcessed(parsedTokenList)){
+            ParsedToken function = TokensTools.getMostFunctionPriority(parsedTokenList);
+            
+            int functionPosition = parsedTokenList.indexOf(function);
+            if (function.isFunction()) {
+
+                ParsedToken nextToken = parsedTokenList.get(functionPosition + 1);
+
+                /**
+                 * Handle following syntax: - cos8 - cosx
+                 */
+                if (nextToken instanceof TOK_VARIABLE || nextToken instanceof TOK_NUMBER) {
+                    // add node
+
+                    // create the node
+                    TreeNode functionNode = new TreeNode(function, nextToken);
+
+                    // add node to list
+                    allNodes.add(functionNode);
+
+                    // set processed
+                    function.setProcessed(true);
+                    nextToken.setProcessed(true);
+
+                   // i++; // skip the next token
+                    continue;
+                }
+
+                /**
+                 * Handle following syntax: - cos( 3+2+5+8 ...)
+                 */
+                if (nextToken instanceof TOK_PAR_OPEN) {
+
+                    leftLimit = functionPosition + 2;
+                    rightLimit = findLastParenthesisPosition(leftLimit);
+
+                    System.out.println("DEFINING LIMITS " + leftLimit +" -> " + rightLimit +" for function " + function.toString());
+                    
+                    // for limits...
+                    createTree();
+                    System.out.println("BACK FROM CREATETREE!!");
+
+                    // set processed
+                    function.setProcessed(true);
+
+                    // must find the parent of processed expression
+                    ParsedToken randomTokenInLimits = parsedTokenList.get(functionPosition + 2);
+
+                    System.out.println("Found this token inside the expression: " + randomTokenInLimits.toString());
+
+                    TreeNode parentTree = findParent(allNodes, randomTokenInLimits);
+                    System.out.println("Parent of this expression: ");
+                    bTreePrinter.printNode(parentTree);
+
+                    TreeNode functionTree = new TreeNode(function, parentTree);
+                    allNodes.remove(parentTree);
+                    allNodes.add(functionTree);
+
+                    System.out.println("Final node for function " + function.toString());
+                    bTreePrinter.printNode(functionTree);
+
+                }
+            }
+
         }
-
-        // left, then right
-        TreeNode toR = null;
-
-        if (tree.getLeft() != null) {
-            findParent(tree.getLeft(), tok);
-        }
-
-        if (toR == null && tree.getRight() != null) {
-            toR = findParent(tree.getRight(), tok);
-        }
-
-        return toR;
     }
 }

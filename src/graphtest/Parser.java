@@ -48,7 +48,7 @@ class Parser {
     }
     
     private String cleanMath(String input){
-        input = input.replace(" ", "");
+        input = input.trim().replace(" ", "");
         return input;
     }
 

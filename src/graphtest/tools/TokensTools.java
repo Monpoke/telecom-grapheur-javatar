@@ -23,7 +23,20 @@ public class TokensTools {
      * @return
      */
     public static boolean areAllProcessed(ArrayList<ParsedToken> parsedTokenList) {
-        for (ParsedToken parsedToken : parsedTokenList) {
+        return areAllProcessed(parsedTokenList, 0, parsedTokenList.size() - 1);
+    }
+
+    /**
+     * Returns true if tokens are all already processed.
+     *
+     * @param parsedTokenList
+     * @param left
+     * @param right
+     * @return
+     */
+    public static boolean areAllProcessed(ArrayList<ParsedToken> parsedTokenList, int left, int right) {
+        for (int i = left, t = Math.min(right, parsedTokenList.size()); i < t; i++) {
+            ParsedToken parsedToken = parsedTokenList.get(i);
             if (!parsedToken.isProcessed()) {
                 return false;
             }
@@ -49,10 +62,25 @@ public class TokensTools {
      * @return
      */
     public static ParsedToken getMostOperatorPriority(ArrayList<ParsedToken> parsedTokenList) {
+        return getMostOperatorPriority(parsedTokenList, 0, parsedTokenList.size());
+    }
+
+    /**
+     * Gets the operator between some limits.
+     *
+     * @param parsedTokenList
+     * @param minLimit
+     * @param maxLimit
+     * @return
+     */
+    public static ParsedToken getMostOperatorPriority(ArrayList<ParsedToken> parsedTokenList, int minLimit, int maxLimit) {
         ParsedToken mostOperator = null;
 
-        for (ParsedToken parsedToken : parsedTokenList) {
-            if (!parsedToken.isOperator() || parsedToken.isProcessed()) {
+        for (int i = minLimit, t = maxLimit; i < t; i++) {
+            ParsedToken parsedToken = parsedTokenList.get(i);
+
+            // function or operator...
+            if (!(parsedToken.isOperator()) || parsedToken.isProcessed()) {
                 continue;
             }
             if (mostOperator == null || mostOperator.getPriority() < parsedToken.getPriority()) {
@@ -127,7 +155,7 @@ public class TokensTools {
                 System.out.println(leftR + "%" + rightR);
                 break;
             case OPERATOR_POWER:
-                result += Math.pow(leftR ,rightR);
+                result += Math.pow(leftR, rightR);
                 System.out.println(leftR + "^" + rightR);
                 break;
 
@@ -136,6 +164,39 @@ public class TokensTools {
         }
         return result;
 
+    }
+
+    public static ParsedToken getMostFunctionPriority(ArrayList<ParsedToken> parsedTokenList) {
+        ParsedToken mostOperator = null;
+
+        for (int i = 0, t = parsedTokenList.size(); i < t; i++) {
+            ParsedToken parsedToken = parsedTokenList.get(i);
+
+            // function or operator...
+            if (!(parsedToken.isFunction()) || parsedToken.isProcessed()) {
+                continue;
+            }
+            if (mostOperator == null || mostOperator.getPriority() < parsedToken.getPriority()) {
+                mostOperator = parsedToken;
+            }
+        }
+
+        return mostOperator;
+    }
+
+    public static boolean allFunctionsAreProcessed(ArrayList<ParsedToken> parsedTokenList) {
+        ParsedToken mostOperator = null;
+
+        for (int i = 0, t = parsedTokenList.size(); i < t; i++) {
+            ParsedToken parsedToken = parsedTokenList.get(i);
+
+            // function or operator...
+            if (parsedToken.isFunction() && !parsedToken.isProcessed()) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
 }

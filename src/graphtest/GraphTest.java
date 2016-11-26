@@ -30,12 +30,12 @@ public class GraphTest {
         
         Scanner s = new Scanner(System.in);
 
-        String math = "";
+        String math = "cos(2+sin(0-0))";
 
-        do {
+       /* do {
             System.out.println("Phrase: ");
             math = s.nextLine();
-        } while (math.length() <= 0);
+        } while (math.length() <= 0);*/
 
         System.out.println("Lancement du parsage...");
 
