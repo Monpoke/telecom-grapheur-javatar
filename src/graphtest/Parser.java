@@ -19,6 +19,7 @@ import graphtest.lexem.Matcher_PAR_CLOSE;
 import graphtest.lexem.Matcher_PAR_OPEN;
 import graphtest.lexem.Matcher_VARIABLE;
 import graphtest.lexem.Matcher_OPERATOR_PLUS;
+import graphtest.lexem.Matcher_OPERATOR_POWER;
 import graphtest.lexem.Rule;
 import graphtest.parsed.ParsedToken;
 import java.util.ArrayList;
@@ -117,6 +118,7 @@ class Parser {
         // OPERATORS
         registeredMatchers.add(new Matcher_OPERATOR_PLUS());
         registeredMatchers.add(new Matcher_OPERATOR_MINUS());
+        registeredMatchers.add(new Matcher_OPERATOR_POWER());
         registeredMatchers.add(new Matcher_OPERATOR_DIVIDE());
         registeredMatchers.add(new Matcher_OPERATOR_MULTIPLY());
         registeredMatchers.add(new Matcher_OPERATOR_MODULO());

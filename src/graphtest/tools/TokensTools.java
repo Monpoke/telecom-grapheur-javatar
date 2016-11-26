@@ -73,8 +73,10 @@ public class TokensTools {
     public static ParsedToken getLeftOperand(ArrayList<ParsedToken> parsedTokenList, int operatorPosition) throws ParsingException {
         System.out.println("looking for left operand: " + operatorPosition);
         operatorPosition--;
-        if(operatorPosition<0) throw new ParsingException("Problème d'index d'opérateur.");
-        
+        if (operatorPosition < 0) {
+            throw new ParsingException("Problème d'index d'opérateur.");
+        }
+
         return parsedTokenList.get(operatorPosition);
     }
 
@@ -87,7 +89,9 @@ public class TokensTools {
      */
     public static ParsedToken getRightOperand(ArrayList<ParsedToken> parsedTokenList, int operatorPosition) throws ParsingException {
         operatorPosition++;
-        if(parsedTokenList.size()<operatorPosition) throw new ParsingException("Problème d'index d'opérateur.");
+        if (parsedTokenList.size() < operatorPosition) {
+            throw new ParsingException("Problème d'index d'opérateur.");
+        }
         return parsedTokenList.get(operatorPosition);
     }
 
@@ -121,6 +125,10 @@ public class TokensTools {
             case OPERATOR_MODULO:
                 result += leftR % rightR;
                 System.out.println(leftR + "%" + rightR);
+                break;
+            case OPERATOR_POWER:
+                result += Math.pow(leftR ,rightR);
+                System.out.println(leftR + "^" + rightR);
                 break;
 
             default:
