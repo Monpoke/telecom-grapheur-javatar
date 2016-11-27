@@ -26,14 +26,15 @@ public class TelecomGrapheurModele extends Observable{
 	}
 	
 	public boolean getDialog(){
-		return this.dialog;
-	}
-	
-	public void setDialog(boolean dialog){
-		this.dialog = dialog;
-		setChanged ();
-		notifyObservers ();
-	}
+		 		return this.dialog;
+		 	}
+		 	
+		 	public void setDialog(boolean dialog){
+		 		this.dialog = dialog;
+		 		setChanged ();
+		 		notifyObservers ();
+		 	}
+		 	
 	
 	public CourbeModele getListesPoints() {
 		return listesPoints;
@@ -41,8 +42,6 @@ public class TelecomGrapheurModele extends Observable{
 	
 	public void setListesPoints(CourbeModele listesPoints) {
 		this.listesPoints = listesPoints;
-		setChanged ();
-		notifyObservers ();
 	}
 	
 	public String getJtext() {

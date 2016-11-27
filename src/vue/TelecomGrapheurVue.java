@@ -1,14 +1,8 @@
 package vue;
 
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Graphics;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.text.DecimalFormat;
 import java.util.Observable;
 import java.util.Observer;
@@ -17,10 +11,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import controleur.TelecomGrapheurControleur;
-import modele.Constantes;
+import sun.util.logging.resources.logging;
 import modele.PointModele;
 import modele.TelecomGrapheurModele;
+import controleur.TelecomGrapheurControleur;
 
 public class TelecomGrapheurVue extends JPanel implements Observer{
 
@@ -73,8 +67,8 @@ public class TelecomGrapheurVue extends JPanel implements Observer{
 	"- L’ajout de points. Il est possible, en double cliquant, de créer un point sur le graphique. Son nom ainsi que ses coordonnées s’affichent à côté du point.\n" +
 	"- Le retrait du point. En faisant un clic droit sur un point créé, le point disparaitra.\n " +
 	"- Le curseur. A tout moment, si une courbe est dessinée, un curseur suit la souris sur la courbe pour avoir plus de précision sur un point de la courbe. Ces coordonnées s’affichent en haut à gauche.\n");
-			} catch (Exception e) {
-				// TODO: handle exception
+			} catch (NullPointerException e) {
+				System.out.println("ici");
 			}
 
 		}

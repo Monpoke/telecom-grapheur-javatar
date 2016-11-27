@@ -6,24 +6,24 @@
 package graphtest.parsed;
 
 /**
- * This class reprensents a sin function
+ * This class reprensents a number
  */
-public class TOK_FCT_POW extends ParsedToken implements ParsedTokenInterface {
+public class TOK_OPERATOR_MODULO extends ParsedToken implements ParsedTokenInterface {
     
-    public TOK_FCT_POW() {
-        this.parsedType = TokenType.FCT_POW;
+    public TOK_OPERATOR_MODULO() {
+        this.parsedType = TokenType.OPERATOR_MODULO;
     }
-
+    
+    
     @Override
-    public boolean isFunction() {
-        return true;
+    public boolean isOperator() {
+        return true; 
     }
 
+    
     @Override
     public String toString() {
-        return "POW";
+        return "MODULO";
     }
-    
-    
     
 }
