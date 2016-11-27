@@ -69,11 +69,21 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
 				this.modele.getListesPoints().getListePoints().add(new PointModele(e.getX(), e.getY()-1000000000));
 			}
 		}
-		else if(!this.modele.getListesPoints().getListePoints().isEmpty()){
-			for (PointModele p : this.modele.getListesPoints().getListePoints()) {
-				if(e.getX()>p.getX()-3 && e.getX()<p.getX()+3 && e.getY()>p.getY()-3 && e.getY()<p.getY()+3){
-					this.modele.getListesPoints().getListePoints().remove(p);
-					break;
+		else {
+			if(!this.modele.getListesPoints().getListePoints().isEmpty()){
+				for (PointModele p : this.modele.getListesPoints().getListePoints()) {
+					if(e.getX()>p.getX()-3 && e.getX()<p.getX()+3 && e.getY()>p.getY()-3 && e.getY()<p.getY()+3){
+						this.modele.getListesPoints().getListePoints().remove(p);
+						break;
+					}
+				}
+			}
+			else if(!this.modele.getCourbe().getListePoints().isEmpty()){
+				for (PointModele p : this.modele.getCourbe().getListePoints()) {
+					if(e.getX()>p.getX()-3 && e.getX()<p.getX()+3 && e.getY()>p.getY()-3 && e.getY()<p.getY()+3){
+						this.modele.getCourbe().getListePoints().clear();
+						break;
+					}
 				}
 			}
 		}
@@ -107,10 +117,10 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
 		this.modele.getOrigin().setX(e.getX()+this.decalageXOrigin);
 		this.modele.getOrigin().setY(e.getY()+this.decalageYOrigin);
 		if(fonction!=null){
-			this.modele.getCursor().setX(e.getX());
 			for (PointModele p : this.modele.getCourbe().getListePoints()) {
 				if(p.getX()==e.getX()){
 					this.modele.getCursor().setY(p.getY());
+					this.modele.getCursor().setX(e.getX());
 				}
 			}
 		}
@@ -150,7 +160,6 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
 
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
-		this.modele.getCourbe().videListe();
 		ArrayList<PointModele> listeTemp = new ArrayList<PointModele>();
 		int notches = e.getWheelRotation(); 
 		if (notches < 0) { 
@@ -219,12 +228,16 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getActionCommand()!="Aide"){ // le jtextfield
-			this.fonction = e.getActionCommand();
-			this.modele.getCourbe().videListe();
-			eval = GraphTest.lancementProjet(e.getActionCommand());
-			for(int i = this.modele.getBornes().getBorneXLeft(); i < this.modele.getBornes().getBorneXRight();i+=2){
-				double x = (i+this.modele.getOrigin().getX());
-				this.modele.getCourbe().setPoints(new PointModele((int) (x),  (int) (-GraphTest.evaluateur(eval, (i/(this.modele.getAxeModeleY().getTailleCase()/this.modele.getAxeModeleY().getPas())))*this.modele.getAxeModeleY().getTailleCase()/this.modele.getAxeModeleY().getPas()+ this.modele.getOrigin().getY())));
+			try {
+				this.fonction = e.getActionCommand();
+				this.modele.getCourbe().videListe();
+				eval = GraphTest.lancementProjet(e.getActionCommand());
+				for(int i = this.modele.getBornes().getBorneXLeft(); i < this.modele.getBornes().getBorneXRight();i+=2){
+					double x = (i+this.modele.getOrigin().getX());
+					this.modele.getCourbe().setPoints(new PointModele((int) (x),  (int) (-GraphTest.evaluateur(eval, (i/(this.modele.getAxeModeleY().getTailleCase()/this.modele.getAxeModeleY().getPas())))*this.modele.getAxeModeleY().getTailleCase()/this.modele.getAxeModeleY().getPas()+ this.modele.getOrigin().getY())));
+				}
+			} catch (Exception e2) {
+				// TODO: handle exception
 			}
 		}
 		else if (e.getActionCommand()=="Aide"){

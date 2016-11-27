@@ -43,7 +43,7 @@ public class TelecomGrapheurVue extends JPanel implements Observer{
 		this.setSize(new Dimension(this.fenetre.getWidth()-50,this.fenetre.getHeight()));
 		this.text.addActionListener(telecomGrapheurControleur); 
 	}
-	
+
 	/**
 	 * Ajout les observers aux modeles
 	 */
@@ -64,15 +64,27 @@ public class TelecomGrapheurVue extends JPanel implements Observer{
 	@Override
 	public void paint(Graphics g) {
 		if(this.modele.getDialog()){
+			System.out.println(this.modele.getDialog());
 			this.modele.setDialog(false);
-			JOptionPane.showMessageDialog(this,
-				    "Eggs are not supposed to be green.");
+			try {
+				JOptionPane.showMessageDialog(this,
+						"- Le zoom. Grâce à la molette, il est possible de zoomer ainsi que dezoomer. La grille s’adaptera pour permettre une meilleure visibilité.\n" +
+	"- Le déplacement du graphique. En restant appuyer sur le clic gauche et en déplaçant la souris, cela permet de voir d’autre partie du graphique\n" +
+	"- L’ajout de points. Il est possible, en double cliquant, de créer un point sur le graphique. Son nom ainsi que ses coordonnées s’affichent à côté du point.\n" +
+	"- Le retrait du point. En faisant un clic droit sur un point créé, le point disparaitra.\n " +
+	"- Le curseur. A tout moment, si une courbe est dessinée, un curseur suit la souris sur la courbe pour avoir plus de précision sur un point de la courbe. Ces coordonnées s’affichent en haut à gauche.\n");
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+
 		}
 		g.clearRect(0, 0, this.fenetre.getWidth(), this.fenetre.getHeight()); //efface tout	
 		this.drawQuadrillage(g);
 		this.drawAxeXY(g);
 		this.drawFunction(g);
-		this.drawCursor(g);
+		if(!this.modele.getCourbe().getListePoints().isEmpty()){
+			this.drawCursor(g);
+		}
 		//this.modele.createCourbe();
 		this.drawPoints(g);
 	}
@@ -157,7 +169,7 @@ public class TelecomGrapheurVue extends JPanel implements Observer{
 	public void update(Observable arg0, Object arg1) {
 		repaint();
 	}
-	
+
 	/**
 	 * Dessine la fonction
 	 * @param g
@@ -165,8 +177,8 @@ public class TelecomGrapheurVue extends JPanel implements Observer{
 	public void drawFunction(Graphics g){
 		// fonction y=cos(x) temp
 		for (PointModele point : this.modele.getCourbe().getListePoints()) {
-//			System.out.println("x = " + point.getX());
-//			System.out.println("y = " +point.getY());
+			//			System.out.println("x = " + point.getX());
+			//			System.out.println("y = " +point.getY());
 			//g.drawLine((int) point.getX(),(int) point.getY(),(int) point.getX(),(int) point.getY());
 			g.fillOval((int) point.getX()-3,(int) point.getY()-3,6,6);
 		}
@@ -183,7 +195,7 @@ public class TelecomGrapheurVue extends JPanel implements Observer{
 		double x = ((this.modele.getCursor().getX()-this.modele.getOrigin().getX())/this.modele.getAxeModeleX().getTailleCase())*this.modele.getAxeModeleX().getPas();
 		double y = -((this.modele.getCursor().getY()-this.modele.getOrigin().getY())/this.modele.getAxeModeleY().getTailleCase())*this.modele.getAxeModeleY().getPas();
 		DecimalFormat df = new DecimalFormat ( ) ; 
-		df.setMaximumFractionDigits ( 2 ) ;
+		df.setMaximumFractionDigits ( 3 ) ;
 		g.drawString("Coordonnées ( " + df.format(x) + " , " + df.format(y) + " ) ", 50, 50);
 	}
 
@@ -207,7 +219,7 @@ public class TelecomGrapheurVue extends JPanel implements Observer{
 			}
 		}
 	}
-	
+
 	public FenetreContener getFenetre() {
 		return fenetre;
 	}
