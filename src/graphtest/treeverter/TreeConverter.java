@@ -93,6 +93,7 @@ public class TreeConverter {
         // for only one token
         if (nbElementsInList() == 1) {
             ParsedToken number = parsedTokenList.get(leftLimit);
+            number.setProcessed(true);
             if (number instanceof TOK_NUMBER || number instanceof TOK_VARIABLE) {
                 allNodes.add(new TreeNode(number));
             } else {
@@ -137,6 +138,7 @@ public class TreeConverter {
             // left operand
             ParsedToken leftOperand = TokensTools.getLeftOperand(parsedTokenList, operatorPosition);
 
+            // IF THERE ARE TWO FOLLOWING OPERATORS
             if(leftOperand.isOperator() || rightOperand.isOperator()){
                 throw new ParsingException("Deux opérateurs ne peuvent se suivre...");
             }
@@ -153,6 +155,8 @@ public class TreeConverter {
 
                 System.out.println("___________________________");
                 continue;
+            } else {
+                System.out.println("Neither of operands are processed...");
             }
 
             TreeNode thisNode = new TreeNode(operator, leftOperand, rightOperand);
@@ -444,6 +448,8 @@ public class TreeConverter {
 
                     System.out.println("Final node for function " + function.toString());
                     bTreePrinter.printNode(functionTree);
+                    
+                    resetLimits();
 
                 }
             }

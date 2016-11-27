@@ -29,7 +29,7 @@ import java.util.List;
  *
  * @author A643012
  */
-class Parser {
+public class Parser {
 
     private List<Rule> registeredMatchers = new ArrayList<>();
     private ArrayList<ParsedToken> parsedTokenList = new ArrayList<>();
