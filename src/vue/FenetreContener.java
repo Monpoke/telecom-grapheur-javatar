@@ -14,13 +14,17 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import controleur.TelecomGrapheurControleur;
 import modele.Constantes;
+import modele.TelecomGrapheurModele;
 
 public class FenetreContener extends JFrame { // Fenetre dans laquelle est contenu tous le projet
 
-    JTextField text;
-    JButton btn;
-
+    JTextField text = new JTextField();
+    JButton btn = new JButton("Aide");
+	TelecomGrapheurModele modele = new TelecomGrapheurModele();
+	TelecomGrapheurControleur controleur = new TelecomGrapheurControleur(modele);
+	TelecomGrapheurVue graph = new TelecomGrapheurVue(this,modele,controleur);
 
     public FenetreContener() {
         this.setSize(Constantes.width, Constantes.height);
@@ -37,13 +41,12 @@ public class FenetreContener extends JFrame { // Fenetre dans laquelle est conte
         grandContainer.setLayout(new BorderLayout());
         Container petitContainer = new Container();
         petitContainer.setLayout(new BorderLayout());
-        text = new JTextField();
         text.setPreferredSize(new Dimension(this.getWidth() - 60, 30));
         petitContainer.add("East", text);
         petitContainer.add("West", new JLabel(" f(x) = "));
         grandContainer.add("South", petitContainer);
-        btn = new JButton("Aide");
         grandContainer.add("North",btn);
+        grandContainer.add("Center",graph);
     }
 
     public void addControllerOnJTextField(ActionListener listener) {

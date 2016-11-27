@@ -31,10 +31,10 @@ public class TelecomGrapheurVue extends JPanel implements Observer{
 		this.ajoutObserver();
 		this.fenetre.addControllerOnJTextField(telecomGrapheurControleur);
 		this.fenetre.addControllerOnBtn(telecomGrapheurControleur);
-		this.addMouseListener(telecomGrapheurControleur);
-		this.addMouseMotionListener(telecomGrapheurControleur);
-		this.addMouseWheelListener(telecomGrapheurControleur);
-		this.setSize(new Dimension(this.fenetre.getWidth()-50,this.fenetre.getHeight()));
+		this.fenetre.addMouseListener(telecomGrapheurControleur);
+		this.fenetre.addMouseMotionListener(telecomGrapheurControleur);
+		this.fenetre.addMouseWheelListener(telecomGrapheurControleur);
+		this.setSize(new Dimension(this.fenetre.getWidth(),this.fenetre.getHeight()-60));
 		this.text.addActionListener(telecomGrapheurControleur); 
 	}
 
@@ -58,7 +58,6 @@ public class TelecomGrapheurVue extends JPanel implements Observer{
 	@Override
 	public void paint(Graphics g) {
 		if(this.modele.getDialog()){
-			System.out.println(this.modele.getDialog());
 			this.modele.setDialog(false);
 			try {
 				JOptionPane.showMessageDialog(this,
