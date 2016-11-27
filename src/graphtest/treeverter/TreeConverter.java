@@ -91,7 +91,11 @@ public class TreeConverter {
         System.out.println("CREATE TREE FOR THESE LIMITS: " + leftLimit + " -> " + rightLimit);
 
         // for only one token
-        if (nbElementsInList() == 1) {
+        int nb=nbElementsInList();
+        if(nb==0){
+            throw new ParsingException("L'expression n'est pas valide.");
+        }
+        else if (nb == 1) {
             ParsedToken number = parsedTokenList.get(leftLimit);
             number.setProcessed(true);
             if (number instanceof TOK_NUMBER || number instanceof TOK_VARIABLE) {
