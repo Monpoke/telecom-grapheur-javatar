@@ -31,7 +31,7 @@ public class PriorityTools {
         
         int coefNbToken = coefficientCalculator(priorityArray);
         long coefTokenRule = coefNbToken;
-        boolean reverseDivide = false;
+        boolean reverseDivide = false;  // if there is a divide operator in the expression
         
         for(int i=0;i<priorityArray.size();i++){
             
@@ -47,14 +47,26 @@ public class PriorityTools {
             if((priorityArray.get(i) instanceof TOK_OPERATOR_MULTIPLY || priorityArray.get(i) instanceof TOK_OPERATOR_DIVIDE )&& priorityArray.get(i+1) instanceof TOK_PAR_OPEN){
                 // Avoiding [(y+x)*(y+x)] multiply's problem priority -> Multiply Token shall have a coef of priority as high as the next parenthesis expression
                 priorityArray.get(i).setPriority(i+coefTokenRule*PriorityRules.TOK_OPERATOR_MULTIPLY_RULE.getPriorityValue());  // Multiply and Divide Token Rule shall be the same for mathemical priority reason
-            }else if(false){
-                // reverse divide
             }else if(schemaXOperatorY(priorityArray,i)){
                 // When x+y the lexical order prevail -> no use of the token values
                 priorityArray.get(i).setPriority(i+coefTokenRule);
             }else{
                 // Regular case of calculation
                 priorityArray.get(i).setPriority(regularPriorityCalculation(priorityArray,coefTokenRule,i));
+            }
+            
+            // Avoiding multiple check, if there is at least one divide, redo a for on all the priorityArray. If not, allow to avoid
+            if(!reverseDivide && priorityArray.get(i) instanceof TOK_OPERATOR_DIVIDE){
+                reverseDivide = true;
+            }
+        }
+        
+        // Reverse divide priority
+        if(reverseDivide){
+            for(int i=0;i<priorityArray.size();i++){
+                if(priorityArray.get(i) instanceof TOK_OPERATOR_DIVIDE){
+                    reverseDividePriority(priorityArray,i);
+                }
             }
         }
         
@@ -196,6 +208,101 @@ public class PriorityTools {
         }while(nbClose > nbOpen && i>=0);
         
         return i;
+    }
+    
+    /**
+     * Reverse the priority of the numerator and divisor
+     * of the detected division directly in the list
+     * @param priorityArray
+     * @param i 
+     */
+    public static void reverseDividePriority(ArrayList<ParsedToken> priorityArray, int index){
+        int numeratorStartIndex = index-1;
+        int denominatorEndIndex = index+1;
+        int nbTokenDenominator = 1;
+        int nbTokenNumerator = 1;
+        
+        // Classical case x/y swap
+        if(!(priorityArray.get(index-1) instanceof TOK_PAR_CLOSE) && !(priorityArray.get(index+1) instanceof TOK_PAR_OPEN)){
+            long prioNumerator = priorityArray.get(index-1).getPriority();
+            priorityArray.get(index-1).setPriority(priorityArray.get(index+1).getPriority());
+            priorityArray.get(index+1).setPriority(prioNumerator);
+        }else{
+            // Numerator multiple
+            if(priorityArray.get(index-1) instanceof TOK_PAR_CLOSE){
+                int nbClose = 1;
+                int j = index-2;
+
+                while(j>=0 && priorityArray.get(j) instanceof TOK_PAR_CLOSE){
+                    nbClose++;
+                    j--;
+                }
+
+                while(j>=0 && nbClose>0){
+                    numeratorStartIndex = j;
+
+                    if(priorityArray.get(j) instanceof TOK_PAR_OPEN){
+                        nbClose--;
+                    }
+                    if(!(priorityArray.get(j) instanceof TOK_PAR_OPEN) && !(priorityArray.get(0) instanceof TOK_PAR_CLOSE)){
+                        nbTokenNumerator++;
+                }
+                    j--;
+                }
+            }
+            // Denominator multiple
+            if(priorityArray.get(index+1) instanceof TOK_PAR_OPEN){
+                int nbOpen = 1;
+                int k=index+2;
+
+                while(k<priorityArray.size() && priorityArray.get(k) instanceof TOK_PAR_OPEN){
+                    nbOpen++;
+                    k++;
+                }
+
+                while(k<priorityArray.size() && nbOpen>0){
+                    denominatorEndIndex = k;
+
+                    if(priorityArray.get(k) instanceof TOK_PAR_CLOSE){
+                        nbOpen--;
+                    }
+                    if(!(priorityArray.get(k) instanceof TOK_PAR_CLOSE) && !(priorityArray.get(k) instanceof TOK_PAR_OPEN)){
+                        nbTokenDenominator++;
+                    }
+                    k++;
+                }
+            }
+            // Regular multiple expression swap : (x+y)/(z+w)
+            if(nbTokenDenominator==nbTokenNumerator){
+                int indexCp = index;
+                for(int nsi=numeratorStartIndex;nsi<index;nsi++){
+                    long tmp = priorityArray.get(nsi).getPriority();
+                    priorityArray.get(nsi).setPriority(priorityArray.get(indexCp+1).getPriority());
+                    priorityArray.get(indexCp+1).setPriority(tmp);
+                    indexCp++;
+                }
+            }else{
+                // Denominator or Numerator tokens number different, expression swap like : x/(y+z)
+                int indexEndSwap =0;
+                
+                // Swap the max we can, then add
+                for(int nsi=numeratorStartIndex, dei=index+1;(nsi<index && dei<=denominatorEndIndex);nsi++,dei++){
+                    long tmp = priorityArray.get(nsi).getPriority();
+                    priorityArray.get(nsi).setPriority(priorityArray.get(dei).getPriority());
+                    priorityArray.get(dei).setPriority(tmp);
+                    indexEndSwap++;
+                }
+                
+                if(numeratorStartIndex+indexEndSwap>=index){
+                    for(int i=index+indexEndSwap;i<=denominatorEndIndex;i++){
+                        priorityArray.get(i).setPriority(priorityArray.get(i-1).getPriority()+1);
+                    }
+                }else{
+                    // reverse denominator
+                    for()
+                }
+            }
+        }
     }
     
     /**
