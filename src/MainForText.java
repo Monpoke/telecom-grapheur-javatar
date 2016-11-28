@@ -1,7 +1,4 @@
 
-import modele.TelecomGrapheurModele;
-import controleur.TelecomGrapheurControleur;
-import graphtest.MathParser;
 import graphtest.Parser;
 import graphtest.TreeNode;
 import graphtest.evaluator.Evaluator;
@@ -14,8 +11,6 @@ import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import vue.FenetreContener;
-import vue.TelecomGrapheurVue;
 
 public class MainForText {
 

@@ -7,7 +7,9 @@ package graphtest.evaluator;
 
 import graphtest.BTreePrinter;
 import graphtest.TreeNode;
+import graphtest.exceptions.MathException;
 import graphtest.exceptions.ParsingException;
+import graphtest.exceptions.UnexpectedException;
 import graphtest.exceptions.VariableException;
 import graphtest.parsed.TOK_NUMBER;
 import graphtest.parsed.TokenType;
@@ -90,7 +92,7 @@ public class Evaluator {
      * @return
      * @throws java.lang.Exception
      */
-    protected double process(TreeNode node) throws Exception {
+    protected double process(TreeNode node) throws ParsingException, VariableException, MathException, UnexpectedException {
         double result = 0;
 
         // NO OPERATOR? KILLL
@@ -115,6 +117,13 @@ public class Evaluator {
             return variables.get(node.getToken().getVariableName()).getValue();
         }
 
+        /**
+         * Throw MathException
+         */
+        if (!Double.isFinite(result)) {
+            throw new MathException("Résultat non fini...");
+        }
+
         //  System.out.println("returns=> " + result);
         return result;
     }
@@ -125,7 +134,7 @@ public class Evaluator {
      * @param node
      * @return
      */
-    private double processOperators(TreeNode node) throws Exception {
+    private double processOperators(TreeNode node) throws UnexpectedException, ParsingException, VariableException, MathException {
         double leftR, rightR;
 
         leftR = process(node.getLeft());
@@ -140,7 +149,7 @@ public class Evaluator {
      * @param node
      * @return
      */
-    private double processFunction(TreeNode node) throws Exception {
+    private double processFunction(TreeNode node) throws ParsingException, VariableException, MathException, UnexpectedException  {
         double leftR, result = 0;
 
         switch (node.getToken().getParsedType()) {

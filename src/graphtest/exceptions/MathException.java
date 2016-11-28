@@ -9,13 +9,13 @@ package graphtest.exceptions;
  *
  * @author A643012
  */
-public class ParsingException extends Exception {
+public class MathException extends Exception {
 
     /**
      * Creates a new instance of <code>ParsingException</code> without detail
      * message.
      */
-    public ParsingException() {
+    public MathException() {
     }
 
     /**
@@ -24,11 +24,11 @@ public class ParsingException extends Exception {
      *
      * @param msg the detail message.
      */
-    public ParsingException(String msg) {
+    public MathException(String msg) {
         super(msg);
     }
 
-    public ParsingException(Exception parserException) {
+    public MathException(Exception parserException) {
         super(parserException);
     }
 }
