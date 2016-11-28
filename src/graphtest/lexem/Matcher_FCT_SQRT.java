@@ -6,7 +6,8 @@
 package graphtest.lexem;
 
 import graphtest.parsed.ParsedToken;
-import graphtest.parsed.TOK_VARIABLE;
+import graphtest.parsed.TOK_FCT_SIN;
+import graphtest.parsed.TOK_FCT_SQRT;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,16 +15,16 @@ import java.util.regex.Pattern;
  *
  * @author A643012
  */
-public class Matcher_CONSTANT extends Lexem implements Rule {
+public class Matcher_FCT_SQRT extends Lexem implements Rule {
 
-    public final static String NAME = "CONSTANT";
-    
-    public Matcher_CONSTANT() {
+    public final static String NAME = "FCT_SQRT";
+
+    public Matcher_FCT_SQRT() {
     }
 
     @Override
     public ParsedToken match(String sentence) {
-        pattern = Pattern.compile("^(pi)");
+        pattern = Pattern.compile("^(sqrt)");
         Matcher matcher = pattern.matcher(sentence);
 
         boolean r = matcher.find();
@@ -32,7 +33,7 @@ public class Matcher_CONSTANT extends Lexem implements Rule {
             lastMatch = (matcher.group(0));
             movePointerFromX = lastMatch.length();
 
-            return new TOK_VARIABLE(lastMatch);
+            return new TOK_FCT_SQRT();
         }
 
         return null;

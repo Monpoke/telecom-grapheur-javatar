@@ -9,6 +9,7 @@ import graphtest.exceptions.ParsingException;
 import graphtest.lexem.Matcher_CONSTANT;
 import graphtest.lexem.Matcher_FCT_COS;
 import graphtest.lexem.Matcher_FCT_SIN;
+import graphtest.lexem.Matcher_FCT_SQRT;
 import graphtest.lexem.Matcher_FCT_TAN;
 import graphtest.lexem.Matcher_NUMBER;
 import graphtest.lexem.Matcher_OPERATOR_DIVIDE;
@@ -26,13 +27,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * This class analyses a simple mathematical string.
  *
- * @author A643012
+ * @author Pierre BOURGEOIS
  */
 public class Parser {
 
-    private List<Rule> registeredMatchers = new ArrayList<>();
-    private ArrayList<ParsedToken> parsedTokenList = new ArrayList<>();
+    private final List<Rule> registeredMatchers = new ArrayList<>();
+    private final ArrayList<ParsedToken> parsedTokenList = new ArrayList<>();
 
     /**
      * Contains the original phrase to process
@@ -46,17 +48,28 @@ public class Parser {
 
         startParser();
     }
-    
-    private String cleanMath(String input){
+
+    /**
+     * Clean an input from spaces.
+     *
+     * @param input
+     * @return
+     */
+    private String cleanMath(String input) {
         input = input.trim().replace(" ", "");
         return input;
     }
 
+    /**
+     * Main function of the parser.
+     *
+     * @throws ParsingException
+     */
     private void startParser() throws ParsingException {
 
         int i = 0;
         String remaining = math.substring(i);
-        // avancement caractère par caractère
+        // Move forward, char by char
         do {
             boolean found = false;
 
@@ -64,19 +77,22 @@ public class Parser {
                 break;
             }
 
+            /**
+             * Loop on all matchers registered.
+             */
             for (Rule rule : registeredMatchers) {
 
                 // reset rule
                 rule.reset();
 
                 try {
-                    
+
                     /**
                      * IF THE MATCHER HAS FOUND SMTH
                      */
                     ParsedToken match = rule.match(remaining);
                     if (match != null) {
-                        
+
                         // Move the pointer from the length of matched content
                         i += rule.movePointerFrom();
 
@@ -89,21 +105,20 @@ public class Parser {
                 } catch (Exception parserException) {
                     System.out.println("ERROR..." + parserException.getMessage());
                     parserException.printStackTrace();
-                    
+
                     throw new ParsingException(parserException);
                 }
             }
 
             if (!found) {
                 i++;
-                
+
                 throw new ParsingException("Unknown token -> " + remaining);
             }
 
             remaining = math.substring(i);
         } while (!remaining.isEmpty());
 
-        
         displayTokensList(parsedTokenList);
     }
 
@@ -114,7 +129,7 @@ public class Parser {
 
         // CHECK NUMBER
         registeredMatchers.add(new Matcher_NUMBER());
-        
+
         // OPERATORS
         registeredMatchers.add(new Matcher_OPERATOR_PLUS());
         registeredMatchers.add(new Matcher_OPERATOR_MINUS());
@@ -123,8 +138,8 @@ public class Parser {
         registeredMatchers.add(new Matcher_OPERATOR_MULTIPLY());
         registeredMatchers.add(new Matcher_OPERATOR_MODULO());
 
-
         // FCTS
+        registeredMatchers.add(new Matcher_FCT_SQRT());
         registeredMatchers.add(new Matcher_FCT_SIN());
         registeredMatchers.add(new Matcher_FCT_COS());
         registeredMatchers.add(new Matcher_FCT_TAN());
@@ -132,10 +147,10 @@ public class Parser {
         // PARENTHESIS
         registeredMatchers.add(new Matcher_PAR_OPEN());
         registeredMatchers.add(new Matcher_PAR_CLOSE());
-        
+
         // detect constant
         registeredMatchers.add(new Matcher_CONSTANT());
-        
+
         // last rule, variable. If registered before, functions won't be processed
         registeredMatchers.add(new Matcher_VARIABLE());
     }
@@ -144,17 +159,16 @@ public class Parser {
         return parsedTokenList;
     }
 
-    
-    
     /**
      * Displays a list of parsed tokens.
-     * @param parsedTokenList 
+     *
+     * @param parsedTokenList
      */
     private void displayTokensList(List<ParsedToken> parsedTokenList) {
         System.out.println("FIRST STEP: ANALYSE SYNTAXIQUE");
-        
-        for(ParsedToken parsed : parsedTokenList){
-            System.out.println(parsed.getClass().getName() +"\t" + parsed.getValue() + "\t" + parsed.getVariableName());
+
+        for (ParsedToken parsed : parsedTokenList) {
+            System.out.println(parsed.getClass().getName() + "\t" + parsed.getValue() + "\t" + parsed.getVariableName());
         }
     }
 

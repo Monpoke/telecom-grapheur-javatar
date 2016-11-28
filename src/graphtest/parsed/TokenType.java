@@ -27,6 +27,7 @@ public enum TokenType {
     FCT_SIN(8),
     FCT_COS(8),
     FCT_TAN(8),
+    FCT_SQRT(8),
     UNKNOWN_TOKEN;
 
     private int defaultPriority = 1;

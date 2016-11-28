@@ -8,19 +8,17 @@ package graphtest.evaluator;
 import graphtest.BTreePrinter;
 import graphtest.TreeNode;
 import graphtest.exceptions.ParsingException;
-import graphtest.exceptions.UnexpectedException;
 import graphtest.exceptions.VariableException;
-import graphtest.parsed.ParsedToken;
 import graphtest.parsed.TOK_NUMBER;
 import graphtest.parsed.TokenType;
 import graphtest.tools.TokensTools;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * The evaluator needs a tree to work.
  *
- * @author A643012
+ * @author Pierre BOURGEOIS
  */
 public class Evaluator {
 
@@ -30,6 +28,12 @@ public class Evaluator {
     private final TreeNode root;
     private Map<String, Variable> variables;
 
+    /**
+     * Constructor.
+     *
+     * @param root
+     * @throws Exception
+     */
     public Evaluator(TreeNode root) throws Exception {
         this.root = root;
 
@@ -38,7 +42,7 @@ public class Evaluator {
         BTreePrinter bTreePrinter = new BTreePrinter();
         System.out.println("Simplified tree:");
         bTreePrinter.printNode(root);
-        
+
         resetScope();
     }
 
@@ -54,6 +58,7 @@ public class Evaluator {
     }
 
     /**
+     * Add a variable into the scope.
      *
      * @param variable
      */
@@ -63,8 +68,9 @@ public class Evaluator {
 
     /**
      * Call this method to evaluate with the current scope.
+     *
      * @return
-     * @throws Exception 
+     * @throws Exception
      */
     public double evaluate() throws Exception {
         double result = 0;
@@ -78,7 +84,7 @@ public class Evaluator {
     }
 
     /**
-     * Process
+     * Process by recursive method.
      *
      * @param node
      * @return
@@ -88,10 +94,10 @@ public class Evaluator {
         double result = 0;
 
         // NO OPERATOR? KILLL
-        if(node == null || node.getToken()==null){
+        if (node == null || node.getToken() == null) {
             throw new ParsingException("Token nul...");
         }
-        
+
         if (node.getToken().isOperator()) {
             result += processOperators(node);
 
@@ -109,12 +115,12 @@ public class Evaluator {
             return variables.get(node.getToken().getVariableName()).getValue();
         }
 
-      //  System.out.println("returns=> " + result);
+        //  System.out.println("returns=> " + result);
         return result;
     }
 
     /**
-     * Operators
+     * Operators.
      *
      * @param node
      * @return
@@ -129,7 +135,7 @@ public class Evaluator {
     }
 
     /**
-     * Functions
+     * Functions.
      *
      * @param node
      * @return
@@ -138,6 +144,10 @@ public class Evaluator {
         double leftR, result = 0;
 
         switch (node.getToken().getParsedType()) {
+            case FCT_SQRT:
+                leftR = Math.sqrt(process(node.getLeft()));
+                result += leftR;
+                break;
             case FCT_COS:
                 leftR = Math.cos(process(node.getLeft()));
                 result += leftR;
@@ -157,53 +167,12 @@ public class Evaluator {
     }
 
     /**
+     * Allows the simplification of a tree.
      *
-     * @param parsedTokenList
+     * @param node
+     * @return
+     * @throws Exception
      */
-    public static void simplifyCompute(ArrayList<ParsedToken> parsedTokenList) throws UnexpectedException, ParsingException {
-
-        // foreach each token, simplify
-        while (true != TokensTools.areAllProcessed(parsedTokenList)) {
-
-            ParsedToken operator = TokensTools.getMostOperatorPriority(parsedTokenList);
-            int operatorPosition = parsedTokenList.indexOf(operator);
-
-            ParsedToken leftOperand = TokensTools.getLeftOperand(parsedTokenList, operatorPosition);
-            ParsedToken rightOperand = TokensTools.getRightOperand(parsedTokenList, operatorPosition);
-
-            /*
-           If both operand are numbers, we can compute them
-             */
-            // check processed
-            if (operator != null) {
-                operator.setProcessed(true);
-            }
-
-            if (leftOperand != null) {
-                leftOperand.setProcessed(true);
-            }
-
-            if (rightOperand != null) {
-                rightOperand.setProcessed(true);
-            }
-
-            // if one of them is null, continue
-            if (operator == null || leftOperand == null || rightOperand == null) {
-                continue;
-            } else if (!(leftOperand instanceof TOK_NUMBER) // none of the operand are number
-                    || !(rightOperand instanceof TOK_NUMBER)) {
-                continue;
-            }
-
-            // simplify
-            TOK_NUMBER simplification = new TOK_NUMBER(TokensTools.compute(operator, leftOperand.getValue(), rightOperand.getValue()));
-            System.out.println("Simplification: " + leftOperand.toString() + " " + operator.toString() + " " + rightOperand.toString() + " => " + simplification.toString());
-
-        }
-
-        TokensTools.eraseProcessed(parsedTokenList);
-    }
-
     private boolean simplifyCompute(TreeNode node) throws Exception {
 
         // LEFT
@@ -228,9 +197,10 @@ public class Evaluator {
 
     /**
      * In order to simplify the tree.
+     *
      * @param node
      * @return
-     * @throws Exception 
+     * @throws Exception
      */
     private boolean simplifyComputeProcess(TreeNode node) throws Exception {
 
@@ -248,8 +218,7 @@ public class Evaluator {
         node.setToken(new TOK_NUMBER(result));
         node.setLeft(null);
         node.setRight(null);
-        
-        
+
         return true;
     }
 

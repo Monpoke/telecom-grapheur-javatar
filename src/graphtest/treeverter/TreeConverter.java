@@ -55,12 +55,59 @@ public class TreeConverter {
 
         List<TreeNode> createTree = this.createTree();
 
+        // reassemble nodes if needed
+        reassembleNodes(createTree);
+
         if (createTree.size() == 1) {
             root = createTree.iterator().next();
         } else {
-            throw new ParsingException("Erreur de parsage.");
+            /**
+             * display wrong nodes
+             */
+
+            System.out.println("WRONG NODES");
+            for (TreeNode treeNode : createTree) {
+                bTreePrinter.printNode(treeNode);
+            }
+
+            throw new ParsingException("Erreur de parsage. Stack different from 1");
         }
 
+    }
+
+    private boolean reassembleNodes(List<TreeNode> resultTree) {
+        if (resultTree.size() <= 1) {
+            return false;
+        }
+
+        // at least 2 nodes
+        int size = resultTree.size();
+        for (int i = 1; i < size; i++) {
+            TreeNode previous = resultTree.get(i - 1);
+            TreeNode node = resultTree.get(i);
+
+            // assemble with previous one
+            if (assembleNodes(previous, node)) {
+                resultTree.remove(node);
+            }
+
+        }
+
+        return true;
+    }
+
+    private boolean assembleNodes(TreeNode originTree, TreeNode toAssemble) {
+        if (originTree == null) {
+            return false;
+        }
+
+        if (originTree.getToken() == toAssemble.getToken()) {
+            originTree.setLeft(toAssemble.getLeft());
+            originTree.setRight(toAssemble.getRight());
+            return true;
+        }
+
+        return assembleNodes(originTree.getLeft(), toAssemble) || assembleNodes(originTree.getRight(), toAssemble);
     }
 
     /**
@@ -73,11 +120,12 @@ public class TreeConverter {
 
     /**
      * Returns the nb in the list, following the limits
-     * @return 
+     *
+     * @return
      */
     private int nbElementsInList() {
         System.out.println((rightLimit - leftLimit));
-        return (rightLimit - leftLimit) ;
+        return (rightLimit - leftLimit);
     }
 
     /**
@@ -91,17 +139,16 @@ public class TreeConverter {
         System.out.println("CREATE TREE FOR THESE LIMITS: " + leftLimit + " -> " + rightLimit);
 
         // for only one token
-        int nb=nbElementsInList();
-        if(nb==0){
+        int nb = nbElementsInList();
+        if (nb == 0) {
             throw new ParsingException("L'expression n'est pas valide.");
-        }
-        else if (nb == 1) {
+        } else if (nb == 1) {
             ParsedToken number = parsedTokenList.get(leftLimit);
             number.setProcessed(true);
             if (number instanceof TOK_NUMBER || number instanceof TOK_VARIABLE) {
                 allNodes.add(new TreeNode(number));
             } else {
-                throw new ParsingException("L'expression n'est pas valide. Expected: number|variable. Found: "+number.toString());
+                throw new ParsingException("L'expression n'est pas valide. Expected: number|variable. Found: " + number.toString());
             }
             return allNodes;
         }
@@ -134,8 +181,8 @@ public class TreeConverter {
 
             int operatorPosition = parsedTokenList.indexOf(operator);
 
-            System.out.println("Found operator: "+ operator.toString() + " at position: " + operatorPosition);
-            
+            System.out.println("Found operator: " + operator.toString() + " at position: " + operatorPosition);
+
             // right
             ParsedToken rightOperand = TokensTools.getRightOperand(parsedTokenList, operatorPosition);
 
@@ -143,11 +190,10 @@ public class TreeConverter {
             ParsedToken leftOperand = TokensTools.getLeftOperand(parsedTokenList, operatorPosition);
 
             // IF THERE ARE TWO FOLLOWING OPERATORS
-            if(leftOperand.isOperator() || rightOperand.isOperator()){
+            if (leftOperand.isOperator() || rightOperand.isOperator()) {
                 throw new ParsingException("Deux opérateurs ne peuvent se suivre...");
             }
-            
-            
+
             System.out.println("Have to process: " + leftOperand.toString() + " " + operator.toString() + " " + rightOperand.toString());
 
             // check not processed
@@ -259,11 +305,9 @@ public class TreeConverter {
                 if (level == 0) {
                     return i;
                 } else // niveau de parenthèse non correspondant
-                {
-                    if (level < 0) {
+                 if (level < 0) {
                         throw new ParsingException("Niveau de parenthèsage incohérent.");
                     }
-                }
             }
 
         }
@@ -392,9 +436,9 @@ public class TreeConverter {
 
     private void processFunctions() throws ParsingException {
 
-        while(true != TokensTools.allFunctionsAreProcessed(parsedTokenList)){
+        while (true != TokensTools.allFunctionsAreProcessed(parsedTokenList)) {
             ParsedToken function = TokensTools.getMostFunctionPriority(parsedTokenList);
-            
+
             int functionPosition = parsedTokenList.indexOf(function);
             if (function.isFunction()) {
 
@@ -416,7 +460,7 @@ public class TreeConverter {
                     function.setProcessed(true);
                     nextToken.setProcessed(true);
 
-                   // i++; // skip the next token
+                    // i++; // skip the next token
                     continue;
                 }
 
@@ -428,8 +472,8 @@ public class TreeConverter {
                     leftLimit = functionPosition + 2;
                     rightLimit = findLastParenthesisPosition(leftLimit);
 
-                    System.out.println("DEFINING LIMITS " + leftLimit +" -> " + rightLimit +" for function " + function.toString());
-                    
+                    System.out.println("DEFINING LIMITS " + leftLimit + " -> " + rightLimit + " for function " + function.toString());
+
                     // for limits...
                     createTree();
                     System.out.println("BACK FROM CREATETREE!!");
@@ -452,7 +496,7 @@ public class TreeConverter {
 
                     System.out.println("Final node for function " + function.toString());
                     bTreePrinter.printNode(functionTree);
-                    
+
                     resetLimits();
 
                 }
