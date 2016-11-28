@@ -169,11 +169,18 @@ public class TelecomGrapheurVue extends JPanel implements Observer{
 	 */
 	public void drawFunction(Graphics g){
 		// fonction y=cos(x) temp
+		PointModele pPrec = null;
 		for (PointModele point : this.modele.getCourbe().getListePoints()) {
 			//			System.out.println("x = " + point.getX());
 			//			System.out.println("y = " +point.getY());
 			//g.drawLine((int) point.getX(),(int) point.getY(),(int) point.getX(),(int) point.getY());
 			g.fillOval((int) point.getX()-3,(int) point.getY()-3,6,6);
+			if(pPrec!=null){
+				if(pPrec.getX()+1==point.getX()){
+				g.drawLine((int) pPrec.getX(),(int) pPrec.getY(),(int) point.getX(), (int) point.getY());
+				}
+			}
+			pPrec = point;
 		}
 	}
 
@@ -201,6 +208,7 @@ public class TelecomGrapheurVue extends JPanel implements Observer{
 		for (PointModele point : this.modele.getListesPoints().getListePoints()) {
 			if(point.getY()>0)
 			{
+				//System.out.println(point.getX() + " : " + point.getY());
 				g.fillOval((int) point.getX()-3, (int) point.getY()-3, 6, 6); //dessine le point
 				double x = ((point.getX()-this.modele.getOrigin().getX())/this.modele.getAxeModeleX().getTailleCase())*this.modele.getAxeModeleX().getPas(); //permet de changer le x du graph en sa valeur sur le graphique
 				double y = -((point.getY()-this.modele.getOrigin().getY())/this.modele.getAxeModeleY().getTailleCase())*this.modele.getAxeModeleY().getPas(); //permet de changer le y du graph en sa valeur sur le graphique

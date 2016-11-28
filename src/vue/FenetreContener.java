@@ -45,6 +45,7 @@ public class FenetreContener extends JFrame { // Fenetre dans laquelle est conte
         petitContainer.add("East", text);
         petitContainer.add("West", new JLabel(" f(x) = "));
         grandContainer.add("South", petitContainer);
+        btn.setPreferredSize(new Dimension(this.getWidth(), 30));
         grandContainer.add("North",btn);
         grandContainer.add("Center",graph);
     }

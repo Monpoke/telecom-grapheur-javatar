@@ -7,6 +7,7 @@ import java.util.Observable;
 public class CourbeModele extends Observable{
 	
 	private ArrayList<PointModele> listePoints;
+	private ArrayList<String> fonction = new ArrayList<String>();
 	
 	public CourbeModele() {
 		this.listePoints = new ArrayList<PointModele>();
@@ -32,5 +33,13 @@ public class CourbeModele extends Observable{
 		this.listePoints = new ArrayList<PointModele>();
 		setChanged ();
 		notifyObservers ();
+	}
+	
+	public ArrayList<String> getFonction() {
+		return fonction;
+	}
+	
+	public void setFonction(ArrayList<String> fonction) {
+		this.fonction = fonction;
 	}
 }
