@@ -81,6 +81,7 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
 					break;
 				}
 			}
+			this.modele.getCourbe().setFonction(new ArrayList<String>());
 		}
 	}
 
@@ -123,7 +124,7 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
 			i++;
 		}
 		this.modele.getCourbe().videListe();
-		if (fonction != null) {
+		if (fonction != null && fonction != "") {
 			Evaluator eval = MathParser.getEvaluatorFromMathString(fonction);
 
 			// error, so skip
@@ -213,7 +214,7 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
 			double graphY = -p.getY() * this.modele.getAxeModeleY().getTailleCase() / this.modele.getAxeModeleY().getPas() + this.modele.getOrigin().getY();
 			this.modele.getListesPoints().setPoints(new PointModele(graphX, graphY));
 		}
-		if (fonction != null) {
+		if (fonction != null && fonction != "") {
 			Evaluator eval = MathParser.getEvaluatorFromMathString(fonction);
 
 			// error, so skip

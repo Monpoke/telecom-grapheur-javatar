@@ -60,13 +60,13 @@ public class MathParser {
             
             return evaluator;
         } catch (ParsingException ex) {
-            //JOptionPane.showMessageDialog(null, "Erreur dans l'expression mathématique :\n" + ex.getMessage());
+            JOptionPane.showMessageDialog(null, "Erreur dans l'expression mathématique :\n" + ex.getMessage());
             Logger.getLogger(MathParser.class.getName()).log(Level.SEVERE, null, ex);
         } catch (VariableException ex) {
-            //JOptionPane.showMessageDialog(null, "Une variable/constante n'est pas définie :\n" + ex.getMessage());
+            JOptionPane.showMessageDialog(null, "Une variable/constante n'est pas définie :\n" + ex.getMessage());
             Logger.getLogger(MathParser.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
-            //JOptionPane.showMessageDialog(null, "Une erreur est survenue !\n"+ex.getMessage());
+            JOptionPane.showMessageDialog(null, "Une erreur est survenue !\n"+ex.getMessage());
             Logger.getLogger(MathParser.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;

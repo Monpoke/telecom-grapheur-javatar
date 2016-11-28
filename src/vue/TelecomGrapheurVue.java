@@ -65,7 +65,8 @@ public class TelecomGrapheurVue extends JPanel implements Observer{
 	"- Le déplacement du graphique. En restant appuyer sur le clic gauche et en déplaçant la souris, cela permet de voir d’autre partie du graphique\n" +
 	"- L’ajout de points. Il est possible, en double cliquant, de créer un point sur le graphique. Son nom ainsi que ses coordonnées s’affichent à côté du point.\n" +
 	"- Le retrait du point. En faisant un clic droit sur un point créé, le point disparaitra.\n " +
-	"- Le curseur. A tout moment, si une courbe est dessinée, un curseur suit la souris sur la courbe pour avoir plus de précision sur un point de la courbe. Ces coordonnées s’affichent en haut à gauche.\n");
+	"- Le curseur. A tout moment, si une courbe est dessinée, un curseur suit la souris sur la courbe pour avoir plus de précision sur un point de la courbe. Ces coordonnées s’affichent en haut à gauche.\n" +
+	"- Le retrait des courbes. Il est possible à l'aide d'un clic droit, de supprimer les courbes");
 			} catch (NullPointerException e) {
 				System.out.println("ici");
 			}
