@@ -7,6 +7,7 @@ package graphtest;
 
 import graphtest.evaluator.Evaluator;
 import graphtest.evaluator.Variable;
+import graphtest.exceptions.MathException;
 import graphtest.exceptions.ParsingException;
 import graphtest.exceptions.VariableException;
 import graphtest.parsed.ParsedToken;
@@ -31,9 +32,6 @@ public class MathParser {
      * @return 
      */
     public static Evaluator getEvaluatorFromMathString(String fonction) {
-        Scanner s = new Scanner(System.in);
-
-        String math = "";
         try {
             // FIRST STEP
             Parser parser = new Parser(fonction);
@@ -78,19 +76,22 @@ public class MathParser {
      * @param x
      * @return 
      */
-    public static double evaluate(Evaluator eval, double x) {
+    public static Double evaluate(Evaluator eval, double x) {
         if(eval==null){
-            return 0;
+            return null;
         }
         // global variables
         registerVariables(eval, x);
         
         try {
             return eval.evaluate();
+        } 
+        catch(MathException me){
+            return null;
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
         }
-        return new Double(0);
+        return null;
     }
 
     private static void registerVariables(Evaluator eval, double x){
