@@ -47,6 +47,8 @@ public class PriorityTools {
             if((priorityArray.get(i) instanceof TOK_OPERATOR_MULTIPLY || priorityArray.get(i) instanceof TOK_OPERATOR_DIVIDE )&& priorityArray.get(i+1) instanceof TOK_PAR_OPEN){
                 // Avoiding [(y+x)*(y+x)] multiply's problem priority -> Multiply Token shall have a coef of priority as high as the next parenthesis expression
                 priorityArray.get(i).setPriority(i+coefTokenRule*PriorityRules.TOK_OPERATOR_MULTIPLY_RULE.getPriorityValue());  // Multiply and Divide Token Rule shall be the same for mathemical priority reason
+            }else if(priorityArray.get(i).isFunction()){
+                priorityArray.get(i).setPriority(i+coefTokenRule*PriorityRules.TOK_FCT_COS_RULE.getPriorityValue());    // Cos function and other functions priority values like sin and tan shall be the same
             }else if(schemaXOperatorY(priorityArray,i)){
                 // When x+y the lexical order prevail -> no use of the token values
                 priorityArray.get(i).setPriority(i+coefTokenRule);

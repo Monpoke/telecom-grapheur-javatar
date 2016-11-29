@@ -125,6 +125,26 @@ public class PriorityToolsTest {
         assertEquals(409,priorityArray3.get(9).getPriority());
         assertEquals(410,priorityArray3.get(10).getPriority());*/
         //assertEquals(true,false); // Assert Equals above are wrong (in cause the (3/4)*(1+y) works now but a (3+4)*(1+y) cannot work)
+        
+        /* Testing cos(2*x)+2 */
+        ArrayList<ParsedToken> priorityArray4 = new ArrayList<>();
+        priorityArray4.add(new TOK_FCT_COS());
+        priorityArray4.add(new TOK_PAR_OPEN());
+        priorityArray4.add(new TOK_NUMBER(2));
+        priorityArray4.add(new TOK_OPERATOR_MULTIPLY());
+        priorityArray4.add(new TOK_VARIABLE("x"));
+        priorityArray4.add(new TOK_PAR_CLOSE());
+        priorityArray4.add(new TOK_OPERATOR_PLUS());
+        priorityArray4.add(new TOK_NUMBER(2));
+        
+        PriorityTools.addPriority(priorityArray4);
+        
+        assertEquals(11, priorityArray4.get(0).getPriority());
+        assertEquals(38, priorityArray4.get(1).getPriority());
+        assertEquals(39, priorityArray4.get(2).getPriority());
+        assertEquals(40, priorityArray4.get(3).getPriority());
+        assertEquals(14, priorityArray4.get(4).getPriority());
+        assertEquals(13, priorityArray4.get(5).getPriority());
     }
 
     /**
