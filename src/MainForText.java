@@ -1,4 +1,5 @@
 
+import graphtest.BTreePrinter;
 import graphtest.Parser;
 import graphtest.TreeNode;
 import graphtest.evaluator.Evaluator;
@@ -33,6 +34,9 @@ public class MainForText {
             TreeConverter converter = new TreeConverter(parsedTokenList);
             TreeNode root = converter.getRoot();
 
+            BTreePrinter bTreePrinter = new BTreePrinter();
+            bTreePrinter.printNode(root);
+            
             /**
              * Register start time
              */
