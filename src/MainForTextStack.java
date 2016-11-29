@@ -1,11 +1,13 @@
 
+import graphtest.BTreePrinter;
 import graphtest.Parser;
+import graphtest.Syntaxor;
 import graphtest.TreeNode;
 import graphtest.evaluator.Evaluator;
+import graphtest.evaluator.StackTreeConverter;
 import graphtest.evaluator.Variable;
 import graphtest.exceptions.ParsingException;
 import graphtest.parsed.ParsedToken;
-import graphtest.treeverter.TreeConverter;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
@@ -37,8 +39,14 @@ public class MainForTextStack {
             */
             TreeNode root = null;
            
+            Syntaxor syntaxor = new Syntaxor(parsedTokenList);
+            syntaxor.displayOrderedStack();
             
+            StackTreeConverter stc = new StackTreeConverter(syntaxor.getOrderedStack());
+            root = stc.getRoot();
             
+            BTreePrinter btree = new BTreePrinter();
+            btree.printNode(root);
             /**
              * Register start time
              */
@@ -48,7 +56,7 @@ public class MainForTextStack {
 
             eval.resetScope();
             eval.addVariable(new Variable("x", 4));
-            System.out.println(eval.evaluate());
+            System.out.println("result="+eval.evaluate());
 
             /**
              * Register last time
