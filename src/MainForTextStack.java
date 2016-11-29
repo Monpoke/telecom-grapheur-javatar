@@ -4,6 +4,7 @@ import graphtest.Parser;
 import graphtest.Syntaxor;
 import graphtest.TreeNode;
 import graphtest.evaluator.Evaluator;
+import graphtest.evaluator.EvaluatorV2;
 import graphtest.evaluator.StackTreeConverter;
 import graphtest.evaluator.Variable;
 import graphtest.exceptions.ParsingException;
@@ -32,11 +33,6 @@ public class MainForTextStack {
 
             ArrayList<ParsedToken> parsedTokenList = parser.getParsedTokenList();
 
-            /**
-            TreeConverter converter = new TreeConverter(parsedTokenList);
-            TreeNode root = converter.getRoot();
-
-            */
             TreeNode root = null;
            
             Syntaxor syntaxor = new Syntaxor(parsedTokenList);
@@ -52,11 +48,11 @@ public class MainForTextStack {
              */
             long startTime = System.nanoTime();
 
-            Evaluator eval = new Evaluator(root);
+            EvaluatorV2 eval = new EvaluatorV2(root);
 
             eval.resetScope();
             eval.addVariable(new Variable("x", 4));
-            System.out.println("result="+eval.evaluate());
+            System.out.println("result="+eval.evaluateV2());
 
             /**
              * Register last time
