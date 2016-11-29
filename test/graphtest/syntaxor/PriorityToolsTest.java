@@ -139,7 +139,7 @@ public class PriorityToolsTest {
         
         PriorityTools.addPriority(priorityArray4);
         
-        assertEquals(11, priorityArray4.get(0).getPriority());
+        assertEquals(30, priorityArray4.get(0).getPriority());
         assertEquals(38, priorityArray4.get(1).getPriority());
         assertEquals(39, priorityArray4.get(2).getPriority());
         assertEquals(40, priorityArray4.get(3).getPriority());
