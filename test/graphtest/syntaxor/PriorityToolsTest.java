@@ -58,11 +58,11 @@ public class PriorityToolsTest {
         
         PriorityTools.addPriority(priorityArray1);
         
-        assertEquals(31,priorityArray1.get(0).getPriority());
-        assertEquals(32,priorityArray1.get(1).getPriority());
-        assertEquals(33,priorityArray1.get(2).getPriority());
-        assertEquals(12,priorityArray1.get(3).getPriority());
-        assertEquals(11,priorityArray1.get(4).getPriority());
+        assertEquals(182,priorityArray1.get(0).getPriority());
+        assertEquals(183,priorityArray1.get(1).getPriority());
+        assertEquals(184,priorityArray1.get(2).getPriority());
+        assertEquals(14,priorityArray1.get(3).getPriority());
+        assertEquals(13,priorityArray1.get(4).getPriority());
         
         /* Testing : (2*(6+3))+2 */
         ArrayList<ParsedToken> priorityArray2 = new ArrayList<>();
@@ -140,11 +140,11 @@ public class PriorityToolsTest {
         PriorityTools.addPriority(priorityArray4);
         
         assertEquals(30, priorityArray4.get(0).getPriority());
-        assertEquals(38, priorityArray4.get(1).getPriority());
-        assertEquals(39, priorityArray4.get(2).getPriority());
-        assertEquals(40, priorityArray4.get(3).getPriority());
-        assertEquals(14, priorityArray4.get(4).getPriority());
-        assertEquals(13, priorityArray4.get(5).getPriority());
+        assertEquals(219, priorityArray4.get(1).getPriority());
+        assertEquals(220, priorityArray4.get(2).getPriority());
+        assertEquals(221, priorityArray4.get(3).getPriority());
+        assertEquals(16, priorityArray4.get(4).getPriority());
+        assertEquals(15, priorityArray4.get(5).getPriority());
     }
 
     /**
@@ -292,11 +292,11 @@ public class PriorityToolsTest {
         
         PriorityTools.addPriority(priorityArray);
         
-        assertEquals(33,priorityArray.get(0).getPriority());
-        assertEquals(32,priorityArray.get(1).getPriority());
-        assertEquals(31,priorityArray.get(2).getPriority());
-        assertEquals(12,priorityArray.get(3).getPriority());
-        assertEquals(11,priorityArray.get(4).getPriority());
+        assertEquals(184,priorityArray.get(0).getPriority());
+        assertEquals(183,priorityArray.get(1).getPriority());
+        assertEquals(182,priorityArray.get(2).getPriority());
+        assertEquals(14,priorityArray.get(3).getPriority());
+        assertEquals(13,priorityArray.get(4).getPriority());
     
         /* Testing 2+x*((3+2)/4) */
         ArrayList<ParsedToken> priorityArray1 = new ArrayList<>();

@@ -26,8 +26,8 @@ public class PriorityTools {
      */
     public static void addPriority(ArrayList<ParsedToken> lexicalArray){
         ArrayList<ParsedToken> priorityArray = new ArrayList<>();
-        // priorityArray = setPriorityParenthesis(lexicalArray); Commented for now resolve setPriorityParenthesis -> Useless now
-        priorityArray = lexicalArray;   // to replace by above when debugged -> SetParenthesis not used anymore in the calculation of priority
+        priorityArray = setPriorityParenthesis(lexicalArray); // Commented for now resolve setPriorityParenthesis -> Useless now
+        //priorityArray = lexicalArray;   // to replace by above when debugged -> SetParenthesis not used anymore in the calculation of priority
         
         int coefNbToken = coefficientCalculator(priorityArray);
         long coefTokenRule = coefNbToken;
@@ -94,14 +94,10 @@ public class PriorityTools {
         parenthesisArray = removeUselessParenthesis(lexicalArray);
         
         for(int i=1;i<parenthesisArray.size();i++){
-            if(parenthesisArray.get(i).isOperator()){
-                if(parenthesisArray.get(i-1) instanceof TOK_PAR_CLOSE && parenthesisArray.get(i+2) instanceof TOK_PAR_OPEN){
-                    parenthesisArray.add(i+2, new TOK_PAR_CLOSE());
-                    parenthesisArray.add(indexOpenParenthesis(parenthesisArray,i), new TOK_PAR_OPEN());
-                }else if(parenthesisArray.get(i+1) instanceof TOK_PAR_OPEN && !(parenthesisArray.get(i-2) instanceof TOK_PAR_OPEN)){
-                    parenthesisArray.add(indexCloseParenthesis(parenthesisArray,i), new TOK_PAR_CLOSE());
-                    parenthesisArray.add(i-2, new TOK_PAR_OPEN());
-                }
+            if((parenthesisArray.get(i) instanceof TOK_OPERATOR_MULTIPLY || parenthesisArray.get(i) instanceof TOK_OPERATOR_DIVIDE) && schemaXOperatorY(parenthesisArray, i)){
+                parenthesisArray.add(i+2, new TOK_PAR_CLOSE());
+                parenthesisArray.add(i-1, new TOK_PAR_OPEN());
+                i++;
             }
         }
         
