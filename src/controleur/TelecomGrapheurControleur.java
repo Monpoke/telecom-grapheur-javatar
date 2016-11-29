@@ -11,6 +11,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.lang.model.type.DeclaredType;
 import javax.swing.SwingUtilities;
@@ -24,7 +25,8 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
     private TelecomGrapheurModele modele;
     private int decalageXOrigin, decalageYOrigin, decalageXPoints, decalageYPoints;
     private String fonction;
-
+    private HashMap<String, Evaluator> eval = new HashMap<String, Evaluator>();
+    
     public TelecomGrapheurControleur(TelecomGrapheurModele modele) {
         this.modele = modele;
     }
@@ -125,14 +127,9 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
         }
         this.modele.getCourbe().videListe();
         if (fonction != null && !fonction.isEmpty()) {
-            Evaluator eval = MathParser.getEvaluatorFromMathString(fonction);
-
-            // error, so skip
-            if (eval == null) {
-                return;
-            }
+            Evaluator eval;
             for (String s : this.modele.getCourbe().getFonction()) {
-                eval = MathParser.getEvaluatorFromMathString(s);
+                eval = getEval(s);
                 for (int j = this.modele.getBornes().getBorneXLeft(); j < this.modele.getBornes().getBorneXRight(); j++) {
                     double x = (j + this.modele.getOrigin().getX());
                     Double y = MathParser.evaluate(eval, (j / (this.modele.getAxeModeleY().getTailleCase() / this.modele.getAxeModeleY().getPas())));
@@ -221,7 +218,7 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
             this.modele.getListesPoints().setPoints(new PointModele(graphX, graphY));
         }
         if (fonction != null && !fonction.isEmpty()) {
-            Evaluator eval = MathParser.getEvaluatorFromMathString(fonction);
+            Evaluator eval = getEval(fonction);
 
             // error, so skip
             if (eval == null) {
@@ -248,7 +245,7 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
             //this.modele.getCourbe().videListe();
             Evaluator eval = null;
             try {
-                eval = MathParser.getEvaluatorFromMathString(e.getActionCommand());
+            	eval = getEval(e.getActionCommand());
             } catch (Exception e2) {
                 // TODO: handle exception
             }
@@ -268,6 +265,13 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
         } else if (e.getActionCommand() == "Aide") {
             this.modele.setDialog(true);
         }
+    }
+    
+    public Evaluator getEval(String s){
+    	if(!this.eval.containsKey(s)){
+    		this.eval.put(s, MathParser.getEvaluatorFromMathString(s));
+    	}
+    	return this.eval.get(s);
     }
 
 }
