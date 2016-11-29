@@ -1,5 +1,6 @@
 package graphtest.syntaxor;
 
+import graphtest.exceptions.LexicalException;
 import graphtest.parsed.ParsedToken;
 import graphtest.parsed.TOK_NUMBER;
 import graphtest.parsed.TOK_OPERATOR_MULTIPLY;
@@ -22,7 +23,7 @@ public class SyntaxTools {
      * @param lexicalArray
      * @return Stack
      */
-    public static ArrayList<ParsedToken> lexicalIntoSyntax(ArrayList<ParsedToken> lexicalArray){
+    public static ArrayList<ParsedToken> lexicalIntoSyntax(ArrayList<ParsedToken> lexicalArray) throws LexicalException{
         ArrayList<ParsedToken> syntaxArray = new ArrayList<>();
         
         if(verifySyntax(lexicalArray)){
@@ -30,9 +31,14 @@ public class SyntaxTools {
             return syntaxArray;
         }else{
             if(!verifyNumberInRow(lexicalArray)){
-                System.out.println("Error number in row");
+                throw new LexicalException("Lexical Error : Number in row");
             }
-            //TODO -> Exceptions
+            if(!verifyTokenStartAndEnd(lexicalArray)){
+                throw new LexicalException("Error at the start or end of the expression");
+            }
+            if(!verifyFacingParenthesis(lexicalArray)){
+                throw new LexicalException("Parenthesis with nothing inside");
+            }
             
             return null;
         }
