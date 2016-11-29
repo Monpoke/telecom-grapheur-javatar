@@ -93,7 +93,7 @@ public class PriorityTools {
         ArrayList<ParsedToken> parenthesisArray = new ArrayList<>();
         parenthesisArray = removeUselessParenthesis(lexicalArray);
         
-        for(int i=1;i<parenthesisArray.size()-1;i++){
+        for(int i=1;i<parenthesisArray.size();i++){
             if(parenthesisArray.get(i).isOperator()){
                 if(parenthesisArray.get(i-1) instanceof TOK_PAR_CLOSE && parenthesisArray.get(i+2) instanceof TOK_PAR_OPEN){
                     parenthesisArray.add(i+2, new TOK_PAR_CLOSE());

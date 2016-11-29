@@ -101,6 +101,14 @@ public class TreeNode {
         
         return false;
     }
+    
+    public void setLeftChild(TreeNode node){
+        if(this.getLeft() == null){
+            this.left = node;
+        }else{
+            this.left.setLeftChild(node);
+        }
+    }
 
     
     

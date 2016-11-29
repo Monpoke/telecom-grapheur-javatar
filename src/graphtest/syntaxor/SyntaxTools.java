@@ -74,7 +74,7 @@ public class SyntaxTools {
             int multiplyIndex =0;
             
             // there is no possible hidding multiply at the end, no point testing it
-            for(int i=0;i<lexicalArray.size();i++){
+            for(int i=0;i<lexicalArray.size()-1;i++){
                 multiplyArray.add(multiplyIndex, lexicalArray.get(i));
                 
                 if((lexicalArray.get(i) instanceof TOK_NUMBER || lexicalArray.get(i) instanceof TOK_VARIABLE) 

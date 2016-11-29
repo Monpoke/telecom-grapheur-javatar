@@ -22,9 +22,7 @@ public class StackTreeConverter {
             if(root == null){
                 this.root = new TreeNode(stack.pop());
             }else{
-                TreeNode tmp = root;
-                root = new TreeNode(stack.pop());
-                root.setLeft(tmp);
+                root.setLeftChild(new TreeNode(stack.pop()));
             }
         }
     }
