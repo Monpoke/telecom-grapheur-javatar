@@ -288,16 +288,13 @@ public class PriorityTools {
                     priorityArray.get(indexCp+1).setPriority(tmp);
                     indexCp++;
                 }
-            }else{
+            }else if(nbTokenDenominator>nbTokenNumerator){
                 // Denominator or Numerator tokens number different, expression swap like : x/(y+z)
+                // Numerator shall have more parenthesis
                 int indexEndSwap =1;
-                System.out.println("not regular");
                 
                 // Swap the max we can, then add
                 for(int nsi=numeratorStartIndex+saveNbClose, dei=index+1+saveNbOpen;(nsi<index && dei<=denominatorEndIndex);nsi++,dei++){
-                    System.out.println(priorityArray);
-                    System.out.println(priorityArray.get(nsi).getPriority() + " nsi : "+nsi);
-                    System.out.println(priorityArray.get(dei).getPriority() + " dei : "+dei);
                     long tmp = priorityArray.get(nsi).getPriority();
                     priorityArray.get(nsi).setPriority(priorityArray.get(dei).getPriority());
                     priorityArray.get(dei).setPriority(tmp);
@@ -308,15 +305,11 @@ public class PriorityTools {
                     // Add 1 to the rest of the unswap denominator priority
                     for(int i=index+indexEndSwap+1;i<=denominatorEndIndex-saveNbOpen;i++){
                         priorityArray.get(i).setPriority(priorityArray.get(i-1).getPriority()+1);
-                        System.out.println(priorityArray);
-                        System.out.println(priorityArray.get(i).getPriority() + " index+IES+1 : "+i);
                     }
                 }else{
                     // Add 1 to the rest of the unswap numerator priority
                     for(int i=numeratorStartIndex+indexEndSwap;i<index-saveNbClose;i++){
                         priorityArray.get(i).setPriority(priorityArray.get(i-1).getPriority()+1);
-                        System.out.println(priorityArray);
-                        System.out.println(priorityArray.get(i).getPriority() + " NSI+IES+1 : "+i);
                     }
                 }
             }
