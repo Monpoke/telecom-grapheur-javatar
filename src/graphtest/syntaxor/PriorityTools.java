@@ -221,6 +221,8 @@ public class PriorityTools {
         int denominatorEndIndex = index+1;
         int nbTokenDenominator = 1;
         int nbTokenNumerator = 1;
+        int saveNbOpen = 0;
+        int saveNbClose = 0;
         
         // Classical case x/y swap
         if(!(priorityArray.get(index-1) instanceof TOK_PAR_CLOSE) && !(priorityArray.get(index+1) instanceof TOK_PAR_OPEN)){
@@ -238,6 +240,8 @@ public class PriorityTools {
                     j--;
                 }
 
+                saveNbClose = nbClose;
+                
                 while(j>=0 && nbClose>0){
                     numeratorStartIndex = j;
 
@@ -259,6 +263,8 @@ public class PriorityTools {
                     nbOpen++;
                     k++;
                 }
+                
+                saveNbOpen = nbOpen;
 
                 while(k<priorityArray.size() && nbOpen>0){
                     denominatorEndIndex = k;
@@ -275,7 +281,8 @@ public class PriorityTools {
             // Regular multiple expression swap : (x+y)/(z+w)
             if(nbTokenDenominator==nbTokenNumerator){
                 int indexCp = index;
-                for(int nsi=numeratorStartIndex;nsi<index;nsi++){
+                System.out.println("regular");
+                for(int nsi=numeratorStartIndex+saveNbClose;nsi<index;nsi++){
                     long tmp = priorityArray.get(nsi).getPriority();
                     priorityArray.get(nsi).setPriority(priorityArray.get(indexCp+1).getPriority());
                     priorityArray.get(indexCp+1).setPriority(tmp);
@@ -283,10 +290,14 @@ public class PriorityTools {
                 }
             }else{
                 // Denominator or Numerator tokens number different, expression swap like : x/(y+z)
-                int indexEndSwap =0;
+                int indexEndSwap =1;
+                System.out.println("not regular");
                 
                 // Swap the max we can, then add
-                for(int nsi=numeratorStartIndex, dei=index+1;(nsi<index && dei<=denominatorEndIndex);nsi++,dei++){
+                for(int nsi=numeratorStartIndex+saveNbClose, dei=index+1+saveNbOpen;(nsi<index && dei<=denominatorEndIndex);nsi++,dei++){
+                    System.out.println(priorityArray);
+                    System.out.println(priorityArray.get(nsi).getPriority() + " nsi : "+nsi);
+                    System.out.println(priorityArray.get(dei).getPriority() + " dei : "+dei);
                     long tmp = priorityArray.get(nsi).getPriority();
                     priorityArray.get(nsi).setPriority(priorityArray.get(dei).getPriority());
                     priorityArray.get(dei).setPriority(tmp);
@@ -294,12 +305,19 @@ public class PriorityTools {
                 }
                 
                 if(numeratorStartIndex+indexEndSwap>=index){
-                    for(int i=index+indexEndSwap;i<=denominatorEndIndex;i++){
+                    // Add 1 to the rest of the unswap denominator priority
+                    for(int i=index+indexEndSwap+1;i<=denominatorEndIndex-saveNbOpen;i++){
                         priorityArray.get(i).setPriority(priorityArray.get(i-1).getPriority()+1);
+                        System.out.println(priorityArray);
+                        System.out.println(priorityArray.get(i).getPriority() + " index+IES+1 : "+i);
                     }
                 }else{
-                    // reverse denominator
-                    for()
+                    // Add 1 to the rest of the unswap numerator priority
+                    for(int i=numeratorStartIndex+indexEndSwap;i<index-saveNbClose;i++){
+                        priorityArray.get(i).setPriority(priorityArray.get(i-1).getPriority()+1);
+                        System.out.println(priorityArray);
+                        System.out.println(priorityArray.get(i).getPriority() + " NSI+IES+1 : "+i);
+                    }
                 }
             }
         }

@@ -20,7 +20,7 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author A642995
+ * @author Florent
  */
 public class PriorityToolsTest {
     
@@ -111,7 +111,7 @@ public class PriorityToolsTest {
                 
         PriorityTools.addPriority(priorityArray3);
         
-        System.out.println(priorityArray3);
+        //System.out.println(priorityArray3);
         
         /*assertEquals(11,priorityArray3.get(0).getPriority());
         assertEquals(34,priorityArray3.get(1).getPriority());
@@ -272,11 +272,11 @@ public class PriorityToolsTest {
         
         PriorityTools.addPriority(priorityArray);
         
-/*        assertEquals(33,priorityArray.get(0).getPriority());
+        assertEquals(33,priorityArray.get(0).getPriority());
         assertEquals(32,priorityArray.get(1).getPriority());
         assertEquals(31,priorityArray.get(2).getPriority());
         assertEquals(12,priorityArray.get(3).getPriority());
-        assertEquals(11,priorityArray.get(4).getPriority());*/
+        assertEquals(11,priorityArray.get(4).getPriority());
     
         /* Testing 2+x*((3+2)/4) */
         ArrayList<ParsedToken> priorityArray1 = new ArrayList<>();
@@ -296,15 +296,15 @@ public class PriorityToolsTest {
         
         PriorityTools.addPriority(priorityArray1);
         
-        /*assertEquals(9,priorityArray1.get(0).getPriority());
+        assertEquals(9,priorityArray1.get(0).getPriority());
         assertEquals(10,priorityArray1.get(1).getPriority());
         assertEquals(11,priorityArray1.get(2).getPriority());
         assertEquals(30,priorityArray1.get(3).getPriority());
-        assertEquals(332,priorityArray1.get(4).getPriority());
-        assertEquals(333,priorityArray1.get(5).getPriority());
-        assertEquals(334,priorityArray1.get(6).getPriority());
+        assertEquals(65,priorityArray1.get(4).getPriority());
+        assertEquals(66,priorityArray1.get(5).getPriority());
+        assertEquals(67,priorityArray1.get(6).getPriority());
         assertEquals(67,priorityArray1.get(7).getPriority());
-        assertEquals(63,priorityArray1.get(8).getPriority());*/
+        assertEquals(330,priorityArray1.get(8).getPriority());
     
         /* Testing 2+x*(3/(4+2)) */
         ArrayList<ParsedToken> priorityArray2 = new ArrayList<>();
@@ -328,11 +328,11 @@ public class PriorityToolsTest {
         assertEquals(10,priorityArray2.get(1).getPriority());
         assertEquals(11,priorityArray2.get(2).getPriority());
         assertEquals(30,priorityArray2.get(3).getPriority());
-        assertEquals(61,priorityArray2.get(4).getPriority());
+        assertEquals(332,priorityArray2.get(4).getPriority());
         assertEquals(168,priorityArray2.get(5).getPriority());
-        assertEquals(330,priorityArray2.get(6).getPriority());
-        assertEquals(331,priorityArray2.get(7).getPriority());
-        assertEquals(332,priorityArray2.get(8).getPriority());
+        assertEquals(59,priorityArray2.get(6).getPriority());
+        assertEquals(60,priorityArray2.get(7).getPriority());
+        assertEquals(61,priorityArray2.get(8).getPriority());
     }
     
     /**
