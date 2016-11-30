@@ -26,7 +26,7 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
     private int decalageXOrigin, decalageYOrigin, decalageXPoints, decalageYPoints;
     private String fonction;
     private HashMap<String, Evaluator> eval = new HashMap<String, Evaluator>();
-    
+
     public TelecomGrapheurControleur(TelecomGrapheurModele modele) {
         this.modele = modele;
     }
@@ -86,7 +86,7 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
                     break;
                 }
             }
-            
+
         }
     }
 
@@ -136,11 +136,11 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
                 for (int j = this.modele.getBornes().getBorneXLeft(); j < this.modele.getBornes().getBorneXRight(); j++) {
                     double x = (j + this.modele.getOrigin().getX());
                     Double y = MathParser.evaluate(eval, (j / (this.modele.getAxeModeleY().getTailleCase() / this.modele.getAxeModeleY().getPas())));
-                    
-                    if(y==null){
+
+                    if (y == null) {
                         continue;
                     }
-                    
+
                     this.modele.getCourbe().setPoints(new PointModele((int) (x), (int) (-y * this.modele.getAxeModeleY().getTailleCase() / this.modele.getAxeModeleY().getPas() + this.modele.getOrigin().getY())));
                 }
             }
@@ -171,17 +171,18 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
         int notches = e.getWheelRotation();
         if (notches < 0) {
             //ici tu scroll ver le haut 
-            //if(this.modele.getAxeModeleX().getCoeffZoom()<1000 && this.modele.getAxeModeleY().getCoeffZoom()<1000){
-            this.modele.getAxeModeleX().setCoeffZoom(this.modele.getAxeModeleX().getCoeffZoom() + 0.1 * this.modele.getAxeModeleX().getCoeffZoom());
-            this.modele.getAxeModeleY().setCoeffZoom(this.modele.getAxeModeleY().getCoeffZoom() + 0.1 * this.modele.getAxeModeleY().getCoeffZoom());
-            //}
-        } else {
-            //if(this.modele.getAxeModeleX().getCoeffZoom()>1000 && this.modele.getAxeModeleY().getCoeffZoom()>1000){
+
+            if (this.modele.getAxeModeleX().getPas() > 0.001 && this.modele.getAxeModeleY().getPas() > 0.001) {
+                this.modele.getAxeModeleX().setCoeffZoom(this.modele.getAxeModeleX().getCoeffZoom() + 0.1 * this.modele.getAxeModeleX().getCoeffZoom());
+                this.modele.getAxeModeleY().setCoeffZoom(this.modele.getAxeModeleY().getCoeffZoom() + 0.1 * this.modele.getAxeModeleY().getCoeffZoom());
+            }
+        } else if (this.modele.getAxeModeleX().getPas() < 1000 && this.modele.getAxeModeleY().getPas() < 1000) {
             //ici tu scroll vers le bas 
             this.modele.getAxeModeleX().setCoeffZoom(this.modele.getAxeModeleX().getCoeffZoom() - 0.1 * this.modele.getAxeModeleX().getCoeffZoom());
             this.modele.getAxeModeleY().setCoeffZoom(this.modele.getAxeModeleY().getCoeffZoom() - 0.1 * this.modele.getAxeModeleY().getCoeffZoom());
-            //}
         }
+        
+        
         for (PointModele p : this.modele.getListesPoints().getListePoints()) {
             double x = ((p.getX() - this.modele.getOrigin().getX()) / this.modele.getAxeModeleX().getTailleCase()) * this.modele.getAxeModeleX().getPas();
             double y = -((p.getY() - this.modele.getOrigin().getY()) / this.modele.getAxeModeleY().getTailleCase()) * this.modele.getAxeModeleY().getPas();
@@ -222,13 +223,13 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
         }
         if (fonction != null && !fonction.isEmpty()) {
             Evaluator eval = null;
-            
+
             for (String s : this.modele.getCourbe().getFonction()) {
                 eval = getEval(s);
                 for (int j = this.modele.getBornes().getBorneXLeft(); j < this.modele.getBornes().getBorneXRight(); j++) {
                     double x = (j + this.modele.getOrigin().getX());
-                    Double y =MathParser.evaluate(eval, (j / (this.modele.getAxeModeleY().getTailleCase() / this.modele.getAxeModeleY().getPas())));
-                    if(y==null){
+                    Double y = MathParser.evaluate(eval, (j / (this.modele.getAxeModeleY().getTailleCase() / this.modele.getAxeModeleY().getPas())));
+                    if (y == null) {
                         continue;
                     }
                     this.modele.getCourbe().setPoints(new PointModele((int) (x), (int) (-y * this.modele.getAxeModeleY().getTailleCase() / this.modele.getAxeModeleY().getPas() + this.modele.getOrigin().getY())));
@@ -244,7 +245,7 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
             //this.modele.getCourbe().videListe();
             Evaluator eval = null;
             try {
-            	eval = getEval(e.getActionCommand());
+                eval = getEval(e.getActionCommand());
             } catch (Exception e2) {
                 // TODO: handle exception
             }
@@ -265,12 +266,12 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
             this.modele.setDialog(true);
         }
     }
-    
-    public Evaluator getEval(String s){
-    	if(!this.eval.containsKey(s)){
-    		this.eval.put(s, MathParser.getEvaluatorFromMathString(s));
-    	}
-    	return this.eval.get(s);
+
+    public Evaluator getEval(String s) {
+        if (!this.eval.containsKey(s)) {
+            this.eval.put(s, MathParser.getEvaluatorFromMathString(s));
+        }
+        return this.eval.get(s);
     }
 
 }
