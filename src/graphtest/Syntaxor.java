@@ -2,6 +2,8 @@ package graphtest;
 
 import graphtest.exceptions.LexicalException;
 import graphtest.parsed.ParsedToken;
+import graphtest.parsed.TOK_NUMBER;
+import graphtest.parsed.TOK_OPERATOR_PLUS;
 import graphtest.syntaxor.PriorityTools;
 import graphtest.syntaxor.Stack;
 import graphtest.syntaxor.SyntaxTools;
@@ -22,6 +24,8 @@ public class Syntaxor {
     
     public Syntaxor(ArrayList<ParsedToken> lexicalArray) throws LexicalException{
         this.lexicalArray = lexicalArray;
+        
+        addOptionalOperators();
         startSyntaxor();
     }
     
@@ -80,5 +84,21 @@ public class Syntaxor {
      */
     public void displayPriorityStack(){
         this.orderedStack.displayStackWithPriority();
+    }
+
+    /**
+     * Optional operators
+     */
+    private void addOptionalOperators() {
+        int size = this.lexicalArray.size();
+        
+        for (int i = 0; i < size-1; i++) {
+            ParsedToken current = this.lexicalArray.get(i);
+            ParsedToken next = this.lexicalArray.get(i+1);
+            
+            if(current instanceof TOK_NUMBER && next instanceof TOK_NUMBER){
+                this.lexicalArray.add(i+1, new TOK_OPERATOR_PLUS());
+            }
+        }
     }
 }

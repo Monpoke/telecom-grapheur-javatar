@@ -118,9 +118,9 @@ public class EvaluatorV2 {
                 System.out.println("Je passe par " + currentNode.toString());
 
                 result = processOperatorsV2(currentNode, result, currentNode.getLeft().getToken().getValue());
-
             }
-
+            
+            
             if (currentNode.getLeft() != null && currentNode.getLeft().getLeft() != null) {
                 currentNode = currentNode.getLeft().getLeft();
             } else {
