@@ -122,7 +122,7 @@ public class PriorityToolsTest {
         assertEquals(410,priorityArray3.get(8).getPriority());
         assertEquals(411,priorityArray3.get(9).getPriority());
         assertEquals(412,priorityArray3.get(10).getPriority());
-        //assertEquals(true,false); // Assert Equals above are wrong (in cause the (3/4)*(1+y) works now but a (3+4)*(1+y) cannot work)
+        assertEquals(true,false); // Assert Equals above are wrong (in cause the (3/4)*(1+y) works now but a (3+4)*(1+y) cannot work)
         
         /* Testing cos(2*x)+2 */
         ArrayList<ParsedToken> priorityArray4 = new ArrayList<>();
