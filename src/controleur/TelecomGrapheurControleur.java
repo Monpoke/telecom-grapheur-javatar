@@ -181,8 +181,7 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
             this.modele.getAxeModeleX().setCoeffZoom(this.modele.getAxeModeleX().getCoeffZoom() - 0.1 * this.modele.getAxeModeleX().getCoeffZoom());
             this.modele.getAxeModeleY().setCoeffZoom(this.modele.getAxeModeleY().getCoeffZoom() - 0.1 * this.modele.getAxeModeleY().getCoeffZoom());
         }
-        
-        
+
         for (PointModele p : this.modele.getListesPoints().getListePoints()) {
             double x = ((p.getX() - this.modele.getOrigin().getX()) / this.modele.getAxeModeleX().getTailleCase()) * this.modele.getAxeModeleX().getPas();
             double y = -((p.getY() - this.modele.getOrigin().getY()) / this.modele.getAxeModeleY().getTailleCase()) * this.modele.getAxeModeleY().getPas();
@@ -268,8 +267,11 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
     }
 
     public Evaluator getEval(String s) {
+        Evaluator evaluation = MathParser.getEvaluatorFromMathString(s);
         if (!this.eval.containsKey(s)) {
-            this.eval.put(s, MathParser.getEvaluatorFromMathString(s));
+            this.eval.put(s, evaluation);
+        } else if (this.eval.containsKey(s) && evaluation == null) {
+            this.eval.remove(s);
         }
         return this.eval.get(s);
     }
