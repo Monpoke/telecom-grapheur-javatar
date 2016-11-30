@@ -55,10 +55,7 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
             int i = 0;
             boolean exist = false;
             for (PointModele p : this.modele.getListesPoints().getListePoints()) {
-                //System.out.println("e.getY() : " +e.getY());
-                //System.out.println("p.getY() : " +(int) (p.getY()+100000));
                 if (e.getX() == p.getX() && e.getY() == ((int) (p.getY() + 1000000055))) {
-                    //System.out.println("test");
                     this.modele.getListesPoints().getListePoints().remove(p);
                     this.modele.getListesPoints().getListePoints().add(new PointModele(e.getX(), e.getY() - 55));
                     exist = true;
@@ -71,14 +68,14 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
         } else {
             System.out.println(e.getX() + " : " + e.getY());
             for (PointModele p : this.modele.getListesPoints().getListePoints()) {
-                if (e.getX() > p.getX() - 3 && e.getX() < p.getX() + 3 && e.getY() - 55 > p.getY() - 3 && e.getY() - 55 < p.getY() + 3) {
+                if (e.getX() > p.getX() - 5 && e.getX() < p.getX() + 10 && e.getY() - 55 > p.getY() - 5 && e.getY() - 55 < p.getY() + 10) {
                     this.modele.getListesPoints().getListePoints().remove(p);
                     System.out.println("Efface fonction");
                     break;
                 }
             }
             for (PointModele p : this.modele.getCourbe().getListePoints()) {
-                if (e.getX() > p.getX() - 3 && e.getX() < p.getX() + 3 && e.getY() - 55 > p.getY() - 3 && e.getY() - 55 < p.getY() + 3) {
+                if (e.getX() > p.getX() - 5 && e.getX() < p.getX() + 10 && e.getY() - 55 > p.getY() - 5 && e.getY() - 55 < p.getY() + 10) {
                     this.modele.getCourbe().videListe();
                     System.out.println("Efface fonction");
                     this.fonction = null;
@@ -241,7 +238,6 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand() != "Aide") { // le jtextfield
             this.fonction = e.getActionCommand();
-            //this.modele.getCourbe().videListe();
             Evaluator eval = null;
             try {
                 eval = getEval(e.getActionCommand());
