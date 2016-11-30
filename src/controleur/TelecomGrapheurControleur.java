@@ -73,17 +73,20 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
             for (PointModele p : this.modele.getListesPoints().getListePoints()) {
                 if (e.getX() > p.getX() - 3 && e.getX() < p.getX() + 3 && e.getY() - 55 > p.getY() - 3 && e.getY() - 55 < p.getY() + 3) {
                     this.modele.getListesPoints().getListePoints().remove(p);
+                    System.out.println("Efface fonction");
                     break;
                 }
             }
             for (PointModele p : this.modele.getCourbe().getListePoints()) {
                 if (e.getX() > p.getX() - 3 && e.getX() < p.getX() + 3 && e.getY() - 55 > p.getY() - 3 && e.getY() - 55 < p.getY() + 3) {
                     this.modele.getCourbe().videListe();
+                    System.out.println("Efface fonction");
                     this.fonction = null;
+                    this.modele.getCourbe().setFonction(new ArrayList<String>());
                     break;
                 }
             }
-            this.modele.getCourbe().setFonction(new ArrayList<String>());
+            
         }
     }
 
