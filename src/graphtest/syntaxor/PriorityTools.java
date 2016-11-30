@@ -98,6 +98,16 @@ public class PriorityTools {
                 parenthesisArray.add(i+2, new TOK_PAR_CLOSE());
                 parenthesisArray.add(i-1, new TOK_PAR_OPEN());
                 i++;
+            }else if(parenthesisArray.get(i).isOperator() && (parenthesisArray.get(i+1) instanceof TOK_PAR_OPEN || parenthesisArray.get(i) instanceof TOK_PAR_CLOSE)){
+                if(parenthesisArray.get(i+1) instanceof TOK_PAR_OPEN){
+                    parenthesisArray.add(indexCloseParenthesis(parenthesisArray, i), new TOK_PAR_CLOSE());
+                    parenthesisArray.add(i-1,new TOK_PAR_OPEN());
+                    i++;
+                }else if (parenthesisArray.get(i-1) instanceof TOK_PAR_CLOSE){
+                    parenthesisArray.add(i+1, new TOK_PAR_CLOSE());
+                    parenthesisArray.add(indexOpenParenthesis(parenthesisArray, i), new TOK_PAR_OPEN());
+                    i++;
+                }
             }
         }
         
