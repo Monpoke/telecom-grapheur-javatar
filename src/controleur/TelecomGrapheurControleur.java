@@ -94,6 +94,12 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
     @Override
     public void mouseDragged(MouseEvent e) {
         ArrayList<PointModele> liste = new ArrayList<PointModele>(); // liste qui contient les d�clages des points par rapport � l'origine
+        int decalX, decalY;
+        for (PointModele p : this.modele.getListesPoints().getListePoints()) {
+            decalX = (int) (p.getX() - this.modele.getOrigin().getX());
+            decalY = (int) (p.getY() - this.modele.getOrigin().getY());
+            liste.add(new PointModele(decalX, decalY));
+        }
         if (this.modele.isClique()) { // si on a fait un clic gauche
             this.decalageXOrigin = (int) this.modele.getOrigin().getX() - e.getX(); // calcul le decalage, par rapport � l'origin, de de la souris en x
             this.decalageYOrigin = (int) this.modele.getOrigin().getY() - e.getY();
