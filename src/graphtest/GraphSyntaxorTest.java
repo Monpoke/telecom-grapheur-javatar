@@ -1,7 +1,9 @@
 package graphtest;
 
+import graphtest.exceptions.LexicalException;
 import graphtest.exceptions.ParsingException;
 import graphtest.parsed.ParsedToken;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -15,7 +17,7 @@ import java.util.logging.Logger;
  */
 public class GraphSyntaxorTest {
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws LexicalException {
 
         //---Lexical Part---
         Scanner s = new Scanner(System.in);
