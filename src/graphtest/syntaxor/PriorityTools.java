@@ -46,7 +46,7 @@ public class PriorityTools {
             // Adding priority into ParsedToken
             if(priorityArray.get(i).isOperator() && priorityArray.get(i+1) instanceof TOK_PAR_OPEN){
                 // Avoiding [(y+x)*(y+x)] multiply's problem priority -> Multiply Token shall have a coef of priority as high as the next parenthesis expression
-                priorityArray.get(i).setPriority(i+coefTokenRule*PriorityRules.TOK_OPERATOR_MULTIPLY_RULE.getPriorityValue());  // Multiply and Divide Token Rule shall be the same for mathemical priority reason
+                priorityArray.get(i).setPriority(i+(coefTokenRule*PriorityRules.TOK_PAR_OPEN_RULE.getPriorityValue()));  // Multiply and Divide Token Rule shall be the same for mathemical priority reason
             }else if(schemaXOperatorY(priorityArray,i)){
                 // When x+y the lexical order prevail -> no use of the token values
                 priorityArray.get(i).setPriority(i+coefTokenRule);
