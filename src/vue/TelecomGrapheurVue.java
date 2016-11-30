@@ -62,7 +62,7 @@ public class TelecomGrapheurVue extends JPanel implements Observer{
 			try {
 				JOptionPane.showMessageDialog(this,
 						"- Le zoom. Grâce à la molette, il est possible de zoomer ainsi que de dezoomer. La grille s’adaptera pour permettre une meilleure visibilité. La grille est bornée de 0.001 à 1000. \n" +
-	"- Le déplacement du graphique. En restant appuyer sur le clic gauche et en déplaçant la souris, cela permet de voir d’autre partie du graphique\n" +
+	"- Le déplacement du graphique. En restant appuyer sur le clic gauche et en déplaçant la souris, cela permet de voir d’autre partie du graphique. Ccela est aussi possible avec le clic droit. \n" +
 	"- L’ajout de points. Il est possible, en double cliquant au même endroit, de créer un point sur le graphique. Son nom ainsi que ses coordonnées s’affichent à côté du point.\n" +
 	"- Le retrait du point. En faisant un clic droit sur un point créé, le point disparaitra. Cela renomme les autres points pour ne pas avoir de conflit de noms. \n " +
 	"- Le curseur. A tout moment, si une courbe est dessinée, un curseur suit la souris sur la courbe pour avoir plus de précision sur un point de la courbe. Ces coordonnées s’affichent en haut à gauche.\n" +
