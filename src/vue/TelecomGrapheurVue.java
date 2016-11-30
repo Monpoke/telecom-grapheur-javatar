@@ -61,12 +61,12 @@ public class TelecomGrapheurVue extends JPanel implements Observer{
 			this.modele.setDialog(false);
 			try {
 				JOptionPane.showMessageDialog(this,
-						"- Le zoom. Grâce à la molette, il est possible de zoomer ainsi que dezoomer. La grille s’adaptera pour permettre une meilleure visibilité.\n" +
-	"- Le déplacement du graphique. En restant appuyer sur le clic gauche et en déplaçant la souris, cela permet de voir d’autre partie du graphique\n" +
-	"- L’ajout de points. Il est possible, en double cliquant, de créer un point sur le graphique. Son nom ainsi que ses coordonnées s’affichent à côté du point.\n" +
-	"- Le retrait du point. En faisant un clic droit sur un point créé, le point disparaitra.\n " +
-	"- Le curseur. A tout moment, si une courbe est dessinée, un curseur suit la souris sur la courbe pour avoir plus de précision sur un point de la courbe. Ces coordonnées s’affichent en haut à gauche.\n" +
-	"- Le retrait des courbes. Il est possible à l'aide d'un clic droit, de supprimer les courbes");
+						"- Le zoom. GrÃ¢ce Ã  la molette, il est possible de zoomer ainsi que de dezoomer. La grille sâ€™adaptera pour permettre une meilleure visibilitÃ©. La grille est bornÃ©e de 0.001 Ã  1000. \n" +
+	"- Le dÃ©placement du graphique. En restant appuyer sur le clic gauche et en dÃ©plaÃ§ant la souris, cela permet de voir dâ€™autre partie du graphique. Ccela est aussi possible avec le clic droit. \n" +
+	"- Lâ€™ajout de points. Il est possible, en double cliquant au mÃªme endroit, de crÃ©er un point sur le graphique. Son nom ainsi que ses coordonnÃ©es sâ€™affichent Ã  cÃ´tÃ© du point.\n" +
+	"- Le retrait du point. En faisant un clic droit sur un point crÃ©Ã©, le point disparaitra. Cela renomme les autres points pour ne pas avoir de conflit de noms. \n " +
+	"- Le curseur. A tout moment, si une courbe est dessinÃ©e, un curseur suit la souris sur la courbe pour avoir plus de prÃ©cision sur un point de la courbe. Ces coordonnÃ©es sâ€™affichent en haut Ã  gauche.\n" +
+	"- Le retrait des courbes. Il est possible Ã  l'aide d'un clic droit, de supprimer les courbes");
 			} catch (NullPointerException e) {
 				System.out.println("ici");
 			}
@@ -106,7 +106,7 @@ public class TelecomGrapheurVue extends JPanel implements Observer{
 	}
 
 	/**
-	 * dessine les échelons pour l'axe des X
+	 * dessine les ï¿½chelons pour l'axe des X
 	 * @param g
 	 */
 	public void drawEchelonX(Graphics g){
@@ -124,14 +124,14 @@ public class TelecomGrapheurVue extends JPanel implements Observer{
 	}
 
 	/**
-	 * dessine les échelons pour l'axe des Y
+	 * dessine les ï¿½chelons pour l'axe des Y
 	 * @param g
 	 */
 	public void drawEchelonY(Graphics g){
 		for(int i = this.modele.getBornes().getBorneYTop(); i<=this.modele.getBornes().getBorneYDown();i++){
 			g.drawLine((int) this.modele.getOrigin().getX()-10, (int) this.modele.getOrigin().getY()+i*this.modele.getAxeModeleY().getTailleCase(),(int) this.modele.getOrigin().getX()+10, (int) this.modele.getOrigin().getY()+i*this.modele.getAxeModeleY().getTailleCase());
 			if(i!=0){
-				g.drawString(""+i*(-1)*this.modele.getAxeModeleY().getPas(), (int) this.modele.getOrigin().getX()+ 20, (int) this.modele.getOrigin().getY()+i*this.modele.getAxeModeleY().getTailleCase()); // *-1 car inversé (haut les plus, bas les -)
+				g.drawString(""+i*(-1)*this.modele.getAxeModeleY().getPas(), (int) this.modele.getOrigin().getX()+ 20, (int) this.modele.getOrigin().getY()+i*this.modele.getAxeModeleY().getTailleCase()); // *-1 car inversï¿½ (haut les plus, bas les -)
 			}
 		}
 	}
@@ -157,7 +157,7 @@ public class TelecomGrapheurVue extends JPanel implements Observer{
 	}
 
 	/**
-	 * A chaque fois qu'une donnée change dans le modele, cette méthode est appelée. Elle redessine avec les nouvelles valeurs
+	 * A chaque fois qu'une donnï¿½e change dans le modele, cette mï¿½thode est appelï¿½e. Elle redessine avec les nouvelles valeurs
 	 */
 	@Override
 	public void update(Observable arg0, Object arg1) {
@@ -197,11 +197,11 @@ public class TelecomGrapheurVue extends JPanel implements Observer{
 		double y = -((this.modele.getCursor().getY()-this.modele.getOrigin().getY())/this.modele.getAxeModeleY().getTailleCase())*this.modele.getAxeModeleY().getPas();
 		DecimalFormat df = new DecimalFormat ( ) ; 
 		df.setMaximumFractionDigits ( 3 ) ;
-		g.drawString("Coordonnées ( " + df.format(x) + " , " + df.format(y) + " ) ", 50, 50);
+		g.drawString("Coordonnï¿½es ( " + df.format(x) + " , " + df.format(y) + " ) ", 50, 50);
 	}
 
 	/**
-	 * dessine l'ensemble de points créé par l'utilisateur
+	 * dessine l'ensemble de points crï¿½ï¿½ par l'utilisateur
 	 * @param g
 	 */
 	public void drawPoints(Graphics g){
@@ -214,10 +214,10 @@ public class TelecomGrapheurVue extends JPanel implements Observer{
 				double x = ((point.getX()-this.modele.getOrigin().getX())/this.modele.getAxeModeleX().getTailleCase())*this.modele.getAxeModeleX().getPas(); //permet de changer le x du graph en sa valeur sur le graphique
 				double y = -((point.getY()-this.modele.getOrigin().getY())/this.modele.getAxeModeleY().getTailleCase())*this.modele.getAxeModeleY().getPas(); //permet de changer le y du graph en sa valeur sur le graphique
 				DecimalFormat df = new DecimalFormat ( ) ; 
-				df.setMaximumFractionDigits ( 2 ) ; // permet de limiter à 2 chiffre après la virgule
-				g.drawString("( " + df.format(x) + " , " + df.format(y) + " ) ", (int) point.getX()+10, (int) point.getY()-5); //dessine les coordonnées
-				g.drawString(""+(char) i, (int) point.getX()+2,(int) point.getY()-5); //dessine sa lettre associée
-				i++; //permet de passer à la lettre d'après
+				df.setMaximumFractionDigits ( 2 ) ; // permet de limiter ï¿½ 2 chiffre aprï¿½s la virgule
+				g.drawString("( " + df.format(x) + " , " + df.format(y) + " ) ", (int) point.getX()+10, (int) point.getY()-5); //dessine les coordonnï¿½es
+				g.drawString(""+(char) i, (int) point.getX()+2,(int) point.getY()-5); //dessine sa lettre associï¿½e
+				i++; //permet de passer ï¿½ la lettre d'aprï¿½s
 			}
 		}
 	}
