@@ -25,7 +25,7 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
     private int decalageXOrigin, decalageYOrigin, decalageXPoints, decalageYPoints;
     private String fonction;
     private HashMap<String, Evaluator> eval = new HashMap<String, Evaluator>();
-    
+
     public TelecomGrapheurControleur(TelecomGrapheurModele modele) {
         this.modele = modele;
     }
@@ -52,31 +52,37 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
         if (SwingUtilities.isLeftMouseButton(e)) { // si c'est un clic gauche
             this.modele.setClique(true); 
             boolean exist = false;
-            for (PointModele p : this.modele.getListesPoints().getListePoints()) { // On parocurt la liste de point
-                if (e.getX() == p.getX() && e.getY() == ((int) (p.getY() + 1000000055))) { // On verifie si on a deja clic à cet endroit
-                    this.modele.getListesPoints().getListePoints().remove(p); // si le point est trouvé, on l'enleve 
+
+            for (PointModele p : this.modele.getListesPoints().getListePoints()) { // On parcourt la liste de point
+                if (e.getX() == p.getX() && e.getY() == ((int) (p.getY() + 1000000055))) { // On verifie si on a deja clic ï¿½ cet endroit
+                    this.modele.getListesPoints().getListePoints().remove(p); // si le point est trouvï¿½, on l'enleve 
                     this.modele.getListesPoints().getListePoints().add(new PointModele(e.getX(), e.getY() - 55)); // et on le repositionne au bon endroit
                     exist = true; //On a trouve un point
                 }
             }
             if (!exist) { // si aucun point n'a ete trouve
-                this.modele.getListesPoints().getListePoints().add(new PointModele(e.getX(), e.getY() - 1000000055)); // On set un point à un endroit invisible
+                this.modele.getListesPoints().getListePoints().add(new PointModele(e.getX(), e.getY() - 1000000055)); // On set un point ï¿½ un endroit invisible
             }
-        } else if (SwingUtilities.isRightMouseButton(e)) { // si c'est un clic droit
-            for (PointModele p : this.modele.getListesPoints().getListePoints()) { // on parcourt tous les points
-                if (e.getX() > p.getX() - 3 && e.getX() < p.getX() + 3 && e.getY() - 55 > p.getY() - 3 && e.getY() - 55 < p.getY() + 3) { // on verifie si le clic est sur un point
-                    this.modele.getListesPoints().getListePoints().remove(p); // On le supprime
+
+        } else {
+            System.out.println(e.getX() + " : " + e.getY());
+            for (PointModele p : this.modele.getListesPoints().getListePoints()) {
+                if (e.getX() > p.getX() - 5 && e.getX() < p.getX() + 10 && e.getY() - 55 > p.getY() - 5 && e.getY() - 55 < p.getY() + 10) {
+                    this.modele.getListesPoints().getListePoints().remove(p);
+                    System.out.println("Efface fonction");
                     break;
                 }
             }
-            for (PointModele p : this.modele.getCourbe().getListePoints()) { // On parcourt les points de la courbe
-                if (e.getX() > p.getX() - 3 && e.getX() < p.getX() + 3 && e.getY() - 55 > p.getY() - 3 && e.getY() - 55 < p.getY() + 3) { // On verifie si le clic est sur un point
-                    this.modele.getCourbe().videListe(); // On efface les courbes
-                    this.fonction = null; // On met la fonction a null
+            for (PointModele p : this.modele.getCourbe().getListePoints()) {
+                if (e.getX() > p.getX() - 5 && e.getX() < p.getX() + 10 && e.getY() - 55 > p.getY() - 5 && e.getY() - 55 < p.getY() + 10) {
+                    this.modele.getCourbe().videListe();
+                    System.out.println("Efface fonction");
+                    this.fonction = null;
+                    this.modele.getCourbe().setFonction(new ArrayList<String>());
                     break;
                 }
             }
-            this.modele.getCourbe().setFonction(new ArrayList<String>()); // on reinitialise la liste des fonctions
+
         }
     }
 
@@ -87,16 +93,16 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        ArrayList<PointModele> liste = new ArrayList<PointModele>(); // liste qui contient les déclages des points par rapport à l'origine
+        ArrayList<PointModele> liste = new ArrayList<PointModele>(); // liste qui contient les dï¿½clages des points par rapport ï¿½ l'origine
         if (this.modele.isClique()) { // si on a fait un clic gauche
-            this.decalageXOrigin = (int) this.modele.getOrigin().getX() - e.getX(); // calcul le decalage, par rapport à l'origin, de de la souris en x
+            this.decalageXOrigin = (int) this.modele.getOrigin().getX() - e.getX(); // calcul le decalage, par rapport ï¿½ l'origin, de de la souris en x
             this.decalageYOrigin = (int) this.modele.getOrigin().getY() - e.getY();
             if (this.decalageXOrigin > 0) { // si on a dragg de gauche vers droite
-                this.modele.getBornes().setBorneXLeft(this.modele.getBornes().getBorneXLeft() - this.decalageXOrigin); // On met à jour les bornes 
+                this.modele.getBornes().setBorneXLeft(this.modele.getBornes().getBorneXLeft() - this.decalageXOrigin); // On met ï¿½ jour les bornes 
             } else { // si c'est l'inerse
-                this.modele.getBornes().setBorneXRight(this.modele.getBornes().getBorneXRight() - this.decalageXOrigin); // On met à jour les bornes
+                this.modele.getBornes().setBorneXRight(this.modele.getBornes().getBorneXRight() - this.decalageXOrigin); // On met ï¿½ jour les bornes
             }
-            this.modele.setClique(false); // Maintenant qu'on a calculé le declalage, on ne veut plus repasser dedans jusqu'au prochain clic
+            this.modele.setClique(false); // Maintenant qu'on a calculï¿½ le declalage, on ne veut plus repasser dedans jusqu'au prochain clic
         }
         this.modele.getOrigin().setX(e.getX() + this.decalageXOrigin); // On deplace l'origine
         this.modele.getOrigin().setY(e.getY() + this.decalageYOrigin); // On deplace l'origine
@@ -120,11 +126,11 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
                 for (int j = this.modele.getBornes().getBorneXLeft(); j < this.modele.getBornes().getBorneXRight(); j++) {
                     double x = (j + this.modele.getOrigin().getX());
                     Double y = MathParser.evaluate(eval, (j / (this.modele.getAxeModeleY().getTailleCase() / this.modele.getAxeModeleY().getPas())));
-                    
-                    if(y==null){
+
+                    if (y == null) {
                         continue;
                     }
-                    
+
                     this.modele.getCourbe().setPoints(new PointModele((int) (x), (int) (-y * this.modele.getAxeModeleY().getTailleCase() / this.modele.getAxeModeleY().getPas() + this.modele.getOrigin().getY())));
                 }
             }
@@ -155,17 +161,17 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
         int notches = e.getWheelRotation();
         if (notches < 0) {
             //ici tu scroll ver le haut 
-            if(this.modele.getAxeModeleX().getPas()>0.001 && this.modele.getAxeModeleY().getPas()>0.001){
-            this.modele.getAxeModeleX().setCoeffZoom(this.modele.getAxeModeleX().getCoeffZoom() + 0.1 * this.modele.getAxeModeleX().getCoeffZoom());
-            this.modele.getAxeModeleY().setCoeffZoom(this.modele.getAxeModeleY().getCoeffZoom() + 0.1 * this.modele.getAxeModeleY().getCoeffZoom());
+
+            if (this.modele.getAxeModeleX().getPas() > 0.001 && this.modele.getAxeModeleY().getPas() > 0.001) {
+                this.modele.getAxeModeleX().setCoeffZoom(this.modele.getAxeModeleX().getCoeffZoom() + 0.1 * this.modele.getAxeModeleX().getCoeffZoom());
+                this.modele.getAxeModeleY().setCoeffZoom(this.modele.getAxeModeleY().getCoeffZoom() + 0.1 * this.modele.getAxeModeleY().getCoeffZoom());
             }
-        } else {
-            if(this.modele.getAxeModeleX().getPas()<1000 && this.modele.getAxeModeleY().getPas()<1000){
+        } else if (this.modele.getAxeModeleX().getPas() < 1000 && this.modele.getAxeModeleY().getPas() < 1000) {
             //ici tu scroll vers le bas 
             this.modele.getAxeModeleX().setCoeffZoom(this.modele.getAxeModeleX().getCoeffZoom() - 0.1 * this.modele.getAxeModeleX().getCoeffZoom());
             this.modele.getAxeModeleY().setCoeffZoom(this.modele.getAxeModeleY().getCoeffZoom() - 0.1 * this.modele.getAxeModeleY().getCoeffZoom());
-            }
         }
+
         for (PointModele p : this.modele.getListesPoints().getListePoints()) {
             double x = ((p.getX() - this.modele.getOrigin().getX()) / this.modele.getAxeModeleX().getTailleCase()) * this.modele.getAxeModeleX().getPas();
             double y = -((p.getY() - this.modele.getOrigin().getY()) / this.modele.getAxeModeleY().getTailleCase()) * this.modele.getAxeModeleY().getPas();
@@ -206,13 +212,13 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
         }
         if (fonction != null && !fonction.isEmpty()) {
             Evaluator eval = null;
-            
+
             for (String s : this.modele.getCourbe().getFonction()) {
                 eval = getEval(s);
                 for (int j = this.modele.getBornes().getBorneXLeft(); j < this.modele.getBornes().getBorneXRight(); j++) {
                     double x = (j + this.modele.getOrigin().getX());
-                    Double y =MathParser.evaluate(eval, (j / (this.modele.getAxeModeleY().getTailleCase() / this.modele.getAxeModeleY().getPas())));
-                    if(y==null){
+                    Double y = MathParser.evaluate(eval, (j / (this.modele.getAxeModeleY().getTailleCase() / this.modele.getAxeModeleY().getPas())));
+                    if (y == null) {
                         continue;
                     }
                     this.modele.getCourbe().setPoints(new PointModele((int) (x), (int) (-y * this.modele.getAxeModeleY().getTailleCase() / this.modele.getAxeModeleY().getPas() + this.modele.getOrigin().getY())));
@@ -225,10 +231,9 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
     public void actionPerformed(ActionEvent e) {
         if (e.getActionCommand() != "Aide") { // le jtextfield
             this.fonction = e.getActionCommand();
-            //this.modele.getCourbe().videListe();
             Evaluator eval = null;
             try {
-            	eval = getEval(e.getActionCommand());
+                eval = getEval(e.getActionCommand());
             } catch (Exception e2) {
                 // TODO: handle exception
             }
@@ -250,12 +255,15 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
         }
     }
     
-    public Evaluator getEval(String s){
-    	Evaluator evaluation = MathParser.getEvaluatorFromMathString(s);
-    	if(!this.eval.containsKey(s) && evaluation != null){
-    		this.eval.put(s, evaluation);
-    	}
-    	return this.eval.get(s);
+    public Evaluator getEval(String s) {
+        Evaluator evaluation = MathParser.getEvaluatorFromMathString(s);
+        if (!this.eval.containsKey(s)) {
+            this.eval.put(s, evaluation);
+        } else if (this.eval.containsKey(s) && evaluation == null) {
+            this.eval.remove(s);
+        }
+        return this.eval.get(s);
+        
     }
 
 }

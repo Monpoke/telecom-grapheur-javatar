@@ -7,6 +7,7 @@ package graphtest.treeverter;
 
 import graphtest.parsed.ParsedToken;
 import graphtest.parsed.TOK_NUMBER;
+import graphtest.parsed.TOK_OPERATOR_MINUS;
 import graphtest.parsed.TOK_OPERATOR_MULTIPLY;
 import graphtest.parsed.TOK_OPERATOR_PLUS;
 import graphtest.parsed.TOK_PAR_CLOSE;
@@ -26,9 +27,15 @@ class TokenSimplifier {
 
             ParsedToken current = parsedTokenList.get(i);
             ParsedToken next = parsedTokenList.get(i + 1);
-
-            // 2 numbers, add a + operator => needed for this type: 12 - 10  (TOK_NUMBER(12) TOK_NUMBER(-10))
-            if (current instanceof TOK_NUMBER
+            /**
+             * In order to accept following conditions: -FUNCTION(
+             */
+            if ((current instanceof TOK_OPERATOR_MINUS && next.isFunction())) {
+                System.out.println("Add multiply");
+                parsedTokenList.add(i + 1, new TOK_NUMBER(1));
+                parsedTokenList.add(i + 2, new TOK_OPERATOR_MULTIPLY());
+            } // 2 numbers, add a + operator => needed for this type: 12 - 10  (TOK_NUMBER(12) TOK_NUMBER(-10))
+            else if (current instanceof TOK_NUMBER
                     && (next instanceof TOK_NUMBER)) {
                 parsedTokenList.add(i + 1, new TOK_OPERATOR_PLUS());
             } /*
@@ -40,14 +47,13 @@ class TokenSimplifier {
                 - 12x
              */ else if ((next instanceof TOK_PAR_OPEN
                     || next instanceof TOK_VARIABLE
-                     || next instanceof TOK_NUMBER)
+                    || next instanceof TOK_NUMBER)
                     && (current instanceof TOK_NUMBER
                     || current instanceof TOK_PAR_CLOSE
                     || current instanceof TOK_VARIABLE)) {
 
                 parsedTokenList.add(i + 1, new TOK_OPERATOR_MULTIPLY());
             }
-
         }
 
     }
