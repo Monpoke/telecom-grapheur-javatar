@@ -26,8 +26,8 @@ public class PriorityTools {
      */
     public static void addPriority(ArrayList<ParsedToken> lexicalArray){
         ArrayList<ParsedToken> priorityArray = new ArrayList<>();
-        // priorityArray = setPriorityParenthesis(lexicalArray); Commented for now resolve setPriorityParenthesis
-        priorityArray = lexicalArray;   // to replace by above when debugged
+        // priorityArray = setPriorityParenthesis(lexicalArray); Commented for now resolve setPriorityParenthesis -> Useless now
+        priorityArray = lexicalArray;   // to replace by above when debugged -> SetParenthesis not used anymore in the calculation of priority
         
         int coefNbToken = coefficientCalculator(priorityArray);
         long coefTokenRule = coefNbToken;
@@ -82,7 +82,7 @@ public class PriorityTools {
      * Add some parenthesis in the expression in order to respect the priority setter rules
      * See @Florent for more details about the priority setter rules
      * 
-     * Try remember what it does ... : put parenthesis around * and / to ensure their working
+     * Put parenthesis around * and / to ensure their working
      * 
      * @param lexicalArray
      * @return ArrayList<ParsedToken>
@@ -214,7 +214,7 @@ public class PriorityTools {
      * Reverse the priority of the numerator and divisor
      * of the detected division directly in the list
      * @param priorityArray
-     * @param i 
+     * @param index 
      */
     public static void reverseDividePriority(ArrayList<ParsedToken> priorityArray, int index){
         int numeratorStartIndex = index-1;

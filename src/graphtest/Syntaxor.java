@@ -1,5 +1,6 @@
 package graphtest;
 
+import graphtest.exceptions.LexicalException;
 import graphtest.parsed.ParsedToken;
 import graphtest.syntaxor.PriorityTools;
 import graphtest.syntaxor.Stack;
@@ -19,12 +20,12 @@ public class Syntaxor {
     private final ArrayList<ParsedToken> lexicalArray;
     private Stack orderedStack;
     
-    public Syntaxor(ArrayList<ParsedToken> lexicalArray){
+    public Syntaxor(ArrayList<ParsedToken> lexicalArray) throws LexicalException{
         this.lexicalArray = lexicalArray;
         startSyntaxor();
     }
     
-    private void startSyntaxor(){
+    private void startSyntaxor() throws LexicalException{
         ArrayList<ParsedToken> syntaxArray = new ArrayList<>();
         
         if(!this.lexicalArray.isEmpty()){
@@ -67,6 +68,9 @@ public class Syntaxor {
         return this.orderedStack;
     }
     
+    /**
+     * Display the stack at the given state
+     */
     public void displayOrderedStack(){
         this.orderedStack.displayStack();
     }

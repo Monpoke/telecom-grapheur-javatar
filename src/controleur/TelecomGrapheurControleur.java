@@ -205,14 +205,10 @@ public class TelecomGrapheurControleur implements MouseListener, MouseMotionList
             this.modele.getListesPoints().setPoints(new PointModele(graphX, graphY));
         }
         if (fonction != null && !fonction.isEmpty()) {
-            Evaluator eval = getEval(fonction);
-
-            // error, so skip
-            if (eval == null) {
-                return;
-            }
+            Evaluator eval = null;
+            
             for (String s : this.modele.getCourbe().getFonction()) {
-                eval = MathParser.getEvaluatorFromMathString(s);
+                eval = getEval(s);
                 for (int j = this.modele.getBornes().getBorneXLeft(); j < this.modele.getBornes().getBorneXRight(); j++) {
                     double x = (j + this.modele.getOrigin().getX());
                     Double y =MathParser.evaluate(eval, (j / (this.modele.getAxeModeleY().getTailleCase() / this.modele.getAxeModeleY().getPas())));
