@@ -82,7 +82,7 @@ public class PriorityToolsTest {
         PriorityTools.addPriority(priorityArray2);
                 
         assertEquals(49,priorityArray2.get(0).getPriority());
-        assertEquals(146,priorityArray2.get(1).getPriority());
+        assertEquals(290,priorityArray2.get(1).getPriority());
         assertEquals(292,priorityArray2.get(2).getPriority());
         assertEquals(293,priorityArray2.get(3).getPriority());
         assertEquals(294,priorityArray2.get(4).getPriority());
@@ -111,19 +111,17 @@ public class PriorityToolsTest {
                 
         PriorityTools.addPriority(priorityArray3);
         
-        //System.out.println(priorityArray3);
-        
-        /*assertEquals(11,priorityArray3.get(0).getPriority());
-        assertEquals(34,priorityArray3.get(1).getPriority());
+        assertEquals(11,priorityArray3.get(0).getPriority());
+        assertEquals(67,priorityArray3.get(1).getPriority());
         assertEquals(69,priorityArray3.get(2).getPriority());
-        assertEquals(72,priorityArray3.get(3).getPriority());
-        assertEquals(404,priorityArray3.get(4).getPriority());
-        assertEquals(403,priorityArray3.get(5).getPriority());
-        assertEquals(402,priorityArray3.get(6).getPriority());
-        assertEquals(208,priorityArray3.get(7).getPriority());
-        assertEquals(408,priorityArray3.get(8).getPriority());
-        assertEquals(409,priorityArray3.get(9).getPriority());
-        assertEquals(410,priorityArray3.get(10).getPriority());*/
+        assertEquals(400,priorityArray3.get(3).getPriority());
+        assertEquals(2385,priorityArray3.get(4).getPriority());
+        assertEquals(2384,priorityArray3.get(5).getPriority());
+        assertEquals(2383,priorityArray3.get(6).getPriority());
+        assertEquals(408,priorityArray3.get(7).getPriority());
+        assertEquals(410,priorityArray3.get(8).getPriority());
+        assertEquals(411,priorityArray3.get(9).getPriority());
+        assertEquals(412,priorityArray3.get(10).getPriority());
         //assertEquals(true,false); // Assert Equals above are wrong (in cause the (3/4)*(1+y) works now but a (3+4)*(1+y) cannot work)
         
         /* Testing cos(2*x)+2 */
@@ -319,7 +317,7 @@ public class PriorityToolsTest {
         assertEquals(9,priorityArray1.get(0).getPriority());
         assertEquals(10,priorityArray1.get(1).getPriority());
         assertEquals(11,priorityArray1.get(2).getPriority());
-        assertEquals(30,priorityArray1.get(3).getPriority());
+        assertEquals(57,priorityArray1.get(3).getPriority());
         assertEquals(330,priorityArray1.get(4).getPriority());
         assertEquals(331,priorityArray1.get(5).getPriority());
         assertEquals(332,priorityArray1.get(6).getPriority());
@@ -347,9 +345,9 @@ public class PriorityToolsTest {
         assertEquals(9,priorityArray2.get(0).getPriority());
         assertEquals(10,priorityArray2.get(1).getPriority());
         assertEquals(11,priorityArray2.get(2).getPriority());
-        assertEquals(30,priorityArray2.get(3).getPriority());
+        assertEquals(57,priorityArray2.get(3).getPriority());
         assertEquals(332,priorityArray2.get(4).getPriority());
-        assertEquals(168,priorityArray2.get(5).getPriority());
+        assertEquals(330,priorityArray2.get(5).getPriority());
         assertEquals(59,priorityArray2.get(6).getPriority());
         assertEquals(60,priorityArray2.get(7).getPriority());
         assertEquals(61,priorityArray2.get(8).getPriority());
