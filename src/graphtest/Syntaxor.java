@@ -74,4 +74,11 @@ public class Syntaxor {
     public void displayOrderedStack(){
         this.orderedStack.displayStack();
     }
+    
+    /**
+     * Display the stack at the given state with the priority
+     */
+    public void displayPriorityStack(){
+        this.orderedStack.displayStackWithPriority();
+    }
 }

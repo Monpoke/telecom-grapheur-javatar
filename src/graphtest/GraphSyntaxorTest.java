@@ -37,7 +37,8 @@ public class GraphSyntaxorTest {
             
             //---Syntax Part---
             Syntaxor syntaxor = new Syntaxor(parsedTokenList);
-            syntaxor.displayOrderedStack();
+            //syntaxor.displayOrderedStack();
+            syntaxor.displayPriorityStack();
             
         } catch (ParsingException ex) {
             Logger.getLogger(MathParser.class.getName()).log(Level.SEVERE, null, ex);

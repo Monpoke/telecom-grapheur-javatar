@@ -98,4 +98,30 @@ public class Stack {
             System.out.println("\nEmpty Stack : Nothing to display\n");
         }
     }
+    
+    /**
+     * Debug fonction : display the values in the stack and their priority
+     */
+    public void displayStackWithPriority(){
+        if(!empty()){
+            System.out.println("\n---Stack---|---Priority---");
+            
+            int i= this.maxLength-1;
+            ParsedToken[] ptCopy = new ParsedToken[this.maxLength];
+            
+            /* Display and copy depop values */
+            while(!empty()){
+                ptCopy[i] = pop();
+                System.out.print("|   "+ptCopy[i]+"   |");
+                System.out.println("|   "+ptCopy[i].getPriority()+"  |");
+                i--;
+            }
+            /* Recopy values into the original stack */
+            while(i<this.maxLength-1){
+                push(ptCopy[++i]);
+            }
+        }else{
+            System.out.println("\nEmpty Stack : Nothing to display\n");
+        }
+    }
 }
