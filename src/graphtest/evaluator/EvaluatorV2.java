@@ -112,16 +112,20 @@ public class EvaluatorV2 {
         TreeNode currentNode = root.getLeft();
 
         while (currentNode != null) {
-          //  System.out.println("CURRENT, je suis=" + currentNode.toString());
+            //  System.out.println("CURRENT, je suis=" + currentNode.toString());
 
             if (currentNode.getToken().isOperator()) {
                 System.out.println("Je passe par " + currentNode.toString());
-                
+
                 result = processOperatorsV2(currentNode, result, currentNode.getLeft().getToken().getValue());
-                
+
             }
 
-            currentNode = currentNode.getLeft().getLeft();
+            if (currentNode.getLeft() != null && currentNode.getLeft().getLeft() != null) {
+                currentNode = currentNode.getLeft().getLeft();
+            } else {
+                currentNode = currentNode.getLeft();
+            }
         }
 
         return result;
